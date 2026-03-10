@@ -1,14 +1,39 @@
 @import "tailwindcss";
 
 @theme {
-  --color-app-bg: #222831; 
-  --color-app-card: #393e46;
-  --color-app-accent: #3282b8;
-  --color-app-muted: #9ba4b4;
-  --color-app-border: #4b5563;
+  --color-app-bg: var(--app-bg);
+  --color-app-card: var(--app-card);
+  --color-app-accent: var(--app-accent);
+  --color-app-muted: var(--app-muted);
+  --color-app-border: var(--app-border);
+  --color-app-sidebar: var(--app-sidebar);
+  --color-app-theme-toggle: var(--app-theme-toggle);
+  --color-app-text-primary: var(--app-text-primary);
 }
 
 @layer base {
+  :root {
+    --app-bg: #222831;
+    --app-card: #393e46;
+    --app-accent: #3282b8;
+    --app-muted: #9ba4b4;
+    --app-border: #4b5563;
+    --app-sidebar: #222831;
+    --app-theme-toggle: #e9e56b;
+    --app-text-primary: #eeeeee;
+  }
+
+  :root.light {
+    --app-bg: #eeeeee;
+    --app-card: #ffffff;
+    --app-accent: #00adb5;
+    --app-muted: #393e46;
+    --app-border: #c0c0c0;
+    --app-sidebar: #eeeeee;
+    --app-theme-toggle: #2772c1;
+    --app-text-primary: #868686;
+  }
+
   body {
     @apply bg-app-bg text-white antialiased;
     margin: 0;
