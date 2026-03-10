@@ -1,0 +1,16 @@
+@import "tailwindcss";
+
+@theme {
+  --color-app-bg: #222831; 
+  --color-app-card: #393e46;
+  --color-app-accent: #3282b8;
+  --color-app-muted: #9ba4b4;
+  --color-app-border: #4b5563;
+}
+
+@layer base {
+  body {
+    @apply bg-app-bg text-white antialiased;
+    margin: 0;
+  }
+}
