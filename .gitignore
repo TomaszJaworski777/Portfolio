@@ -2,7 +2,7 @@
 Thumbs.db
 
 [Bb]in/
-[Ob]j/
+[Oo]bj/
 out/
 appsettings.Development.json
 appsettings.Local.json
@@ -39,9 +39,3 @@ yarn-error.log*
 
 *.db
 *.sqlite
-*.pdb
-*.dll
-*.exe
-*.txt
-*.cache
-/Portfolio.Server/obj
