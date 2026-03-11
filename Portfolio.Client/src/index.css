@@ -9,6 +9,8 @@
   --color-app-sidebar: var(--app-sidebar);
   --color-app-theme-toggle: var(--app-theme-toggle);
   --color-app-text-primary: var(--app-text-primary);
+  --color-app-github-highlight: var(--app-github-highlight);
+  --color-app-linkedin-highlight: var(--app-linkedin-highlight);
 }
 
 @layer base {
@@ -21,6 +23,8 @@
     --app-sidebar: #222831;
     --app-theme-toggle: #e9e56b;
     --app-text-primary: #eeeeee;
+    --app-github-highlight: #9721bb;
+    --app-linkedin-highlight: #0077b5;
   }
 
   :root.light {
@@ -32,6 +36,8 @@
     --app-sidebar: #eeeeee;
     --app-theme-toggle: #2772c1;
     --app-text-primary: #868686;
+    --app-github-highlight: #9721bb;
+    --app-linkedin-highlight: #0077b5;
   }
 
   body {

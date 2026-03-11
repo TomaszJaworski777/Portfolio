@@ -1,21 +1,20 @@
 import { Sun, Moon } from "lucide-react";
 import { useState } from "react";
+import { TopBarButton } from "./top_bar_button";
 
-export function ThemeToggle({ size: size, defaultLight: defaultLight, onToggle: onToggle }: { size: number, defaultLight: boolean, onToggle: (isLight: boolean) => void }) { //TODO: Write normalized topbar button and use here for consistency
+interface ThemeToggleProps {
+  defaultLight?: boolean;
+  onToggle: (isLight: boolean) => void;
+  className?: string; 
+  size?: number;
+}
+
+export function ThemeToggle({ size = 28, defaultLight = false, className = "", onToggle }: ThemeToggleProps) { //TODO: Write normalized topbar button and use here for consistency
   const [isLight, setIsLight] = useState(defaultLight);
 
   onToggle(isLight);
 
   return (
-    <button
-      onClick={() => {setIsLight(!isLight); onToggle(!isLight)}}
-      className="
-        w-11 h-10 flex items-center justify-center
-        transition-all active:scale-90 cursor-pointer
-        hover:text-app-theme-toggle text-app-text-primary
-      "
-    >
-      {isLight ? <Moon size={size} strokeWidth={1.5}/> : <Sun size={size} strokeWidth={1.5}/>}
-    </button>
+    <TopBarButton icon={isLight ? Moon : Sun} size={size} onClick={() => { setIsLight(!isLight); onToggle(!isLight) }} className={`hover:text-app-theme-toggle ${className}`}/>
   );
 }
