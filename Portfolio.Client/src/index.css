@@ -15,7 +15,7 @@
 
 @layer base {
   :root {
-    --app-bg: #222831;
+    --app-bg: #192028;
     --app-card: #393e46;
     --app-accent: #3282b8;
     --app-muted: #9ba4b4;
@@ -28,14 +28,14 @@
   }
 
   :root.light {
-    --app-bg: #eeeeee;
+    --app-bg: #e3e3e3;
     --app-card: #ffffff;
     --app-accent: #00adb5;
-    --app-muted: #393e46;
+    --app-muted: #939393;
     --app-border: #c0c0c0;
     --app-sidebar: #eeeeee;
     --app-theme-toggle: #2772c1;
-    --app-text-primary: #868686;
+    --app-text-primary: #767676;
     --app-github-highlight: #9721bb;
     --app-linkedin-highlight: #0077b5;
   }
