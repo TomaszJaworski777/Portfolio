@@ -11,6 +11,7 @@
   --color-app-text-primary: var(--app-text-primary);
   --color-app-github-highlight: var(--app-github-highlight);
   --color-app-linkedin-highlight: var(--app-linkedin-highlight);
+  --color-app-scrollbar: var(--app-scrollbar);
 }
 
 @layer base {
@@ -25,6 +26,7 @@
     --app-text-primary: #eeeeee;
     --app-github-highlight: #9721bb;
     --app-linkedin-highlight: #0077b5;
+    --app-scrollbar: #4b5563;
   }
 
   :root.light {
@@ -38,10 +40,30 @@
     --app-text-primary: #767676;
     --app-github-highlight: #9721bb;
     --app-linkedin-highlight: #0077b5;
+    --app-scrollbar: #939393;
   }
 
   body {
     @apply bg-app-bg text-white antialiased;
     margin: 0;
+  }
+}
+
+@layer utilities {
+  .custom-scrollbar::-webkit-scrollbar {
+    width: 7px;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    background: var(--app-scrollbar);
+    border-radius: 2px;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: var(--app-accent);
   }
 }

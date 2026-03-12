@@ -3,6 +3,7 @@ import { UserRound, X, FileDown, MapPin, Phone } from "lucide-react";
 import { ThemeToggle } from "./components/ui/theme_toggle";
 import { TopBarButton } from "./components/ui/top_bar_button";
 import { GitHubActivity } from "./components/ui/github_activity";
+import { ProjectCard } from "./components/ui/project_card";
 
 export default function App() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -99,13 +100,22 @@ export default function App() {
           <p className="text-[10px] uppercase tracking-widest text-white/20">Filter Bar (Search + Toggles)</p>
         </section>
 
-        <main className="flex-1 overflow-y-auto px-6 lg:px-10 pb-0">
-          <div className="h-500 w-full border border-dashed border-app-border flex items-start justify-center pt-20">
-            <p className="text-[10px] uppercase tracking-widest text-white/20">Main Content (Scrollable Area)</p>
+        <main className="flex-1 overflow-y-auto px-6 lg:px-10 pb-0 w-full mask-[linear-gradient(to_bottom,transparent,black_25px)] custom-scrollbar scrollbar-gutter-stable">
+          <div className="w-full py-5 px-6">
+            <div className="grid gap-6 grid-cols-[repeat(auto-fill,minmax(350px,1fr))] w-full">
+              {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30].map((i) => (
+                <ProjectCard 
+                  key={i} 
+                  id={i} 
+                  title="project title" 
+                  description="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+                />
+              ))}
+            </div>
           </div>
 
           <footer className="h-20 flex items-center justify-between shrink-0 mt-10 mb-5 border border-app-border">
-            <p className="text-[10px] uppercase tracking-widest text-white/20">Footer Container</p>
+            <p className="text-[10px] uppercase tracking-widest text-white/20 px-6">Footer Container</p>
           </footer>
         </main>
       </div>

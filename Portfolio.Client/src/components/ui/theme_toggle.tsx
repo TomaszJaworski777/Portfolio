@@ -12,7 +12,9 @@ interface ThemeToggleProps {
 export function ThemeToggle({ size = 28, defaultLight = false, className = "", onToggle }: ThemeToggleProps) { //TODO: Write normalized topbar button and use here for consistency
   const [isLight, setIsLight] = useState(defaultLight);
 
-  onToggle(isLight);
+  setTimeout(() => {
+    onToggle(isLight);
+  }, 0);
 
   return (
     <TopBarButton icon={isLight ? Moon : Sun} size={size} onClick={() => { setIsLight(!isLight); onToggle(!isLight) }} className={`hover:text-app-theme-toggle ${className}`}/>
