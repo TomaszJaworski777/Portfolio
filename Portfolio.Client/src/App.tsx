@@ -4,6 +4,16 @@ import { ThemeToggle } from "./components/ui/theme_toggle";
 import { TopBarButton } from "./components/ui/top_bar_button";
 import { GitHubActivity } from "./components/ui/github_activity";
 import { ProjectCard } from "./components/ui/project_card";
+import { FilterButton } from "./components/ui/filter_button";
+
+const TECH_TAGS = [
+  { name: 'c#', icon: 'csharp', color: '#a179dc' },
+  { name: 'asp.net', icon: 'dot-net', color: '#512bd4' },
+  { name: 'react', icon: 'react', color: '#61dafb' },
+  { name: 'typescript', icon: 'typescript', color: '#3178c6' },
+  { name: 'sql server', icon: 'microsoftsqlserver', color: '#CC2927' },
+  { name: 'docker', icon: 'docker', color: '#2496ed' },
+];
 
 export default function App() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -96,8 +106,30 @@ export default function App() {
           }} />
         </header>
 
-        <section className="h-24 px-6 lg:px-10 flex flex-col justify-center shrink-0">
-          <p className="text-[10px] uppercase tracking-widest text-white/20">Filter Bar (Search + Toggles)</p>
+        <section className="w-full px-10 lg:px-15 py-6 flex flex-col justify-center shrink-0 bg-app-bg sticky top-0 z-10">
+          <p className="uppercase text-[10px] tracking-wider mb-1.5 text-app-accent font-bold">filter</p>
+          <div className="relative group mb-3">
+            <div className="absolute left-3 top-1/2 -translate-y-1/2 text-app-accent font-mono text-xs opacity-50 group-focus-within:opacity-100">
+              &gt;
+            </div>
+            <input 
+              type="text" 
+              placeholder="SEARCH..."
+              className="w-full bg-app-surface border border-app-border py-2 pl-8 pr-4 text-[11px] font-mono text-app-text-primary placeholder:text-app-text-primary/50 focus:outline-none focus:border-app-accent focus:ring-1 focus:ring-app-accent/30 transition-all uppercase tracking-widest"
+            />
+          </div>
+
+          <div className="flex flex-wrap gap-2 w-full">
+            {TECH_TAGS.map((tag) => (
+              <FilterButton 
+                key={tag.name}
+                name={tag.name}
+                icon={tag.icon}
+                color={tag.color}
+                onToggle={() => {}}
+              />
+            ))}
+          </div>
         </section>
 
         <main className="flex-1 overflow-y-auto px-6 lg:px-10 pb-0 w-full mask-[linear-gradient(to_bottom,transparent,black_25px)] custom-scrollbar scrollbar-gutter-stable">

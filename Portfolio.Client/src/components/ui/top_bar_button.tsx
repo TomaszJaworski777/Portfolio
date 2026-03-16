@@ -4,7 +4,7 @@ interface TopBarButtonProps {
   icon?: LucideIcon;
   devicon?: string;
   onClick?: () => void;
-  className?: string; 
+  className?: string;
   size?: number;
 }
 
@@ -20,7 +20,7 @@ export function TopBarButton({ icon: Icon, devicon, onClick, className = "", siz
     >
       {Icon && <Icon size={size} strokeWidth={1.5} />}
 
-      {devicon && <i className={`${devicon} text-[${size}px]`} />}
+      {devicon && <i className={devicon} style={{ fontSize: size }} />}
     </button>
   );
 }

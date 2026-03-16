@@ -26,12 +26,12 @@ export function GitHubActivity({ isLight }: { isLight: boolean }) {
   return (
     <div className="mt-8">
       <div className="flex justify-between items-end mb-2">
-        <p className="w-full uppercase tracking-wider ml-3 text-[11px] text-app-accent">
+        <p className="w-full uppercase tracking-wider text-[11px] text-app-accent">
           <b>github activity</b>
         </p>
       </div>
 
-      <div className="relative px-3">
+      <div className="relative">
         {!isReady && (
           <div className="w-full h-32.5 bg-app-surface animate-pulse flex items-center justify-center" />
         )}
