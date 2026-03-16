@@ -35,7 +35,7 @@ export function FilterButton({ name, icon, color, onToggle }: FilterButtonProps)
             }}
         >
             <img
-                src={`https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/${icon}/${icon}-original.svg`}
+                src={icon}
                 alt=""
                 className={`w-5 h-5`}
             />
