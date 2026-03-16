@@ -94,6 +94,24 @@ app.MapGet("/api/projects", () =>
 
     for(int i = 0; i < 30; i++)
     {
+        var tech = new List<TechData>();
+
+        if( i % 2 == 0 ) {
+            tech.Add( new TechData { Name = "C#", IconUrl = "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/csharp/csharp-original.svg", Category = "language", LightColor = "#68217a", DarkColor = "#a179dc" } );
+            tech.Add( new TechData { Name = "ASP.NET", IconUrl = "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/dot-net/dot-net-original.svg", Category = "framework", LightColor = "#512bd4", DarkColor = "#a68aee" } );
+        }
+        else {
+            tech.Add( new TechData { Name = "Rust", IconUrl = "src/assets/rust.svg", Category = "language", LightColor = "#d15b36", DarkColor = "#FF7043" } );
+        }
+
+        if( i % 3 == 0 ) {
+            tech.Add( new TechData { Name = "Docker", IconUrl = "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/docker/docker-original.svg", Category = "devops", LightColor = "#1a70b2", DarkColor = "#2496ed" } );
+        }
+
+        if( i % 4 == 0 ) {
+            tech.Add( new TechData { Name = "Unity", IconUrl = "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/unity/unity-original.svg", Category = "framework", LightColor = "#000000", DarkColor = "#ffffff" } );
+        }
+        
         projects.Add( new ProjectData
         {
             Id = i + 1,
@@ -102,13 +120,7 @@ app.MapGet("/api/projects", () =>
             Description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
             GithubUrl = "",
             DemoUrl = "",
-            Technologies = new List<TechData>
-            {
-                new TechData { Name = "C#", IconUrl = "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/csharp/csharp-original.svg", Category = "language", LightColor = "#68217a", DarkColor = "#a179dc" },
-                new TechData { Name = "ASP.NET", IconUrl = "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/dot-net/dot-net-original.svg", Category = "framework", LightColor = "#512bd4", DarkColor = "#a68aee" },
-                new TechData { Name = "React", IconUrl = "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/react/react-original.svg", Category = "framework", LightColor = "#0b8da8", DarkColor = "#61dafb" },
-                new TechData { Name = "TypeScript", IconUrl = "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/typescript/typescript-original.svg", Category = "language", LightColor = "#3178c6", DarkColor = "#6ba5e7" }
-            }
+            Technologies = tech,
         } );
     }
 
@@ -151,6 +163,7 @@ class ProjectData
     public int Order { get; set; }
     public string Name { get; set; } = string.Empty;
     public string Description { get; set; } = string.Empty;
+    public string ThumbnailUrl { get; set; } = string.Empty;
     public string GithubUrl { get; set; } = string.Empty;
     public string DemoUrl { get; set; } = string.Empty;
     public List<TechData> Technologies { get; set; } = new List<TechData>();

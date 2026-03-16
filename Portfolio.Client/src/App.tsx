@@ -8,6 +8,7 @@ import { FilterButton } from "./components/ui/filter_button";
 import { TechIcon } from "./components/ui/tech_icon";
 import type { ProfileData, TechData, ProjectData } from "./services/api";
 import { fetchProfile, fetchFilters, fetchProjects } from "./services/api";
+import { motion, AnimatePresence } from "framer-motion";
 
 export default function App() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -17,6 +18,10 @@ export default function App() {
   const [filters, setFilters] = useState<TechData[]>([]);
   const [projects, setProjects] = useState<ProjectData[]>([]);
   const [isLoaded, setIsLoaded] = useState(false);
+
+  const [activeFilters, setActiveFilters] = useState<string[]>([]);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [hasFiltered, setHasFiltered] = useState(false);
 
   useEffect(() => {
     const loadAllData = async () => {
@@ -39,9 +44,29 @@ export default function App() {
     loadAllData();
   }, []);
 
+  const toggleFilter = (filterName: string, active: boolean) => {
+    setHasFiltered(true);
+    setActiveFilters(prev =>
+      active
+        ? [...prev, filterName]
+        : prev.filter(f => f !== filterName)
+    );
+  };
+
   if (!isLoaded) {
     return <div className="flex h-screen w-screen bg-app-bg"></div>;
   }
+
+  const filteredProjects = projects.filter(project => {
+    const matchesSearch = searchQuery === "" ||
+      project.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      project.description.toLowerCase().includes(searchQuery.toLowerCase());
+
+    const matchesTags = activeFilters.length === 0 ||
+      project.technologies.some(tech => activeFilters.includes(tech.name));
+
+    return matchesSearch && matchesTags;
+  });
 
   return (
     <div className="flex h-screen w-screen overflow-hidden bg-app-bg relative">
@@ -135,18 +160,20 @@ export default function App() {
             <input
               type="text"
               placeholder="SEARCH..."
+              value={searchQuery}
+              onChange={(e) => { setSearchQuery(e.target.value); setHasFiltered(true); }}
               className="w-full bg-app-surface border border-app-border py-2 pl-8 pr-4 text-[11px] font-mono text-app-text-primary placeholder:text-app-text-primary/50 focus:outline-none focus:border-app-accent focus:ring-1 focus:ring-app-accent/30 transition-all uppercase tracking-widest"
             />
           </div>
 
           <div className="flex flex-wrap gap-2 w-full">
-            {filters.map((tag, i) => (
+            {isLoaded && filters.map((tag, i) => (
               <div key={tag.name} className="animate-fade-in-left" style={{ animationDelay: `${i * 30}ms`, animationFillMode: 'both' }}>
                 <FilterButton
                   name={tag.name}
                   icon={tag.iconUrl}
                   color={isLight ? tag.lightColor : tag.darkColor}
-                  onToggle={() => { }}
+                  onToggle={(active) => toggleFilter(tag.name, active)}
                 />
               </div>
             ))}
@@ -155,19 +182,41 @@ export default function App() {
 
         <main className="flex-1 overflow-y-auto px-6 lg:px-10 pb-0 w-full mask-[linear-gradient(to_bottom,transparent,black_25px)] custom-scrollbar scrollbar-gutter-stable">
           <div className="w-full py-5 px-6">
-            <div className="grid gap-6 grid-cols-[repeat(auto-fill,minmax(350px,1fr))] w-full">
-              {projects.map((project, i) => (
-                <div key={project.id} className="animate-fade-in-up" style={{ animationDelay: `${i * 40}ms`, animationFillMode: 'both' }}>
-                  <ProjectCard
-                    id={project.id}
-                    title={project.name}
-                    description={project.description}
-                    technologies={project.technologies}
-                    isLight={isLight}
-                  />
-                </div>
-              ))}
-            </div>
+            <motion.div layout className="grid gap-6 grid-cols-[repeat(auto-fill,minmax(350px,1fr))] w-full">
+              <AnimatePresence mode="popLayout">
+                {isLoaded && filteredProjects.map((project, i) => (
+                  <motion.div
+                    key={project.id}
+                    layout
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{
+                      opacity: 0,
+                      transition: { duration: 0 }
+                    }}
+                    transition={{
+                      opacity: {
+                        duration: 0.3,
+                        delay: hasFiltered ? 0 : i * 0.04
+                      },
+                      layout: {
+                        duration: 0.3,
+                        type: "spring",
+                        bounce: 0.15
+                      }
+                    }}
+                  >
+                    <ProjectCard
+                      id={project.id}
+                      title={project.name}
+                      description={project.description}
+                      technologies={project.technologies}
+                      isLight={isLight}
+                    />
+                  </motion.div>
+                ))}
+              </AnimatePresence>
+            </motion.div>
           </div>
 
           <footer className="h-20 flex items-center justify-between shrink-0 mt-10 mb-5 border border-app-border">
