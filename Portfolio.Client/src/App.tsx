@@ -16,6 +16,7 @@ export default function App() {
   const [profile, setProfile] = useState<ProfileData | null>(null);
   const [filters, setFilters] = useState<TechData[]>([]);
   const [projects, setProjects] = useState<ProjectData[]>([]);
+  const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
     const loadAllData = async () => {
@@ -29,6 +30,7 @@ export default function App() {
         setProfile(profileData);
         setFilters(filtersData);
         setProjects(projectsData);
+        setIsLoaded(true);
       } catch (err) {
         console.error(err);
       }
@@ -36,6 +38,10 @@ export default function App() {
 
     loadAllData();
   }, []);
+
+  if (!isLoaded) {
+    return <div className="flex h-screen w-screen bg-app-bg"></div>;
+  }
 
   return (
     <div className="flex h-screen w-screen overflow-hidden bg-app-bg relative">
@@ -58,7 +64,7 @@ export default function App() {
             <button onClick={() => setIsSidebarOpen(false)} className="lg:hidden text-app-muted hover:text-app-accent flex ml-auto">
               <X size={20} />
             </button>
-            <div className="border-b border-app-border pb-6">
+            <div className="border-b border-app-border pb-6 animate-fade-in-up">
               <div className="rounded-full bg-app-bg w-50 h-50 border-2 m-auto border-app-border"></div>
               <p className="w-full uppercase mt-4 text-app-text-primary text-center tracking-wider font-bold">{profile?.name}</p>
               <p className="w-full uppercase mt-1 text-app-accent text-[12px] text-center font-bold">{profile?.title}</p>
@@ -71,25 +77,25 @@ export default function App() {
               <p className="w-full mt-2 text-app-text-primary text-[14px] ml-5"><Phone size={16} className="inline mr-2 text-app-accent" />{profile?.phone}</p>
             </div>
             <div>
-              <p className="w-full uppercase mt-5 tracking-wider ml-3 text-[10px] text-app-accent"><b>languages</b></p>
-              <div className="w-full grid grid-cols-8 gap-2 pl-3 pr-3  mt-2">
-                {profile?.languages?.map(tech => <TechIcon key={tech.name} name={tech.name} iconUrl={tech.iconUrl} color={isLight ? tech.lightColor : tech.darkColor} />)}
-              </div>
-              <p className="w-full uppercase mt-6 tracking-wider ml-3 text-[10px] text-app-accent"><b>frameworks</b></p>
-              <div className="w-full grid grid-cols-8 gap-2 pl-3 pr-3  mt-2">
-                {profile?.frameworks?.map(tech => <TechIcon key={tech.name} name={tech.name} iconUrl={tech.iconUrl} color={isLight ? tech.lightColor : tech.darkColor} />)}
-              </div>
-              <p className="w-full uppercase mt-6 tracking-wider ml-3 text-[10px] text-app-accent"><b>ides & tools</b></p>
+              <p className="w-full uppercase mt-5 tracking-wider ml-3 text-[10px] text-app-accent animate-fade-in-left delay-50"><b>languages</b></p>
               <div className="w-full grid grid-cols-8 gap-2 pl-3 pr-3 mt-2">
-                {profile?.tools?.map(tech => <TechIcon key={tech.name} name={tech.name} iconUrl={tech.iconUrl} color={isLight ? tech.lightColor : tech.darkColor} />)}
+                {profile?.languages?.map((tech, i) => <div key={tech.name} className="animate-fade-in-left" style={{ animationDelay: `${50 + (i * 30)}ms` }}><TechIcon name={tech.name} iconUrl={tech.iconUrl} color={isLight ? tech.lightColor : tech.darkColor} /></div>)}
               </div>
-              <p className="w-full uppercase mt-6 tracking-wider ml-3 text-[10px] text-app-accent"><b>databases</b></p>
+              <p className="w-full uppercase mt-6 tracking-wider ml-3 text-[10px] text-app-accent animate-fade-in-left delay-100"><b>frameworks</b></p>
               <div className="w-full grid grid-cols-8 gap-2 pl-3 pr-3 mt-2">
-                {profile?.databases?.map(tech => <TechIcon key={tech.name} name={tech.name} iconUrl={tech.iconUrl} color={isLight ? tech.lightColor : tech.darkColor} />)}
+                {profile?.frameworks?.map((tech, i) => <div key={tech.name} className="animate-fade-in-left" style={{ animationDelay: `${100 + (i * 30)}ms` }}><TechIcon name={tech.name} iconUrl={tech.iconUrl} color={isLight ? tech.lightColor : tech.darkColor} /></div>)}
               </div>
-              <p className="w-full uppercase mt-6 tracking-wider ml-3 text-[10px] text-app-accent"><b>devops</b></p>
+              <p className="w-full uppercase mt-6 tracking-wider ml-3 text-[10px] text-app-accent animate-fade-in-left delay-150"><b>ides & tools</b></p>
               <div className="w-full grid grid-cols-8 gap-2 pl-3 pr-3 mt-2">
-                {profile?.devOps?.map(tech => <TechIcon key={tech.name} name={tech.name} iconUrl={tech.iconUrl} color={isLight ? tech.lightColor : tech.darkColor} />)}
+                {profile?.tools?.map((tech, i) => <div key={tech.name} className="animate-fade-in-left" style={{ animationDelay: `${150 + (i * 30)}ms` }}><TechIcon name={tech.name} iconUrl={tech.iconUrl} color={isLight ? tech.lightColor : tech.darkColor} /></div>)}
+              </div>
+              <p className="w-full uppercase mt-6 tracking-wider ml-3 text-[10px] text-app-accent animate-fade-in-left delay-200"><b>databases</b></p>
+              <div className="w-full grid grid-cols-8 gap-2 pl-3 pr-3 mt-2">
+                {profile?.databases?.map((tech, i) => <div key={tech.name} className="animate-fade-in-left" style={{ animationDelay: `${200 + (i * 30)}ms` }}><TechIcon name={tech.name} iconUrl={tech.iconUrl} color={isLight ? tech.lightColor : tech.darkColor} /></div>)}
+              </div>
+              <p className="w-full uppercase mt-6 tracking-wider ml-3 text-[10px] text-app-accent animate-fade-in-left delay-250"><b>devops</b></p>
+              <div className="w-full grid grid-cols-8 gap-2 pl-3 pr-3 mt-2">
+                {profile?.devOps?.map((tech, i) => <div key={tech.name} className="animate-fade-in-left" style={{ animationDelay: `${250 + (i * 30)}ms` }}><TechIcon name={tech.name} iconUrl={tech.iconUrl} color={isLight ? tech.lightColor : tech.darkColor} /></div>)}
               </div>
             </div>
           </div>
@@ -134,14 +140,15 @@ export default function App() {
           </div>
 
           <div className="flex flex-wrap gap-2 w-full">
-            {filters.map((tag) => (
-              <FilterButton
-                key={tag.name}
-                name={tag.name}
-                icon={tag.iconUrl}
-                color={isLight ? tag.lightColor : tag.darkColor}
-                onToggle={() => { }}
-              />
+            {filters.map((tag, i) => (
+              <div key={tag.name} className="animate-fade-in-left" style={{ animationDelay: `${i * 30}ms`, animationFillMode: 'both' }}>
+                <FilterButton
+                  name={tag.name}
+                  icon={tag.iconUrl}
+                  color={isLight ? tag.lightColor : tag.darkColor}
+                  onToggle={() => { }}
+                />
+              </div>
             ))}
           </div>
         </section>
@@ -149,15 +156,16 @@ export default function App() {
         <main className="flex-1 overflow-y-auto px-6 lg:px-10 pb-0 w-full mask-[linear-gradient(to_bottom,transparent,black_25px)] custom-scrollbar scrollbar-gutter-stable">
           <div className="w-full py-5 px-6">
             <div className="grid gap-6 grid-cols-[repeat(auto-fill,minmax(350px,1fr))] w-full">
-              {projects.map((project) => (
-                <ProjectCard
-                  key={project.id}
-                  id={project.id}
-                  title={project.name}
-                  description={project.description}
-                  technologies={project.technologies}
-                  isLight={isLight}
-                />
+              {projects.map((project, i) => (
+                <div key={project.id} className="animate-fade-in-up" style={{ animationDelay: `${i * 40}ms`, animationFillMode: 'both' }}>
+                  <ProjectCard
+                    id={project.id}
+                    title={project.name}
+                    description={project.description}
+                    technologies={project.technologies}
+                    isLight={isLight}
+                  />
+                </div>
               ))}
             </div>
           </div>

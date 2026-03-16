@@ -66,4 +66,62 @@
   .custom-scrollbar::-webkit-scrollbar-thumb:hover {
     background: var(--app-accent);
   }
+
+  @keyframes fade-in-left {
+    from {
+      opacity: 0;
+      transform: translateX(-10px);
+    }
+
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  @keyframes fade-in-up {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .animate-fade-in-left {
+    animation: fade-in-left 0.3s ease-out forwards;
+    opacity: 0;
+  }
+
+  .animate-fade-in-up {
+    animation: fade-in-up 0.4s ease-out forwards;
+    opacity: 0;
+  }
+
+  .delay-50 {
+    animation-delay: 50ms;
+  }
+
+  .delay-100 {
+    animation-delay: 100ms;
+  }
+
+  .delay-150 {
+    animation-delay: 150ms;
+  }
+
+  .delay-200 {
+    animation-delay: 200ms;
+  }
+
+  .delay-250 {
+    animation-delay: 250ms;
+  }
+
+  .delay-300 {
+    animation-delay: 300ms;
+  }
 }
