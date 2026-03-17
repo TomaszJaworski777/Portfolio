@@ -1,0 +1,32 @@
+services:
+  db:
+    image: postgres:16
+    environment:
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_NAME}
+    ports:
+      - "5432:5432"
+  server:
+    build: ./Portfolio.Server
+    container_name: portfolio-server
+    ports:
+      - "5000:8080"
+    environment:
+      ASPNETCORE_ENVIRONMENT: "Development"
+      ASPNETCORE_URLS: "http://+:8080"
+      DOTNET_USE_POLLING_FILE_WATCHER: "true"
+      ConnectionStrings__DefaultConnection: "Host=db;Port=5432;Database=${DB_NAME};Username=${DB_USER};Password=${DB_PASSWORD}"
+    depends_on:
+      - db
+    volumes:
+      - ./Portfolio.Server:/app
+  client:
+    build: ./Portfolio.Client
+    container_name: portfolio-client
+    ports:
+      - "5173:5173"
+    volumes:
+      - ./Portfolio.Client:/app
+      - /app/node_modules
+    
