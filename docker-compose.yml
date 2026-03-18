@@ -21,6 +21,8 @@ services:
       - db
     volumes:
       - ./Portfolio.Server:/app
+      - /app/bin
+      - /app/obj
   client:
     build: ./Portfolio.Client
     container_name: portfolio-client
