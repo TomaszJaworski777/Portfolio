@@ -90,7 +90,7 @@ export default function Home() {
               <X size={20} />
             </button>
             <div className="border-b border-app-border pb-6 animate-fade-in-up">
-              <div className="rounded-full bg-app-bg w-50 h-50 border-2 m-auto border-app-border"></div>
+              <img src={profile?.photoUrl} className="rounded-full bg-app-bg w-50 h-50 border-2 m-auto border-app-border"></img>
               <p className="w-full uppercase mt-4 text-app-text-primary text-center tracking-wider font-bold">{profile?.name}</p>
               <p className="w-full uppercase mt-1 text-app-accent text-[12px] text-center font-bold">{profile?.title}</p>
               <div className="whitespace-pre-line text-sm leading-relaxed text-center mt-5 text-app-muted">

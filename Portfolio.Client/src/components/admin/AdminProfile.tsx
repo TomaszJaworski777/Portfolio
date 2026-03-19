@@ -140,7 +140,7 @@ export default function AdminProfile() {
 
             <div className="space-y-2 pt-2">
               <Label htmlFor="description" className="text-app-muted uppercase text-[10px] tracking-widest font-bold block mb-1.5">Bio / Description</Label>
-              <Textarea id="description" name="description" value={profile.description} onChange={handleChange} className="bg-app-bg border-app-border min-h-[150px] rounded-none text-app-text-primary ring-0 focus-visible:ring-0 focus-visible:border-app-accent p-3 transition-all" />
+              <Textarea id="description" name="description" value={profile.description} onChange={handleChange} className="bg-app-bg border-app-border min-h-37.5 rounded-none text-app-text-primary ring-0 focus-visible:ring-0 focus-visible:border-app-accent p-3 transition-all" />
             </div>
 
             <div className="grid grid-cols-2 gap-6">
@@ -181,9 +181,9 @@ export default function AdminProfile() {
                             className={`
                               group flex items-center gap-1.5 pr-2 pl-1.5 py-1 border transition-all duration-200
                               text-[12px] uppercase tracking-wide cursor-pointer rounded-none
-                              hover:border-[var(--tag-color)] hover:text-[var(--tag-color)]
+                              hover:border-(--tag-color) hover:text-(--tag-color)
                               ${isActive
-                                ? "bg-[var(--active-bg)] border-[var(--tag-color)] text-[var(--tag-color)]"
+                                ? "bg-(--active-bg) border-(--tag-color) text-(--tag-color)"
                                 : "bg-transparent border-app-border text-app-muted"
                               }
                             `}

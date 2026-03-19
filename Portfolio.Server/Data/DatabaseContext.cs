@@ -54,12 +54,12 @@ public class DatabaseContext : DbContext
             new ProfileData
             {
                 Id = 1,
-                Name = "Tomasz Jaworski",
-                Title = "Software Engineer",
-                PhotoUrl = "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=256&h=256",
-                Description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
-                Location = "Cracow, Poland",
-                Phone = "(+48) 798 412 800",
+                Name = "Name",
+                Title = "Title",
+                PhotoUrl = "",
+                Description = "Description",
+                Location = "City, Country",
+                Phone = "Phone number",
             }
         );
     }

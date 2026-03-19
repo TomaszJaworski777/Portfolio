@@ -1,12 +1,32 @@
+import { useState, useEffect } from "react";
 import { Routes, Route, Link, useLocation } from "react-router-dom";
 import { User, Briefcase, Cpu, Home, LogOut } from "lucide-react";
 import AdminProfile from "../components/admin/AdminProfile";
 import AdminProjects from "../components/admin/AdminProjects";
 import AdminTechnologies from "../components/admin/AdminTechnologies";
 import { ThemeToggle } from "../components/ui/theme_toggle";
+import { fetchProfile, type ProfileData } from "../services/api";
 
 export default function Admin() {
   const location = useLocation();
+
+  const [profile, setProfile] = useState<ProfileData | null>(null);
+
+  useEffect(() => {
+    const loadAllData = async () => {
+      try {
+        const [profileData] = await Promise.all([
+          fetchProfile(),
+        ]);
+
+        setProfile(profileData);
+      } catch (err) {
+        console.error(err);
+      }
+    };
+
+    loadAllData();
+  }, []);
 
   const navItems = [
     { name: "Profile", path: "/admin/profile", icon: User },
@@ -20,9 +40,7 @@ export default function Admin() {
         <div className="p-6 flex flex-col h-full">
           <div className="flex-1">
             <div className="border-b border-app-border pb-6 animate-fade-in-up">
-              <div className="rounded-full bg-app-bg w-32 h-32 border-2 m-auto border-app-border flex items-center justify-center">
-                <User size={48} className="text-app-muted" />
-              </div>
+              <img src={profile?.photoUrl} className="rounded-full bg-app-bg w-32 h-32 border-2 m-auto border-app-border flex items-center justify-center" />
               <p className="w-full uppercase mt-4 text-app-text-primary text-center tracking-widest font-bold">Admin Panel</p>
               <p className="w-full uppercase mt-1 text-app-accent text-[12px] text-center font-bold">authenticated</p>
             </div>
