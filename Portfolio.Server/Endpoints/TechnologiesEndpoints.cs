@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Portfolio.Server.Data;
+using Portfolio.Server.Models;
 
 namespace Portfolio.Server.Endpoints;
 
@@ -16,5 +17,75 @@ public static class TechnologiesEndpoints
             return await context.Technologies.OrderBy(t => t.Name.ToLower()).ToListAsync();
         })
         .WithName("GetTechnologies");
+
+        group.MapPost("/", async (TechnologyDto dto, DatabaseContext context) =>
+        {
+            Thread.Sleep(150);
+
+            var tech = new TechData
+            {
+                Name = dto.Name,
+                Category = dto.Category,
+                IconUrl = dto.IconUrl,
+                DarkColor = dto.DarkColor,
+                LightColor = dto.LightColor
+            };
+
+            context.Technologies.Add(tech);
+            await context.SaveChangesAsync();
+
+            return Results.Created($"/api/technologies/{tech.Id}", tech);
+        })
+        .WithName("CreateTechnology");
+
+        group.MapPut("/{id}", async (int id, TechnologyDto dto, DatabaseContext context) =>
+        {
+            Thread.Sleep(150);
+
+            var tech = await context.Technologies.FindAsync(id);
+
+            if (tech == null)
+            {
+                return Results.NotFound();
+            }
+
+            tech.Name = dto.Name;
+            tech.Category = dto.Category;
+            tech.IconUrl = dto.IconUrl;
+            tech.DarkColor = dto.DarkColor;
+            tech.LightColor = dto.LightColor;
+
+            await context.SaveChangesAsync();
+
+            return Results.NoContent();
+        })
+        .WithName("UpdateTechnology");
+
+        group.MapDelete("/{id}", async (int id, DatabaseContext context) =>
+        {
+            Thread.Sleep(150);
+
+            var tech = await context.Technologies.FindAsync(id);
+
+            if (tech == null)
+            {
+                return Results.NotFound();
+            }
+
+            context.Technologies.Remove(tech);
+            await context.SaveChangesAsync();
+
+            return Results.NoContent();
+        })
+        .WithName("DeleteTechnology");
     }
 }
+
+record TechnologyDto(
+    string Name,
+    string IconUrl,
+    string Category,
+    string DarkColor,
+    string LightColor
+);
+

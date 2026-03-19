@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Plus, Trash } from "lucide-react";
-import { fetchProfile, updateProfile, fetchFilters, type ProfileData, type TechData } from "../../services/api";
+import { fetchProfile, updateProfile, type ProfileData, type TechData, fetchTechnologies } from "../../services/api";
 import { Input } from "../ui/input";
 import { Label } from "../ui/label";
 import { Textarea } from "../ui/textarea";
@@ -12,7 +12,7 @@ export default function AdminProfile({ onUpdate }: { onUpdate?: () => void }) {
   const [saving, setSaving] = useState(false);
 
   useEffect(() => {
-    Promise.all([fetchProfile(), fetchFilters()]).then(([profileData, techData]) => {
+    Promise.all([fetchProfile(), fetchTechnologies()]).then(([profileData, techData]) => {
       setProfile(profileData);
       setAllTech(techData);
     });

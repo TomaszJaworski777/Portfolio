@@ -9,7 +9,6 @@ import { Plus, Trash, Edit2, X } from "lucide-react";
 export default function AdminTechnologies() {
   const [techs, setTechs] = useState<TechData[]>([]);
   const [editingTech, setEditingTech] = useState<TechData | null>(null);
-  const [originalName, setOriginalName] = useState<string>("");
   const [isAdding, setIsAdding] = useState(false);
 
   useEffect(() => {
@@ -20,26 +19,25 @@ export default function AdminTechnologies() {
 
   const handleEdit = (tech: TechData) => {
     setEditingTech({ ...tech });
-    setOriginalName(tech.name);
     setIsAdding(false);
   };
 
   const handleAdd = () => {
     setEditingTech({
+      id: 0,
       name: "",
       iconUrl: "",
       category: "language",
       lightColor: "#000000",
       darkColor: "#ffffff"
     });
-    setOriginalName("");
     setIsAdding(true);
   };
 
-  const handleDelete = async (name: string) => {
+  const handleDelete = async (name: string, id: number) => {
     if (!confirm(`Are you sure you want to delete ${name}?`)) return;
     try {
-      await deleteTechnology(name);
+      await deleteTechnology(id);
       setTechs(techs.filter(t => t.name !== name));
     } catch (error) {
       console.error(error);
@@ -52,10 +50,8 @@ export default function AdminTechnologies() {
     try {
       if (isAdding) {
         await addTechnology(editingTech);
-        alert("Technology added successfully!");
       } else {
-        await updateTechnology(originalName, editingTech);
-        alert("Technology updated successfully!");
+        await updateTechnology(editingTech.id, editingTech);
       }
       setEditingTech(null);
       fetchTechnologies().then(setTechs);
@@ -238,7 +234,7 @@ export default function AdminTechnologies() {
                 <button onClick={() => handleEdit(tech)} className="text-app-muted border border-app-muted p-1.5 hover:text-app-accent hover:border-app-accent transition-all rounded-none">
                   <Edit2 className="h-4 w-4" strokeWidth={1.5} />
                 </button>
-                <button onClick={() => handleDelete(tech.name)} className="text-app-muted border border-app-muted p-1.5 hover:text-red-500 hover:border-red-500 transition-all rounded-none">
+                <button onClick={() => handleDelete(tech.name, tech.id)} className="text-app-muted border border-app-muted p-1.5 hover:text-red-500 hover:border-red-500 transition-all rounded-none">
                   <Trash className="h-4 w-4" strokeWidth={1.5} />
                 </button>
               </TableCell>

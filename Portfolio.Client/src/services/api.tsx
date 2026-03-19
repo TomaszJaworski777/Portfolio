@@ -23,6 +23,7 @@ export interface ProjectData {
 }
 
 export interface TechData {
+  id: number;
   name: string;
   iconUrl: string;
   category: string;
@@ -61,16 +62,16 @@ export const addTechnology = async (tech: TechData): Promise<void> => {
   });
 };
 
-export const updateTechnology = async (name: string, tech: TechData): Promise<void> => {
-  await fetch(`/api/technologies/${name}`, {
+export const updateTechnology = async (id: number, tech: TechData): Promise<void> => {
+  await fetch(`/api/technologies/${id}`, {
     method: "PUT",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(tech),
   });
 };
 
-export const deleteTechnology = async (name: string): Promise<void> => {
-  await fetch(`/api/technologies/${name}`, {
+export const deleteTechnology = async (id: number): Promise<void> => {
+  await fetch(`/api/technologies/${id}`, {
     method: "DELETE",
   });
 };

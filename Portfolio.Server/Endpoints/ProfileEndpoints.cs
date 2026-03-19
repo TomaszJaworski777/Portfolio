@@ -78,19 +78,18 @@ public static class ProfileEndpoints
     }
 }
 
-public record ProfileUpdateDto(
+record ProfileUpdateDto(
     string Name,
     string Title,
     string? PhotoUrl,
     string Description,
     string Location,
     string Phone,
-    List<TechDto> Languages,
-    List<TechDto> Frameworks,
-    List<TechDto> Tools,
-    List<TechDto> Databases,
-    List<TechDto> DevOps
+    List<TechnologyDto> Languages,
+    List<TechnologyDto> Frameworks,
+    List<TechnologyDto> Tools,
+    List<TechnologyDto> Databases,
+    List<TechnologyDto> DevOps
 );
 
-public record TechDto(string Name);
  

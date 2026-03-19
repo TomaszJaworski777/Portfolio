@@ -13,7 +13,10 @@ public static class FilterEndpoints
         {
             Thread.Sleep(150);
 
-            return await context.Technologies.OrderBy(t => t.Name.ToLower()).ToListAsync(); // TODO: filters out technologies that are not used in projects
+            return await context.Technologies
+                .Where(t => context.Projects.Any(p => p.Technologies.Any(tp => tp.Id == t.Id)))
+                .OrderBy(t => t.Name.ToLower())
+                .ToListAsync();
         })
         .WithName("GetFilters");
     }
