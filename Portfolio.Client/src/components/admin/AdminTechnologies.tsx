@@ -1,0 +1,253 @@
+import { useState, useEffect } from "react";
+import { fetchFilters, addTech, updateTech, deleteTech, type TechData } from "../../services/api";
+import { Input } from "../ui/input";
+import { Label } from "../ui/label";
+import { Card, CardContent } from "../ui/card";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "../ui/table";
+import { Plus, Trash, Edit2, X } from "lucide-react";
+
+export default function AdminTechnologies() {
+  const [techs, setTechs] = useState<TechData[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [editingTech, setEditingTech] = useState<TechData | null>(null);
+  const [originalName, setOriginalName] = useState<string>("");
+  const [isAdding, setIsAdding] = useState(false);
+
+  useEffect(() => {
+    fetchFilters().then(data => {
+      setTechs(data);
+      setLoading(false);
+    });
+  }, []);
+
+  const handleEdit = (tech: TechData) => {
+    setEditingTech({ ...tech });
+    setOriginalName(tech.name);
+    setIsAdding(false);
+  };
+
+  const handleAdd = () => {
+    setEditingTech({
+      name: "",
+      iconUrl: "",
+      category: "language",
+      lightColor: "#000000",
+      darkColor: "#ffffff"
+    });
+    setOriginalName("");
+    setIsAdding(true);
+  };
+
+  const handleDelete = async (name: string) => {
+    if (!confirm(`Are you sure you want to delete ${name}?`)) return;
+    try {
+      await deleteTech(name);
+      setTechs(techs.filter(t => t.name !== name));
+    } catch (error) {
+      console.error(error);
+      alert("Failed to delete technology.");
+    }
+  };
+
+  const handleSave = async () => {
+    if (!editingTech) return;
+    try {
+      if (isAdding) {
+        await addTech(editingTech);
+        alert("Technology added successfully!");
+      } else {
+        await updateTech(originalName, editingTech);
+        alert("Technology updated successfully!");
+      }
+      setEditingTech(null);
+      fetchFilters().then(setTechs);
+    } catch (error) {
+      console.error(error);
+      alert("Failed to save technology.");
+    }
+  };
+
+  if (loading) return <div>Loading...</div>;
+
+  return (
+    <div className="space-y-6">
+      <div className="flex items-center justify-end mb-4 px-0">
+        <button onClick={handleAdd} className="text-app-muted hover:text-app-accent transition-all uppercase text-[10px] font-bold tracking-widest flex items-center gap-2 h-full px-2">
+          <Plus className="h-3.5 w-3.5" strokeWidth={2} /> Add Technology
+        </button>
+      </div>
+
+      {editingTech && (
+        <Card className="bg-transparent border border-app-border ring-0 text-app-text-primary rounded-none shadow-none px-0 pt-0 pb-4 gap-0">
+          <div className="flex items-center justify-between border-b border-app-border px-4 h-10 mb-4">
+            <h3 className="text-[10px] uppercase tracking-[0.2em] text-app-muted font-bold leading-none">
+              {isAdding ? "New Technology" : `Edit: ${editingTech.name}`}
+            </h3>
+            <button onClick={() => setEditingTech(null)} className="text-app-muted hover:text-app-accent transition-all ring-0 flex items-center justify-center">
+              <X className="h-4 w-4" strokeWidth={1.5} />
+            </button>
+          </div>
+          <CardContent className="space-y-4">
+            <div className="flex gap-4 items-start">
+              <div className="flex-1 space-y-4">
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="space-y-2">
+                    <Label className="text-app-muted uppercase text-[10px] font-bold">Name</Label>
+                    <Input value={editingTech.name} onChange={e => setEditingTech({ ...editingTech, name: e.target.value })} className="bg-app-bg border-app-border rounded-none text-app-text-primary ring-0 focus-visible:ring-0 focus-visible:border-app-accent" />
+                  </div>
+                  <div className="space-y-2">
+                    <Label className="text-app-muted uppercase text-[10px] font-bold">Category</Label>
+                    <select
+                      value={editingTech.category}
+                      onChange={e => setEditingTech({ ...editingTech, category: e.target.value })}
+                      className="w-full h-8 bg-app-bg border border-app-border px-2.5 py-1 text-sm text-app-text-primary outline-none focus:border-app-accent rounded-none appearance-none"
+                    >
+                      <option value="language">Languages</option>
+                      <option value="framework">Frameworks</option>
+                      <option value="ides & tools">Tools</option>
+                      <option value="database">Databases</option>
+                      <option value="devops">DevOps</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div className="space-y-4">
+                  <Label className="text-app-muted uppercase text-[10px] font-bold">Icon (Devicon class or Image URL)</Label>
+                  <div className="flex gap-4 items-center">
+                    <div className="relative group w-12 h-12 border border-app-border flex items-center justify-center bg-app-bg shrink-0 overflow-hidden">
+                      {editingTech.iconUrl ? (
+                        <>
+                          {editingTech.iconUrl.startsWith('devicon-')
+                            ? <i className={`${editingTech.iconUrl} text-2xl`} style={{ color: editingTech.darkColor }}></i>
+                            : <img src={editingTech.iconUrl} className="w-8 h-8 object-contain" />
+                          }
+                          <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-1.5">
+                            <button
+                              onClick={() => document.getElementById('icon-upload')?.click()}
+                              className="p-1 bg-app-accent/20 border border-app-accent text-app-accent hover:bg-app-accent/30 transition-all rounded-none"
+                              title="Change Icon"
+                            >
+                              <Plus size={14} strokeWidth={2} />
+                            </button>
+                            <button
+                              onClick={() => setEditingTech({ ...editingTech, iconUrl: "" })}
+                              className="p-1 bg-red-500/10 border border-red-500 text-red-500 hover:bg-red-500/20 transition-all rounded-none"
+                              title="Remove Icon"
+                            >
+                              <Trash size={14} strokeWidth={2} />
+                            </button>
+                          </div>
+                        </>
+                      ) : (
+                        <button
+                          onClick={() => document.getElementById('icon-upload')?.click()}
+                          className="flex flex-col items-center text-app-muted hover:text-app-accent transition-all"
+                        >
+                          <Plus size={20} strokeWidth={1.5} />
+                        </button>
+                      )}
+                    </div>
+
+                    <div className="flex-1 space-y-1">
+                      <Input
+                        value={editingTech.iconUrl}
+                        onChange={e => setEditingTech({ ...editingTech, iconUrl: e.target.value })}
+                        placeholder="devicon-react-original or URL"
+                        className="bg-app-bg border-app-border rounded-none text-app-text-primary ring-0 focus-visible:ring-0 focus-visible:border-app-accent"
+                      />
+                      <p className="text-[9px] text-app-muted uppercase tracking-tighter">Enter Devicon class, image URL, or upload from computer</p>
+                    </div>
+
+                    <input
+                      id="icon-upload"
+                      type="file"
+                      accept="image/*"
+                      className="hidden"
+                      onChange={(e) => {
+                        const file = e.target.files?.[0];
+                        if (file) {
+                          const localUrl = URL.createObjectURL(file);
+                          setEditingTech({ ...editingTech, iconUrl: localUrl });
+                        }
+                      }}
+                    />
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-2 gap-6">
+                  <div className="space-y-2">
+                    <Label className="text-app-muted uppercase text-[10px] font-bold">Theme Colors</Label>
+                    <div className="flex flex-col gap-3">
+                      <div className="flex items-center gap-3">
+                        <div className="w-8 h-8 border border-app-border shrink-0" style={{ backgroundColor: editingTech.lightColor }}>
+                          <input type="color" value={editingTech.lightColor} onChange={e => setEditingTech({ ...editingTech, lightColor: e.target.value })} className="opacity-0 w-full h-full cursor-pointer" />
+                        </div>
+                        <Input value={editingTech.lightColor} onChange={e => setEditingTech({ ...editingTech, lightColor: e.target.value })} className="h-8 bg-app-bg border-app-border rounded-none text-[11px] font-mono ring-0 focus-visible:ring-0 focus-visible:border-app-accent" placeholder="Light Hex" />
+                        <span className="text-[9px] uppercase text-app-muted font-bold tracking-tighter">Light</span>
+                      </div>
+                      <div className="flex items-center gap-3">
+                        <div className="w-8 h-8 border border-app-border shrink-0" style={{ backgroundColor: editingTech.darkColor }}>
+                          <input type="color" value={editingTech.darkColor} onChange={e => setEditingTech({ ...editingTech, darkColor: e.target.value })} className="opacity-0 w-full h-full cursor-pointer" />
+                        </div>
+                        <Input value={editingTech.darkColor} onChange={e => setEditingTech({ ...editingTech, darkColor: e.target.value })} className="h-8 bg-app-bg border-app-border rounded-none text-[11px] font-mono ring-0 focus-visible:ring-0 focus-visible:border-app-accent" placeholder="Dark Hex" />
+                        <span className="text-[9px] uppercase text-app-muted font-bold tracking-tighter">Dark</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="flex justify-end pt-4 border-t border-app-border/30">
+              <button onClick={handleSave} className="w-fit px-12 text-app-muted border border-app-muted py-2 hover:text-app-accent hover:border-app-accent transition-all uppercase tracking-[0.2em] font-bold text-[10px] rounded-none">
+                Save
+              </button>
+            </div>
+          </CardContent>
+        </Card>
+      )}
+
+      <Table className="border border-app-border text-app-text-primary">
+        <TableHeader>
+          <TableRow className="border-app-border hover:bg-transparent">
+            <TableHead className="text-app-muted uppercase text-[10px] tracking-widest pl-4 font-bold">Preview</TableHead>
+            <TableHead className="text-app-muted uppercase text-[10px] tracking-widest font-bold">Name</TableHead>
+            <TableHead className="text-app-muted uppercase text-[10px] tracking-widest font-bold">Category</TableHead>
+            <TableHead className="text-app-muted uppercase text-[10px] tracking-widest font-bold">Colors</TableHead>
+            <TableHead className="text-right text-app-muted uppercase text-[10px] tracking-widest pr-4 font-bold">Actions</TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          {techs.map(tech => (
+            <TableRow key={tech.name} className="border-app-border hover:bg-transparent">
+              <TableCell className="pl-4 py-1">
+                <div className="w-10 h-10 flex items-center justify-center" style={{ color: tech.darkColor }}>
+                  {tech.iconUrl.startsWith('devicon-')
+                    ? <i className={`${tech.iconUrl} text-2xl`}></i>
+                    : <img src={tech.iconUrl} className="w-8 h-8 object-contain" />
+                  }
+                </div>
+              </TableCell>
+              <TableCell className="font-medium text-app-text-primary text-sm uppercase tracking-wider py-1">{tech.name}</TableCell>
+              <TableCell className="text-app-muted text-[10px] uppercase font-bold tracking-tighter py-1">{tech.category}</TableCell>
+              <TableCell className="py-1">
+                <div className="flex gap-1.5">
+                  <div className="w-4 h-4 border border-app-border" style={{ backgroundColor: tech.lightColor }} title={`Light: ${tech.lightColor}`}></div>
+                  <div className="w-4 h-4 border border-app-border" style={{ backgroundColor: tech.darkColor }} title={`Dark: ${tech.darkColor}`}></div>
+                </div>
+              </TableCell>
+              <TableCell className="text-right space-x-2 pr-4 py-1">
+                <button onClick={() => handleEdit(tech)} className="text-app-muted border border-app-muted p-1.5 hover:text-app-accent hover:border-app-accent transition-all rounded-none">
+                  <Edit2 className="h-4 w-4" strokeWidth={1.5} />
+                </button>
+                <button onClick={() => handleDelete(tech.name)} className="text-app-muted border border-app-muted p-1.5 hover:text-red-500 hover:border-red-500 transition-all rounded-none">
+                  <Trash className="h-4 w-4" strokeWidth={1.5} />
+                </button>
+              </TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+    </div>
+  );
+}
