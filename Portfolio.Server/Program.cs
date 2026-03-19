@@ -37,7 +37,8 @@ using (var scope = app.Services.CreateScope())
 }
 
 app.MapProfileEndpoints();
-app.MapFilterEndpoints();
 app.MapProjectEndpoints();
+app.MapTechnologiesEndpoints();
+app.MapFilterEndpoints();
 
 app.Run();

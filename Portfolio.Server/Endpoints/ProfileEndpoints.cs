@@ -1,5 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Portfolio.Server.Data;
+using Portfolio.Server.Models;
+using System.Linq;
 
 namespace Portfolio.Server.Endpoints;
 
@@ -37,9 +39,58 @@ public static class ProfileEndpoints
         })
         .WithName("GetProfile");
 
-        group.MapGet("/raw", async (DatabaseContext context) => 
-            await context.Profiles.Include(p => p.Technologies).ToListAsync())
-            .WithName("GetProfileRaw");
+        group.MapPut("/", async (ProfileUpdateDto dto, DatabaseContext context) =>
+        {
+            Thread.Sleep(150);
+
+            var profile = await context.Profiles.Include(p => p.Technologies).FirstOrDefaultAsync();
+
+            if (profile == null)
+            {
+                return Results.NotFound();
+            }
+
+            profile.Name = dto.Name;
+            profile.Title = dto.Title;
+            profile.PhotoUrl = dto.PhotoUrl ?? string.Empty;
+            profile.Description = dto.Description;
+            profile.Location = dto.Location;
+            profile.Phone = dto.Phone;
+
+            var allSelectedNames = (dto.Languages ?? new())
+                .Concat(dto.Frameworks ?? new())
+                .Concat(dto.Tools ?? new())
+                .Concat(dto.Databases ?? new())
+                .Concat(dto.DevOps ?? new())
+                .Select(t => t.Name)
+                .Distinct()
+                .ToList();
+
+            profile.Technologies = await context.Technologies
+                .Where(t => allSelectedNames.Contains(t.Name))
+                .ToListAsync();
+
+            await context.SaveChangesAsync();
+
+            return Results.NoContent();
+        })
+        .WithName("UpdateProfile");
     }
 }
+
+public record ProfileUpdateDto(
+    string Name,
+    string Title,
+    string? PhotoUrl,
+    string Description,
+    string Location,
+    string Phone,
+    List<TechDto> Languages,
+    List<TechDto> Frameworks,
+    List<TechDto> Tools,
+    List<TechDto> Databases,
+    List<TechDto> DevOps
+);
+
+public record TechDto(string Name);
  

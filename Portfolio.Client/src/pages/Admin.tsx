@@ -12,19 +12,19 @@ export default function Admin() {
 
   const [profile, setProfile] = useState<ProfileData | null>(null);
 
+  const loadAllData = async () => {
+    try {
+      const [profileData] = await Promise.all([
+        fetchProfile(),
+      ]);
+
+      setProfile(profileData);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
   useEffect(() => {
-    const loadAllData = async () => {
-      try {
-        const [profileData] = await Promise.all([
-          fetchProfile(),
-        ]);
-
-        setProfile(profileData);
-      } catch (err) {
-        console.error(err);
-      }
-    };
-
     loadAllData();
   }, []);
 
@@ -40,7 +40,7 @@ export default function Admin() {
         <div className="p-6 flex flex-col h-full">
           <div className="flex-1">
             <div className="border-b border-app-border pb-6 animate-fade-in-up">
-              <img src={profile?.photoUrl} className="rounded-full bg-app-bg w-32 h-32 border-2 m-auto border-app-border flex items-center justify-center" />
+              <img src={profile?.photoUrl} className="rounded-full bg-app-bg w-32 h-32 border-2 m-auto border-app-border object-cover" alt="Admin Profile" />
               <p className="w-full uppercase mt-4 text-app-text-primary text-center tracking-widest font-bold">Admin Panel</p>
               <p className="w-full uppercase mt-1 text-app-accent text-[12px] text-center font-bold">authenticated</p>
             </div>
@@ -94,7 +94,7 @@ export default function Admin() {
           <div className="h-full border border-app-border bg-app-sidebar flex flex-col shadow-2xl animate-fade-in rounded-none">
             <div className="flex-1 overflow-y-auto p-8 custom-scrollbar">
               <Routes>
-                <Route path="profile" element={<AdminProfile />} />
+                <Route path="profile" element={<AdminProfile onUpdate={loadAllData} />} />
                 <Route path="projects" element={<AdminProjects />} />
                 <Route path="tech" element={<AdminTechnologies />} />
               </Routes>

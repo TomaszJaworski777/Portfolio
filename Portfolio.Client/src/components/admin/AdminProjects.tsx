@@ -222,7 +222,7 @@ export default function AdminProjects() {
                 onClick={handleSave}
                 className="w-fit px-12 h-10 text-app-muted border border-app-border hover:text-app-accent hover:border-app-accent transition-all uppercase tracking-[0.2em] font-bold text-[10px] rounded-none"
               >
-                Save
+                Save Changes
               </button>
             </div>
           </CardContent>

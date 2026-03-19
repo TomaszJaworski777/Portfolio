@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { fetchFilters, addTech, updateTech, deleteTech, type TechData } from "../../services/api";
+import { fetchTechnologies, addTechnology, updateTechnology, deleteTechnology, type TechData } from "../../services/api";
 import { Input } from "../ui/input";
 import { Label } from "../ui/label";
 import { Card, CardContent } from "../ui/card";
@@ -13,7 +13,7 @@ export default function AdminTechnologies() {
   const [isAdding, setIsAdding] = useState(false);
 
   useEffect(() => {
-    fetchFilters().then(data => {
+    fetchTechnologies().then(data => {
       setTechs(data);
     });
   }, []);
@@ -39,7 +39,7 @@ export default function AdminTechnologies() {
   const handleDelete = async (name: string) => {
     if (!confirm(`Are you sure you want to delete ${name}?`)) return;
     try {
-      await deleteTech(name);
+      await deleteTechnology(name);
       setTechs(techs.filter(t => t.name !== name));
     } catch (error) {
       console.error(error);
@@ -51,14 +51,14 @@ export default function AdminTechnologies() {
     if (!editingTech) return;
     try {
       if (isAdding) {
-        await addTech(editingTech);
+        await addTechnology(editingTech);
         alert("Technology added successfully!");
       } else {
-        await updateTech(originalName, editingTech);
+        await updateTechnology(originalName, editingTech);
         alert("Technology updated successfully!");
       }
       setEditingTech(null);
-      fetchFilters().then(setTechs);
+      fetchTechnologies().then(setTechs);
     } catch (error) {
       console.error(error);
       alert("Failed to save technology.");
@@ -198,7 +198,7 @@ export default function AdminTechnologies() {
 
             <div className="flex justify-end pt-6 border-t border-app-border/30">
               <button onClick={handleSave} className="w-fit px-12 h-10 text-app-muted border border-app-border hover:text-app-accent hover:border-app-accent transition-all uppercase tracking-[0.2em] font-bold text-[10px] rounded-none shadow-lg hover:shadow-app-accent/5">
-                Save
+                Save Changes
               </button>
             </div>
           </CardContent>

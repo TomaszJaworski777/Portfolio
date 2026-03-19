@@ -48,24 +48,29 @@ export const fetchFilters = async (): Promise<TechData[]> => {
   return response.json();
 };
 
-export const addTech = async (tech: TechData): Promise<void> => {
-  await fetch(`/api/filters`, {
+export const fetchTechnologies = async (): Promise<TechData[]> => {
+  const response = await fetch(`/api/technologies`);
+  return response.json();
+};
+
+export const addTechnology = async (tech: TechData): Promise<void> => {
+  await fetch(`/api/technologies`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(tech),
   });
 };
 
-export const updateTech = async (name: string, tech: TechData): Promise<void> => {
-  await fetch(`/api/filters/${name}`, {
+export const updateTechnology = async (name: string, tech: TechData): Promise<void> => {
+  await fetch(`/api/technologies/${name}`, {
     method: "PUT",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(tech),
   });
 };
 
-export const deleteTech = async (name: string): Promise<void> => {
-  await fetch(`/api/filters/${name}`, {
+export const deleteTechnology = async (name: string): Promise<void> => {
+  await fetch(`/api/technologies/${name}`, {
     method: "DELETE",
   });
 };

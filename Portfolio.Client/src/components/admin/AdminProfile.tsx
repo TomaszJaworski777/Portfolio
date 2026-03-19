@@ -6,7 +6,7 @@ import { Label } from "../ui/label";
 import { Textarea } from "../ui/textarea";
 import { Card, CardContent } from "../ui/card";
 
-export default function AdminProfile() {
+export default function AdminProfile({ onUpdate }: { onUpdate?: () => void }) {
   const [profile, setProfile] = useState<ProfileData | null>(null);
   const [allTech, setAllTech] = useState<TechData[]>([]);
   const [saving, setSaving] = useState(false);
@@ -53,7 +53,7 @@ export default function AdminProfile() {
     setSaving(true);
     try {
       await updateProfile(profile);
-      alert("Profile updated successfully!");
+      if (onUpdate) onUpdate();
     } catch (error) {
       console.error(error);
       alert("Failed to update profile.");
@@ -61,8 +61,6 @@ export default function AdminProfile() {
       setSaving(false);
     }
   };
-
-  if (!profile) return <div className="text-red-500 uppercase text-[10px] font-bold p-8">No profile data found.</div>;
 
   const categories = ["language", "framework", "ides & tools", "database", "devops"];
 
@@ -75,7 +73,7 @@ export default function AdminProfile() {
               <div className="flex items-start gap-10">
                 <div className="flex flex-col gap-4 shrink-0">
                   <div className="relative mt-3 group w-32 h-32 rounded-full border border-app-border bg-app-bg flex items-center justify-center overflow-hidden shadow-inner ring-offset-4 ring-offset-app-bg group-hover:ring-1 ring-app-accent/20 transition-all">
-                    {profile.photoUrl ? (
+                    {profile?.photoUrl ? (
                       <>
                         <img src={profile.photoUrl} className="w-full h-full object-cover transition-transform group-hover:scale-105" />
                         <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-4">
@@ -109,7 +107,9 @@ export default function AdminProfile() {
                     const file = e.target.files?.[0];
                     if (file) {
                       const localUrl = URL.createObjectURL(file);
-                      setProfile({ ...profile, photoUrl: localUrl });
+                      if (profile) {
+                        setProfile({ ...profile, photoUrl: localUrl });
+                      }
                     }
                   }} />
                 </div>
@@ -117,11 +117,11 @@ export default function AdminProfile() {
                 <div className="flex-1 space-y-4">
                   <div className="space-y-2">
                     <Label htmlFor="name" className="text-app-muted uppercase text-[10px] tracking-widest font-bold block mb-1.5">Full Name</Label>
-                    <Input id="name" name="name" value={profile.name} onChange={handleChange} className="bg-app-bg border-app-border rounded-none text-app-text-primary ring-0 focus-visible:ring-0 focus-visible:border-app-accent h-10 px-3 transition-all" />
+                    <Input id="name" name="name" value={profile?.name} onChange={handleChange} className="bg-app-bg border-app-border rounded-none text-app-text-primary ring-0 focus-visible:ring-0 focus-visible:border-app-accent h-10 px-3 transition-all" />
                   </div>
                   <div className="space-y-2">
                     <Label htmlFor="title" className="text-app-muted uppercase text-[10px] tracking-widest font-bold block mb-1.5">Professional Title</Label>
-                    <Input id="title" name="title" value={profile.title} onChange={handleChange} className="bg-app-bg border-app-border rounded-none text-app-text-primary ring-0 focus-visible:ring-0 focus-visible:border-app-accent h-10 px-3 transition-all" />
+                    <Input id="title" name="title" value={profile?.title} onChange={handleChange} className="bg-app-bg border-app-border rounded-none text-app-text-primary ring-0 focus-visible:ring-0 focus-visible:border-app-accent h-10 px-3 transition-all" />
                   </div>
                 </div>
               </div>
@@ -131,7 +131,7 @@ export default function AdminProfile() {
               <Label className="text-[9px] text-app-muted uppercase tracking-tighter block mb-1">Manual Photo URL</Label>
               <Input
                 name="photoUrl"
-                value={profile.photoUrl}
+                value={profile?.photoUrl}
                 onChange={handleChange}
                 className="h-7 bg-app-bg border border-app-border text-[11px] font-mono rounded-none ring-0 focus-visible:ring-0 focus-visible:border-app-accent transition-all max-w-lg px-2"
                 placeholder="https://example.com/photo.jpg"
@@ -140,17 +140,17 @@ export default function AdminProfile() {
 
             <div className="space-y-2 pt-2">
               <Label htmlFor="description" className="text-app-muted uppercase text-[10px] tracking-widest font-bold block mb-1.5">Bio / Description</Label>
-              <Textarea id="description" name="description" value={profile.description} onChange={handleChange} className="bg-app-bg border-app-border min-h-37.5 rounded-none text-app-text-primary ring-0 focus-visible:ring-0 focus-visible:border-app-accent p-3 transition-all" />
+              <Textarea id="description" name="description" value={profile?.description} onChange={handleChange} className="bg-app-bg border-app-border min-h-37.5 rounded-none text-app-text-primary ring-0 focus-visible:ring-0 focus-visible:border-app-accent p-3 transition-all" />
             </div>
 
             <div className="grid grid-cols-2 gap-6">
               <div className="space-y-2">
                 <Label htmlFor="location" className="text-app-muted uppercase text-[10px] tracking-widest font-bold block mb-1.5">Location</Label>
-                <Input id="location" name="location" value={profile.location} onChange={handleChange} className="bg-app-bg border-app-border rounded-none text-app-text-primary ring-0 focus-visible:ring-0 focus-visible:border-app-accent h-10 px-3 transition-all" />
+                <Input id="location" name="location" value={profile?.location} onChange={handleChange} className="bg-app-bg border-app-border rounded-none text-app-text-primary ring-0 focus-visible:ring-0 focus-visible:border-app-accent h-10 px-3 transition-all" />
               </div>
               <div className="space-y-2">
                 <Label htmlFor="phone" className="text-app-muted uppercase text-[10px] tracking-widest font-bold block mb-1.5">Phone Number</Label>
-                <Input id="phone" name="phone" value={profile.phone} onChange={handleChange} className="bg-app-bg border-app-border rounded-none text-app-text-primary ring-0 focus-visible:ring-0 focus-visible:border-app-accent h-10 px-3 transition-all" />
+                <Input id="phone" name="phone" value={profile?.phone} onChange={handleChange} className="bg-app-bg border-app-border rounded-none text-app-text-primary ring-0 focus-visible:ring-0 focus-visible:border-app-accent h-10 px-3 transition-all" />
               </div>
             </div>
           </div>
@@ -162,14 +162,14 @@ export default function AdminProfile() {
                 if (techsInCategory.length === 0) return null;
 
                 const collectionKey = getProfileCollectionForCategory(category);
-                const selectedInProfile = profile[collectionKey] as TechData[];
+                const selectedInProfile = profile?.[collectionKey] as TechData[];
 
                 return (
                   <div key={category} className="space-y-3">
                     <Label className="text-app-muted uppercase text-[9px] font-bold tracking-[0.2em] opacity-80">{category}</Label>
                     <div className="flex flex-wrap gap-2">
                       {techsInCategory.map(tech => {
-                        const isActive = selectedInProfile.some(t => t.name === tech.name);
+                        const isActive = selectedInProfile?.some(t => t.name === tech.name);
                         return (
                           <button
                             key={tech.name}
@@ -179,12 +179,13 @@ export default function AdminProfile() {
                               "--active-bg": `color-mix(in srgb, ${tech.darkColor}, transparent 80%)`
                             } as React.CSSProperties}
                             className={`
-                              group flex items-center gap-1.5 pr-2 pl-1.5 py-1 border transition-all duration-200
-                              text-[12px] uppercase tracking-wide cursor-pointer rounded-none
+                              group flex items-center gap-1 pr-1.5 pl-1 py-1 border transition-all duration-200
+                              text-[14px] uppercase tracking-wide cursor-pointer rounded-none
                               hover:border-(--tag-color) hover:text-(--tag-color)
+                              hover:shadow-[0_0_15px_color-mix(in_srgb,var(--tag-color),transparent_85%)]
                               ${isActive
                                 ? "bg-(--active-bg) border-(--tag-color) text-(--tag-color)"
-                                : "bg-transparent border-app-border text-app-muted"
+                                : "bg-app-surface border-app-border text-app-muted"
                               }
                             `}
                           >
@@ -194,7 +195,7 @@ export default function AdminProfile() {
                                 : <img src={tech.iconUrl} className="w-4 h-4 object-contain" />
                               }
                             </div>
-                            <span className="font-medium">{tech.name}</span>
+                            <span>{tech.name}</span>
                           </button>
                         );
                       })}
@@ -210,7 +211,7 @@ export default function AdminProfile() {
           <button
             onClick={handleSave}
             disabled={saving}
-            className="w-fit px-12 h-10 text-app-muted border border-app-border hover:text-app-accent hover:border-app-accent disabled:opacity-50 transition-all uppercase tracking-[0.2em] font-bold text-[10px] rounded-none shadow-lg hover:shadow-app-accent/5"
+            className="w-fit px-12 h-10 text-app-muted border border-app-border hover:text-app-accent hover:border-app-accent disabled:opacity-50 transition-all uppercase tracking-[0.2em] font-bold text-[10px] rounded-none"
           >
             {saving ? "Updating..." : "Save Changes"}
           </button>
