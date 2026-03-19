@@ -15,9 +15,9 @@ public static class ProfileEndpoints
 
             var profile = await context.Profiles.Include(p => p.Technologies).FirstOrDefaultAsync();
 
-            if (profile == null)
-{
-                throw new Exception("Profile not found");
+            if (profile == null) 
+            {
+                return Results.NotFound();
             }
 
             return Results.Ok(new
@@ -35,5 +35,10 @@ public static class ProfileEndpoints
             });
         })
         .WithName("GetProfile");
+
+        group.MapGet("/raw", async (DatabaseContext context) => 
+            await context.Profiles.Include(p => p.Technologies).ToListAsync())
+            .WithName("GetProfileRaw");
     }
 }
+ 

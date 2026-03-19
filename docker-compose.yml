@@ -21,8 +21,6 @@ services:
       - db
     volumes:
       - ./Portfolio.Server:/app
-      - /app/bin
-      - /app/obj
   client:
     build: ./Portfolio.Client
     container_name: portfolio-client
@@ -30,5 +28,4 @@ services:
       - "5173:5173"
     volumes:
       - ./Portfolio.Client:/app
-      - /app/node_modules
     
