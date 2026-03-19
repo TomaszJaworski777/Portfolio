@@ -1,20 +1,103 @@
 using Microsoft.EntityFrameworkCore;
 using Portfolio.Server.Data;
+using Portfolio.Server.Models;
 
 namespace Portfolio.Server.Endpoints;
 
 public static class ProjectEndpoints
 {
     public static void MapProjectEndpoints(this IEndpointRouteBuilder app)
-{
+    {
         var group = app.MapGroup("/api/projects").WithTags("Projects");
 
         group.MapGet("/", async (DatabaseContext context) =>
         {
             Thread.Sleep(150);
 
-            return await context.Projects.Include(p => p.Technologies).OrderBy(p => p.Order).ToListAsync();
+            var categoryOrder = new Dictionary<string, int>
+            {
+                { "language", 0 },
+                { "framework", 1 },
+                { "database", 2 },
+                { "devops", 3 },
+                { "ides & tools", 4 }
+            };
+            
+            var projects = await context.Projects.Include(p => p.Technologies).OrderBy(p => p.Order).ToListAsync();
+            projects.ForEach(p => p.Technologies = p.Technologies
+                .OrderBy(t => categoryOrder.GetValueOrDefault(t.Category.ToLower(), 99))
+                .ThenBy(t => t.Name)
+                .ToList());
+            return projects;
         })  
         .WithName("GetProjects");
+
+        group.MapPost("/", async (ProjectData dto, DatabaseContext context) =>
+        {
+            Thread.Sleep(150);
+
+            var project = new ProjectData
+            {
+                Order = dto.Order,
+                Name = dto.Name,
+                Description = dto.Description,
+                ThumbnailUrl = dto.ThumbnailUrl,
+                GithubUrl = dto.GithubUrl,
+                DemoUrl = dto.DemoUrl,
+            };
+
+            var projectTech = dto.Technologies.Select(t => t.Id).ToList();
+
+            project.Technologies = await context.Technologies.Where( t => projectTech.Contains(t.Id) ).ToListAsync();
+
+            context.Projects.Add(project);
+            await context.SaveChangesAsync();
+
+            return Results.Created($"/api/project/{project.Id}", project);
+        }).WithName("AddProject");
+
+        group.MapPut("/{id}", async (int id, ProjectData dto, DatabaseContext context) =>
+        {
+            Thread.Sleep(150);
+
+            var project = await context.Projects.Include(p => p.Technologies).FirstOrDefaultAsync(p => p.Id == id);
+
+            if(project == null)
+            {
+                return Results.NotFound();
+            }
+
+            project.Order = dto.Order;
+            project.Name = dto.Name;
+            project.Description = dto.Description;
+            project.ThumbnailUrl = dto.ThumbnailUrl;
+            project.GithubUrl = dto.GithubUrl;
+            project.DemoUrl = dto.DemoUrl;
+
+            var projectTech = dto.Technologies.Select(t => t.Id).ToList();
+
+            project.Technologies = await context.Technologies.Where( t => projectTech.Contains(t.Id) ).ToListAsync();
+
+            await context.SaveChangesAsync();
+
+            return Results.NoContent();
+        }).WithName("UpdateProject");
+
+        group.MapDelete("/{id}", async (int id, DatabaseContext context) =>
+        {
+            Thread.Sleep(150);
+
+            var project = await context.Projects.Include(p => p.Technologies).FirstOrDefaultAsync(p => p.Id == id);
+
+            if(project == null)
+            {
+                return Results.NotFound();
+            }
+
+            context.Projects.Remove(project);
+            await context.SaveChangesAsync();
+
+            return Results.NoContent();
+        }).WithName("DeleteProject");
     }
 }

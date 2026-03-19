@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { GitHubCalendar } from 'react-github-calendar';
 
-export function GitHubActivity({ isLight }: { isLight: boolean }) {
+export function GitHubActivity({ isLight, username }: { isLight: boolean; username: string }) {
   const [isReady, setIsReady] = useState(false);
 
   const filter = (contributions: any) => {
@@ -41,7 +41,7 @@ export function GitHubActivity({ isLight }: { isLight: boolean }) {
           ${isReady ? "opacity-100 h-auto" : "opacity-0 h-0"}
         `}>
           <GitHubCalendar 
-            username="TomaszJaworski777"
+            username={username}
             transformData={filter}
             labels={{
               totalCount: "{{count}} activities in 6 months",

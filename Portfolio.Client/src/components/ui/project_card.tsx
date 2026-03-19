@@ -6,14 +6,17 @@ interface ProjectCardProps {
     id: number;
     title: string;
     description: string;
+    thumbnailUrl: string;
     technologies: TechData[];
     isLight: boolean;
 }
 
-export function ProjectCard({ title, description, technologies, isLight }: ProjectCardProps) {
+export function ProjectCard({ title, description, thumbnailUrl, technologies, isLight }: ProjectCardProps) {
     return (
         <div className="group relative bg-app-sidebar border border-app-border p-3 h-100">
-            <div className="bg-app-bg w-full h-45" />
+            <div className="bg-app-sidebar w-full h-45 flex items-center justify-center overflow-hidden">
+                {thumbnailUrl && <img src={thumbnailUrl} alt={title} className="w-full h-full object-contain" />}
+            </div>
             <p className="text-app-text-primary font-bold uppercase mt-2 text-[21px] tracking-wider">{title}</p>
             <div className="whitespace-pre-line text-sm leading-relaxed mt-1 text-app-muted h-17">{description}</div>
             <p className="uppercase text-[10px] tracking-wider text-app-accent font-bold mt-2">tech stack</p>

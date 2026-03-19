@@ -18,7 +18,7 @@ public static class TechnologiesEndpoints
         })
         .WithName("GetTechnologies");
 
-        group.MapPost("/", async (TechnologyDto dto, DatabaseContext context) =>
+        group.MapPost("/", async (TechData dto, DatabaseContext context) =>
         {
             Thread.Sleep(150);
 
@@ -38,7 +38,7 @@ public static class TechnologiesEndpoints
         })
         .WithName("CreateTechnology");
 
-        group.MapPut("/{id}", async (int id, TechnologyDto dto, DatabaseContext context) =>
+        group.MapPut("/{id}", async (int id, TechData dto, DatabaseContext context) =>
         {
             Thread.Sleep(150);
 
@@ -80,12 +80,4 @@ public static class TechnologiesEndpoints
         .WithName("DeleteTechnology");
     }
 }
-
-record TechnologyDto(
-    string Name,
-    string IconUrl,
-    string Category,
-    string DarkColor,
-    string LightColor
-);
 

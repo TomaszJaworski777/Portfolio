@@ -1,24 +1,52 @@
 import { useState, useEffect } from "react";
-import { fetchProjects, addProject, updateProject, deleteProject, fetchFilters, type ProjectData, type TechData } from "../../services/api";
+import { fetchProjects, addProject, updateProject, deleteProject, type ProjectData, type TechData, fetchTechnologies } from "../../services/api";
 import { Input } from "../ui/input";
 import { Label } from "../ui/label";
 import { Textarea } from "../ui/textarea";
 import { Card, CardContent } from "../ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "../ui/table";
-import { Plus, Trash, Edit2, X } from "lucide-react";
+import { Plus, Trash, Edit2, X, ArrowUp, ArrowDown } from "lucide-react";
+import { TechIcon } from "../ui/tech_icon";
+import { FilterButton } from "../ui/filter_button";
 
 export default function AdminProjects() {
   const [projects, setProjects] = useState<ProjectData[]>([]);
   const [allTech, setAllTech] = useState<TechData[]>([]);
   const [editingProject, setEditingProject] = useState<ProjectData | null>(null);
   const [isAdding, setIsAdding] = useState(false);
+  const [savingOrder, setSavingOrder] = useState(false);
+  const [orderChanged, setOrderChanged] = useState(false);
 
   useEffect(() => {
-    Promise.all([fetchProjects(), fetchFilters()]).then(([projectsData, techData]) => {
+    Promise.all([fetchProjects(), fetchTechnologies()]).then(([projectsData, techData]) => {
       setProjects(projectsData);
       setAllTech(techData);
+      setOrderChanged(false);
     });
   }, []);
+
+  const moveProject = (index: number, direction: -1 | 1) => {
+    const newIndex = index + direction;
+    if (newIndex < 0 || newIndex >= projects.length) return;
+    const reordered = [...projects];
+    [reordered[index], reordered[newIndex]] = [reordered[newIndex], reordered[index]];
+    reordered.forEach((p, i) => p.order = i);
+    setProjects(reordered);
+    setOrderChanged(true);
+  };
+
+  const handleSaveOrder = async () => {
+    setSavingOrder(true);
+    try {
+      await Promise.all(projects.map(p => updateProject(p.id, p)));
+      setOrderChanged(false);
+    } catch (error) {
+      console.error(error);
+      alert("Failed to save order.");
+    } finally {
+      setSavingOrder(false);
+    }
+  };
 
   const handleEdit = (project: ProjectData) => {
     setEditingProject({ ...project });
@@ -28,6 +56,7 @@ export default function AdminProjects() {
   const handleAdd = () => {
     setEditingProject({
       id: 0,
+      order: projects.length,
       name: "",
       description: "",
       thumbnailUrl: "",
@@ -54,10 +83,8 @@ export default function AdminProjects() {
     try {
       if (isAdding) {
         await addProject(editingProject);
-        alert("Project added successfully!");
       } else {
         await updateProject(editingProject.id, editingProject);
-        alert("Project updated successfully!");
       }
       setEditingProject(null);
       fetchProjects().then(setProjects);
@@ -78,7 +105,16 @@ export default function AdminProjects() {
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-end mb-4 px-0">
+      <div className="flex items-center justify-end gap-4 mb-4 px-0">
+        {orderChanged && (
+          <button
+            onClick={handleSaveOrder}
+            disabled={savingOrder}
+            className="text-app-muted hover:text-app-accent transition-all uppercase text-[10px] font-bold tracking-widest flex items-center gap-2 h-full px-2 disabled:opacity-50"
+          >
+            {savingOrder ? "Saving..." : "Save Order"}
+          </button>
+        )}
         <button onClick={handleAdd} className="text-app-muted hover:text-app-accent transition-all uppercase text-[10px] font-bold tracking-widest flex items-center gap-2 h-full px-2">
           <Plus className="h-3.5 w-3.5" strokeWidth={2} /> Add Project
         </button>
@@ -103,7 +139,7 @@ export default function AdminProjects() {
                     <div className="relative group w-full aspect-video border border-app-border bg-app-bg flex items-center justify-center overflow-hidden shadow-inner uppercase">
                       {editingProject.thumbnailUrl ? (
                         <>
-                          <img src={editingProject.thumbnailUrl} className="w-full h-full object-cover transition-transform group-hover:scale-105" />
+                          <img src={editingProject.thumbnailUrl} className="w-full h-full object-contain transition-transform group-hover:scale-105" />
                           <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-4">
                             <button
                               onClick={() => document.getElementById('thumbnail-upload')?.click()}
@@ -167,7 +203,7 @@ export default function AdminProjects() {
 
                 <div className="space-y-2">
                   <Label className="text-app-muted uppercase text-[10px] font-bold tracking-widest block mb-1.5">Project Description</Label>
-                  <Textarea value={editingProject.description} onChange={e => setEditingProject({ ...editingProject, description: e.target.value })} className="bg-app-bg border-app-border min-h-[120px] rounded-none text-app-text-primary ring-0 focus-visible:ring-0 focus-visible:border-app-accent p-3 transition-all" />
+                  <Textarea value={editingProject.description} onChange={e => setEditingProject({ ...editingProject, description: e.target.value })} className="bg-app-bg border-app-border min-h-30 rounded-none text-app-text-primary ring-0 focus-visible:ring-0 focus-visible:border-app-accent p-3 transition-all" />
                 </div>
 
                 <div className="grid grid-cols-2 gap-4">
@@ -187,29 +223,14 @@ export default function AdminProjects() {
                     {allTech.map(tech => {
                       const isActive = editingProject.technologies.some(t => t.name === tech.name);
                       return (
-                        <button
+                        <FilterButton
                           key={tech.name}
-                          onClick={() => toggleTech(tech)}
-                          style={{
-                            "--tag-color": tech.darkColor,
-                            "--active-bg": `color-mix(in srgb, ${tech.darkColor}, transparent 80%)`
-                          } as React.CSSProperties}
-                          className={`
-                            group flex items-center gap-1.5 pr-2 pl-1 py-1 border transition-all duration-200
-                            text-[14px] uppercase tracking-wide cursor-pointer rounded-none
-                            hover:border-[var(--tag-color)] hover:text-[var(--tag-color)]
-                            ${isActive
-                              ? "bg-[var(--active-bg)] border-[var(--tag-color)] text-[var(--tag-color)]"
-                              : "bg-transparent border-app-border text-app-muted"
-                            }
-                          `}
-                        >
-                          {tech.iconUrl.startsWith('devicon-')
-                            ? <i className={`${tech.iconUrl} text-[18px]`}></i>
-                            : <img src={tech.iconUrl} className="w-5 h-5 object-contain" />
-                          }
-                          <span>{tech.name}</span>
-                        </button>
+                          name={tech.name}
+                          icon={tech.iconUrl}
+                          color={tech.darkColor}
+                          active={isActive}
+                          onToggle={() => toggleTech(tech)}
+                        />
                       );
                     })}
                   </div>
@@ -232,32 +253,46 @@ export default function AdminProjects() {
       <Table className="border border-app-border text-app-text-primary">
         <TableHeader>
           <TableRow className="border-app-border hover:bg-transparent">
-            <TableHead className="text-app-muted uppercase text-[10px] tracking-widest pl-4 font-bold">Project</TableHead>
+            <TableHead className="text-app-muted uppercase text-[10px] tracking-widest pl-4 font-bold w-12">Order</TableHead>
+            <TableHead className="text-app-muted uppercase text-[10px] tracking-widest font-bold">Project</TableHead>
             <TableHead className="text-app-muted uppercase text-[10px] tracking-widest font-bold">Technologies</TableHead>
             <TableHead className="text-right text-app-muted uppercase text-[10px] tracking-widest pr-4 font-bold">Actions</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
-          {projects.map(project => (
+          {projects.map((project, index) => (
             <TableRow key={project.id} className="border-app-border hover:bg-transparent">
-              <TableCell className="font-medium pl-4 py-1.5">{project.name}</TableCell>
+              <TableCell className="pl-4 py-1.5">
+                <div className="flex items-center gap-1">
+                  <button
+                    onClick={() => moveProject(index, -1)}
+                    disabled={index === 0}
+                    className="text-app-muted hover:text-app-accent disabled:opacity-20 transition-all p-0.5"
+                  >
+                    <ArrowUp className="h-3.5 w-3.5" strokeWidth={2} />
+                  </button>
+                  <button
+                    onClick={() => moveProject(index, 1)}
+                    disabled={index === projects.length - 1}
+                    className="text-app-muted hover:text-app-accent disabled:opacity-20 transition-all p-0.5"
+                  >
+                    <ArrowDown className="h-3.5 w-3.5" strokeWidth={2} />
+                  </button>
+                </div>
+              </TableCell>
+              <TableCell className="font-medium py-1.5">{project.name}</TableCell>
               <TableCell className="py-1.5">
-                <div className="flex flex-wrap gap-1">
+                <div className="grid gap-1.5 grid-cols-[repeat(auto-fill,20px)]">
                   {project.technologies.map(t => (
-                    <span
-                      key={t.name}
-                      className="text-[9px] uppercase font-bold px-1.5 py-0.5 border border-app-border text-app-muted"
-                    >
-                      {t.name}
-                    </span>
+                    <TechIcon key={t.name} name={t.name} iconUrl={t.iconUrl} color={t.darkColor} />
                   ))}
                 </div>
               </TableCell>
               <TableCell className="text-right space-x-2 pr-4 py-1.5">
-                <button onClick={() => handleEdit(project)} className="text-app-muted border border-app-muted p-1.5 hover:text-app-accent hover:border-app-accent transition-all rounded-none">
+                <button onClick={() => handleEdit(project)} className="text-app-muted border border-app-border p-1.5 hover:text-app-accent hover:border-app-accent transition-all rounded-none">
                   <Edit2 className="h-4 w-4" strokeWidth={1.5} />
                 </button>
-                <button onClick={() => handleDelete(project.id)} className="text-app-muted border border-app-muted p-1.5 hover:text-red-500 hover:border-red-500 transition-all rounded-none">
+                <button onClick={() => handleDelete(project.id)} className="text-app-muted border border-app-border p-1.5 hover:text-red-500 hover:border-red-500 transition-all rounded-none">
                   <Trash className="h-4 w-4" strokeWidth={1.5} />
                 </button>
               </TableCell>

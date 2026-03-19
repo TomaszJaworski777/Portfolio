@@ -66,14 +66,14 @@ export default function Admin() {
             </nav>
           </div>
 
-          <div className="mt-auto pt-6 border-t border-app-border space-y-2">
-            <Link to="/" className="flex items-center gap-3 px-4 py-3 text-app-muted hover:text-app-accent transition-all uppercase text-[11px] font-bold tracking-[0.2em] rounded-none">
+          <div className="mt-auto pt-3 border-t border-app-border space-y-0">
+            <Link to="/" className="flex items-center gap-3 px-4 py-2 text-app-muted hover:text-app-accent transition-all uppercase text-[11px] font-bold tracking-[0.2em] rounded-none">
               <Home size={16} strokeWidth={1.5} />
               Back to Site
             </Link>
             <button
               onClick={() => alert("Logout clicked")}
-              className="w-full flex items-center gap-3 px-4 py-3 text-app-muted hover:text-red-500 transition-all uppercase text-[11px] font-bold tracking-[0.2em] rounded-none"
+              className="w-full flex items-center gap-3 px-4 py-2 text-app-muted hover:text-red-500 transition-all uppercase text-[11px] font-bold tracking-[0.2em] rounded-none"
             >
               <LogOut size={16} strokeWidth={1.5} />
               Logout

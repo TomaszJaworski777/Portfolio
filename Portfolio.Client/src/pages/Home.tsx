@@ -103,28 +103,28 @@ export default function Home() {
             </div>
             <div>
               <p className="w-full uppercase mt-5 tracking-wider ml-3 text-[10px] text-app-accent animate-fade-in-left delay-50"><b>languages</b></p>
-              <div className="w-full grid grid-cols-8 gap-4 pl-3 pr-3 mt-2">
+              <div className="w-full grid grid-cols-8 gap-2 pl-3 pr-3 mt-2">
                 {profile?.languages?.map((tech, i) => <div key={tech.name} className="animate-fade-in-left" style={{ animationDelay: `${50 + (i * 30)}ms` }}><TechIcon name={tech.name} iconUrl={tech.iconUrl} color={isLight ? tech.lightColor : tech.darkColor} /></div>)}
               </div>
               <p className="w-full uppercase mt-6 tracking-wider ml-3 text-[10px] text-app-accent animate-fade-in-left delay-100"><b>frameworks</b></p>
-              <div className="w-full grid grid-cols-8 gap-4 pl-3 pr-3 mt-2">
+              <div className="w-full grid grid-cols-8 gap-2 pl-3 pr-3 mt-2">
                 {profile?.frameworks?.map((tech, i) => <div key={tech.name} className="animate-fade-in-left" style={{ animationDelay: `${100 + (i * 30)}ms` }}><TechIcon name={tech.name} iconUrl={tech.iconUrl} color={isLight ? tech.lightColor : tech.darkColor} /></div>)}
               </div>
               <p className="w-full uppercase mt-6 tracking-wider ml-3 text-[10px] text-app-accent animate-fade-in-left delay-150"><b>ides & tools</b></p>
-              <div className="w-full grid grid-cols-8 gap-4 pl-3 pr-3 mt-2">
+              <div className="w-full grid grid-cols-8 gap-2 pl-3 pr-3 mt-2">
                 {profile?.tools?.map((tech, i) => <div key={tech.name} className="animate-fade-in-left" style={{ animationDelay: `${150 + (i * 30)}ms` }}><TechIcon name={tech.name} iconUrl={tech.iconUrl} color={isLight ? tech.lightColor : tech.darkColor} /></div>)}
               </div>
               <p className="w-full uppercase mt-6 tracking-wider ml-3 text-[10px] text-app-accent animate-fade-in-left delay-200"><b>databases</b></p>
-              <div className="w-full grid grid-cols-8 gap-4 pl-3 pr-3 mt-2">
+              <div className="w-full grid grid-cols-8 gap-2 pl-3 pr-3 mt-2">
                 {profile?.databases?.map((tech, i) => <div key={tech.name} className="animate-fade-in-left" style={{ animationDelay: `${200 + (i * 30)}ms` }}><TechIcon name={tech.name} iconUrl={tech.iconUrl} color={isLight ? tech.lightColor : tech.darkColor} /></div>)}
               </div>
               <p className="w-full uppercase mt-6 tracking-wider ml-3 text-[10px] text-app-accent animate-fade-in-left delay-250"><b>devops</b></p>
-              <div className="w-full grid grid-cols-8 gap-4 pl-3 pr-3 mt-2">
+              <div className="w-full grid grid-cols-8 gap-2 pl-3 pr-3 mt-2">
                 {profile?.devOps?.map((tech, i) => <div key={tech.name} className="animate-fade-in-left" style={{ animationDelay: `${250 + (i * 30)}ms` }}><TechIcon name={tech.name} iconUrl={tech.iconUrl} color={isLight ? tech.lightColor : tech.darkColor} /></div>)}
               </div>
             </div>
           </div>
-          <GitHubActivity isLight={isLight} />
+          {profile?.githubUsername && <GitHubActivity isLight={isLight} username={profile.githubUsername} />}
         </div>
       </aside>
 
@@ -137,8 +137,8 @@ export default function Home() {
             <UserRound size={26} />
           </button>
 
-          <TopBarButton devicon="devicon-github-original" size={24} className="hover:text-app-github-highlight" onClick={() => { window.open("https://github.com/TomaszJaworski777", "_blank", "noopener,noreferrer") }} />
-          <TopBarButton devicon="devicon-linkedin-plain" size={24} className="hover:text-app-linkedin-highlight" onClick={() => { window.open("https://www.linkedin.com/in/tomasz-jaworski-4217bb176/", "_blank", "noopener,noreferrer") }} />
+          <TopBarButton devicon="devicon-github-original" size={24} className="hover:text-app-github-highlight" onClick={() => { window.open(`https://github.com/${profile?.githubUsername}`, "_blank", "noopener,noreferrer") }} />
+          <TopBarButton devicon="devicon-linkedin-plain" size={24} className="hover:text-app-linkedin-highlight" onClick={() => { window.open(`https://www.linkedin.com/in/${profile?.linkedinProfile}`, "_blank", "noopener,noreferrer") }} />
           <TopBarButton icon={FileDown} size={24} className="hover:text-app-accent" />
           <ThemeToggle size={28} className="lg:ml-5" onToggle={(light) => {
             if (light) {
@@ -210,6 +210,7 @@ export default function Home() {
                       id={project.id}
                       title={project.name}
                       description={project.description}
+                      thumbnailUrl={project.thumbnailUrl}
                       technologies={project.technologies}
                       isLight={isLight}
                     />

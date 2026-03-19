@@ -5,6 +5,8 @@ export interface ProfileData {
   description: string;
   location: string;
   phone: string;
+  githubUsername: string;
+  linkedinProfile: string;
   languages: TechData[];
   frameworks: TechData[];
   tools: TechData[];
@@ -14,6 +16,7 @@ export interface ProfileData {
 
 export interface ProjectData {
   id: number;
+  order: number;
   name: string;
   description: string;
   thumbnailUrl: string;

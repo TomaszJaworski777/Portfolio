@@ -4,6 +4,7 @@ import { fetchProfile, updateProfile, type ProfileData, type TechData, fetchTech
 import { Input } from "../ui/input";
 import { Label } from "../ui/label";
 import { Textarea } from "../ui/textarea";
+import { FilterButton } from "../ui/filter_button";
 import { Card, CardContent } from "../ui/card";
 
 export default function AdminProfile({ onUpdate }: { onUpdate?: () => void }) {
@@ -153,6 +154,17 @@ export default function AdminProfile({ onUpdate }: { onUpdate?: () => void }) {
                 <Input id="phone" name="phone" value={profile?.phone} onChange={handleChange} className="bg-app-bg border-app-border rounded-none text-app-text-primary ring-0 focus-visible:ring-0 focus-visible:border-app-accent h-10 px-3 transition-all" />
               </div>
             </div>
+
+            <div className="grid grid-cols-2 gap-6">
+              <div className="space-y-2">
+                <Label htmlFor="githubUsername" className="text-app-muted uppercase text-[10px] tracking-widest font-bold block mb-1.5">GitHub Username</Label>
+                <Input id="githubUsername" name="githubUsername" value={profile?.githubUsername} onChange={handleChange} className="bg-app-bg border-app-border rounded-none text-app-text-primary ring-0 focus-visible:ring-0 focus-visible:border-app-accent h-10 px-3 transition-all" placeholder="username" />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="linkedinProfile" className="text-app-muted uppercase text-[10px] tracking-widest font-bold block mb-1.5">LinkedIn Profile</Label>
+                <Input id="linkedinProfile" name="linkedinProfile" value={profile?.linkedinProfile} onChange={handleChange} className="bg-app-bg border-app-border rounded-none text-app-text-primary ring-0 focus-visible:ring-0 focus-visible:border-app-accent h-10 px-3 transition-all" placeholder="profile-slug" />
+              </div>
+            </div>
           </div>
 
           <div className="lg:col-span-12 xl:col-span-5 space-y-8">
@@ -171,32 +183,14 @@ export default function AdminProfile({ onUpdate }: { onUpdate?: () => void }) {
                       {techsInCategory.map(tech => {
                         const isActive = selectedInProfile?.some(t => t.name === tech.name);
                         return (
-                          <button
+                          <FilterButton
                             key={tech.name}
-                            onClick={() => toggleTech(tech)}
-                            style={{
-                              "--tag-color": tech.darkColor,
-                              "--active-bg": `color-mix(in srgb, ${tech.darkColor}, transparent 80%)`
-                            } as React.CSSProperties}
-                            className={`
-                              group flex items-center gap-1 pr-1.5 pl-1 py-1 border transition-all duration-200
-                              text-[14px] uppercase tracking-wide cursor-pointer rounded-none
-                              hover:border-(--tag-color) hover:text-(--tag-color)
-                              hover:shadow-[0_0_15px_color-mix(in_srgb,var(--tag-color),transparent_85%)]
-                              ${isActive
-                                ? "bg-(--active-bg) border-(--tag-color) text-(--tag-color)"
-                                : "bg-app-surface border-app-border text-app-muted"
-                              }
-                            `}
-                          >
-                            <div className="flex items-center justify-center w-5 h-5 shrink-0">
-                              {tech.iconUrl.startsWith('devicon-')
-                                ? <i className={`${tech.iconUrl} text-[16px]`}></i>
-                                : <img src={tech.iconUrl} className="w-4 h-4 object-contain" />
-                              }
-                            </div>
-                            <span>{tech.name}</span>
-                          </button>
+                            name={tech.name}
+                            icon={tech.iconUrl}
+                            color={tech.darkColor}
+                            active={isActive}
+                            onToggle={() => toggleTech(tech)}
+                          />
                         );
                       })}
                     </div>

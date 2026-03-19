@@ -30,6 +30,8 @@ public static class ProfileEndpoints
                 profile.Description,
                 profile.Location,
                 profile.Phone,
+                profile.GithubUsername,
+                profile.LinkedinProfile,
                 Languages = profile.Technologies.Where(t => t.Category == "language"),
                 Frameworks = profile.Technologies.Where(t => t.Category == "framework"),
                 Tools = profile.Technologies.Where(t => t.Category == "ides & tools"),
@@ -56,18 +58,20 @@ public static class ProfileEndpoints
             profile.Description = dto.Description;
             profile.Location = dto.Location;
             profile.Phone = dto.Phone;
+            profile.GithubUsername = dto.GithubUsername;
+            profile.LinkedinProfile = dto.LinkedinProfile;
 
             var allSelectedNames = (dto.Languages ?? new())
                 .Concat(dto.Frameworks ?? new())
                 .Concat(dto.Tools ?? new())
                 .Concat(dto.Databases ?? new())
                 .Concat(dto.DevOps ?? new())
-                .Select(t => t.Name)
+                .Select(t => t.Id)
                 .Distinct()
                 .ToList();
 
             profile.Technologies = await context.Technologies
-                .Where(t => allSelectedNames.Contains(t.Name))
+                .Where(t => allSelectedNames.Contains(t.Id))
                 .ToListAsync();
 
             await context.SaveChangesAsync();
@@ -85,11 +89,13 @@ record ProfileUpdateDto(
     string Description,
     string Location,
     string Phone,
-    List<TechnologyDto> Languages,
-    List<TechnologyDto> Frameworks,
-    List<TechnologyDto> Tools,
-    List<TechnologyDto> Databases,
-    List<TechnologyDto> DevOps
+    string GithubUsername,
+    string LinkedinProfile,
+    List<TechData> Languages,
+    List<TechData> Frameworks,
+    List<TechData> Tools,
+    List<TechData> Databases,
+    List<TechData> DevOps
 );
 
  

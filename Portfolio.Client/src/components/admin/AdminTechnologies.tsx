@@ -4,7 +4,7 @@ import { Input } from "../ui/input";
 import { Label } from "../ui/label";
 import { Card, CardContent } from "../ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "../ui/table";
-import { Plus, Trash, Edit2, X } from "lucide-react";
+import { Plus, Trash, Edit2, X, HelpCircle } from "lucide-react";
 
 export default function AdminTechnologies() {
   const [techs, setTechs] = useState<TechData[]>([]);
@@ -216,10 +216,13 @@ export default function AdminTechnologies() {
             <TableRow key={tech.name} className="border-app-border hover:bg-transparent">
               <TableCell className="pl-4 py-1">
                 <div className="w-10 h-10 flex items-center justify-center" style={{ color: tech.darkColor }}>
-                  {tech.iconUrl.startsWith('devicon-')
-                    ? <i className={`${tech.iconUrl} text-2xl`}></i>
-                    : <img src={tech.iconUrl} className="w-8 h-8 object-contain" />
-                  }
+                  {tech.iconUrl ? (
+                    tech.iconUrl.startsWith('devicon-')
+                      ? <i className={`${tech.iconUrl} text-2xl`}></i>
+                      : <img src={tech.iconUrl} className="w-8 h-8 object-contain" />
+                  ) : (
+                    <HelpCircle className="w-6 h-6" strokeWidth={1.2} />
+                  )}
                 </div>
               </TableCell>
               <TableCell className="font-medium text-app-text-primary text-sm uppercase tracking-wider py-1">{tech.name}</TableCell>

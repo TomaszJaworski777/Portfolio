@@ -9,5 +9,7 @@ public class ProfileData
     public string Description { get; set; } = string.Empty;
     public string Location { get; set; } = string.Empty;
     public string Phone { get; set; } = string.Empty;
+    public string GithubUsername { get; set; } = string.Empty;
+    public string LinkedinProfile { get; set; } = string.Empty;
     public List<TechData> Technologies { get; set; } = new List<TechData>();
 }
