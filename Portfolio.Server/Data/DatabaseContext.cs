@@ -19,6 +19,19 @@ public class DatabaseContext : DbContext
             .HasMany(p => p.Technologies)
             .WithMany();
 
+        modelBuilder.Entity<TechData>()
+            .HasOne<TechCategoryData>()
+            .WithMany()
+            .HasForeignKey(t => t.Category);
+
+        modelBuilder.Entity<TechCategoryData>().HasData(
+            new TechCategoryData { Name = "language" },
+            new TechCategoryData { Name = "framework" },
+            new TechCategoryData { Name = "database" },
+            new TechCategoryData { Name = "devops" },
+            new TechCategoryData { Name = "ides & tools" }
+        );
+
         modelBuilder.Entity<TechData>().HasData(
             new TechData { Id = 1, Name = "C#", IconUrl = "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/csharp/csharp-original.svg", Category = "language", LightColor = "#68217a", DarkColor = "#a179dc" },
             new TechData { Id = 2, Name = "ASP.NET", IconUrl = "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/dot-net/dot-net-original.svg", Category = "framework", LightColor = "#512bd4", DarkColor = "#a68aee" },
@@ -53,4 +66,5 @@ public class DatabaseContext : DbContext
     public DbSet<ProfileData> Profiles { get; set; }
     public DbSet<ProjectData> Projects { get; set; }
     public DbSet<TechData> Technologies { get; set; }
+    public DbSet<TechCategoryData> TechCategories { get; set; }
 }
