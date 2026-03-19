@@ -8,7 +8,6 @@ import { Plus, Trash, Edit2, X } from "lucide-react";
 
 export default function AdminTechnologies() {
   const [techs, setTechs] = useState<TechData[]>([]);
-  const [loading, setLoading] = useState(true);
   const [editingTech, setEditingTech] = useState<TechData | null>(null);
   const [originalName, setOriginalName] = useState<string>("");
   const [isAdding, setIsAdding] = useState(false);
@@ -16,7 +15,6 @@ export default function AdminTechnologies() {
   useEffect(() => {
     fetchFilters().then(data => {
       setTechs(data);
-      setLoading(false);
     });
   }, []);
 
@@ -67,8 +65,6 @@ export default function AdminTechnologies() {
     }
   };
 
-  if (loading) return <div>Loading...</div>;
-
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-end mb-4 px-0">
@@ -87,110 +83,112 @@ export default function AdminTechnologies() {
               <X className="h-4 w-4" strokeWidth={1.5} />
             </button>
           </div>
-          <CardContent className="space-y-4">
-            <div className="flex gap-4 items-start">
-              <div className="flex-1 space-y-4">
-                <div className="grid grid-cols-2 gap-4">
-                  <div className="space-y-2">
-                    <Label className="text-app-muted uppercase text-[10px] font-bold">Name</Label>
-                    <Input value={editingTech.name} onChange={e => setEditingTech({ ...editingTech, name: e.target.value })} className="bg-app-bg border-app-border rounded-none text-app-text-primary ring-0 focus-visible:ring-0 focus-visible:border-app-accent" />
-                  </div>
-                  <div className="space-y-2">
-                    <Label className="text-app-muted uppercase text-[10px] font-bold">Category</Label>
-                    <select
-                      value={editingTech.category}
-                      onChange={e => setEditingTech({ ...editingTech, category: e.target.value })}
-                      className="w-full h-8 bg-app-bg border border-app-border px-2.5 py-1 text-sm text-app-text-primary outline-none focus:border-app-accent rounded-none appearance-none"
-                    >
-                      <option value="language">Languages</option>
-                      <option value="framework">Frameworks</option>
-                      <option value="ides & tools">Tools</option>
-                      <option value="database">Databases</option>
-                      <option value="devops">DevOps</option>
-                    </select>
-                  </div>
-                </div>
-
-                <div className="space-y-4">
-                  <Label className="text-app-muted uppercase text-[10px] font-bold">Icon (Devicon class or Image URL)</Label>
-                  <div className="flex gap-4 items-center">
-                    <div className="relative group w-12 h-12 border border-app-border flex items-center justify-center bg-app-bg shrink-0 overflow-hidden">
+          <CardContent className="space-y-8">
+            <div className="space-y-6 max-w-2xl">
+              <div className="space-y-4">
+                <div className="flex items-start gap-8">
+                  <div className="flex flex-col gap-4 shrink-0">
+                    <div className="relative mt-5 group w-24 h-24 border border-app-border bg-app-bg flex items-center justify-center overflow-hidden shadow-inner ring-offset-4 ring-offset-app-bg group-hover:ring-1 ring-app-accent/20 transition-all">
                       {editingTech.iconUrl ? (
                         <>
                           {editingTech.iconUrl.startsWith('devicon-')
-                            ? <i className={`${editingTech.iconUrl} text-2xl`} style={{ color: editingTech.darkColor }}></i>
-                            : <img src={editingTech.iconUrl} className="w-8 h-8 object-contain" />
+                            ? <i className={`${editingTech.iconUrl} text-5xl transition-transform group-hover:scale-110`} style={{ color: editingTech.darkColor }}></i>
+                            : <img src={editingTech.iconUrl} className="w-16 h-16 object-contain transition-transform group-hover:scale-110" />
                           }
-                          <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-1.5">
+                          <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-3">
                             <button
                               onClick={() => document.getElementById('icon-upload')?.click()}
-                              className="p-1 bg-app-accent/20 border border-app-accent text-app-accent hover:bg-app-accent/30 transition-all rounded-none"
+                              className="p-2 bg-app-accent/20 border border-app-accent text-app-accent hover:bg-app-accent/30 transition-all rounded-none"
                               title="Change Icon"
                             >
-                              <Plus size={14} strokeWidth={2} />
+                              <Plus size={18} strokeWidth={2} />
                             </button>
                             <button
                               onClick={() => setEditingTech({ ...editingTech, iconUrl: "" })}
-                              className="p-1 bg-red-500/10 border border-red-500 text-red-500 hover:bg-red-500/20 transition-all rounded-none"
+                              className="p-2 bg-red-500/10 border border-red-500 text-red-500 hover:bg-red-500/20 transition-all rounded-none"
                               title="Remove Icon"
                             >
-                              <Trash size={14} strokeWidth={2} />
+                              <Trash size={18} strokeWidth={2} />
                             </button>
                           </div>
                         </>
                       ) : (
                         <button
                           onClick={() => document.getElementById('icon-upload')?.click()}
-                          className="flex flex-col items-center text-app-muted hover:text-app-accent transition-all"
+                          className="flex flex-col items-center gap-1.5 text-app-muted hover:text-app-accent transition-all group-hover:scale-110"
                         >
-                          <Plus size={20} strokeWidth={1.5} />
+                          <Plus size={28} strokeWidth={1} />
+                          <span className="text-[9px] uppercase tracking-widest font-bold text-center">Icon</span>
                         </button>
                       )}
                     </div>
+                    <input id="icon-upload" type="file" accept="image/*" className="hidden" onChange={(e) => {
+                      const file = e.target.files?.[0];
+                      if (file) {
+                        const localUrl = URL.createObjectURL(file);
+                        setEditingTech({ ...editingTech, iconUrl: localUrl });
+                      }
+                    }} />
+                  </div>
 
-                    <div className="flex-1 space-y-1">
+                  <div className="flex-1 space-y-4">
+                    <div className="grid grid-cols-2 gap-6">
+                      <div className="space-y-2">
+                        <Label className="text-app-muted uppercase text-[10px] font-bold tracking-widest block mb-1.5">Tech Name</Label>
+                        <Input value={editingTech.name} onChange={e => setEditingTech({ ...editingTech, name: e.target.value })} className="h-10 bg-app-bg border-app-border rounded-none text-app-text-primary ring-0 focus-visible:ring-0 focus-visible:border-app-accent px-3 transition-all" />
+                      </div>
+                      <div className="space-y-2">
+                        <Label className="text-app-muted uppercase text-[10px] font-bold tracking-widest block mb-1.5">Category</Label>
+                        <select
+                          value={editingTech.category}
+                          onChange={e => setEditingTech({ ...editingTech, category: e.target.value })}
+                          className="w-full h-10 bg-app-bg border border-app-border px-3 text-sm text-app-text-primary outline-none focus:border-app-accent rounded-none appearance-none transition-all"
+                        >
+                          <option value="language">Languages</option>
+                          <option value="framework">Frameworks</option>
+                          <option value="ides & tools">Tools</option>
+                          <option value="database">Databases</option>
+                          <option value="devops">DevOps</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div className="space-y-2">
+                      <Label className="text-[9px] text-app-muted uppercase tracking-tighter block mb-1">Manual Icon URL / Devicon Class</Label>
                       <Input
                         value={editingTech.iconUrl}
                         onChange={e => setEditingTech({ ...editingTech, iconUrl: e.target.value })}
-                        placeholder="devicon-react-original or URL"
-                        className="bg-app-bg border-app-border rounded-none text-app-text-primary ring-0 focus-visible:ring-0 focus-visible:border-app-accent"
+                        placeholder="devicon-react-original or https://..."
+                        className="h-10 bg-app-bg border-app-border rounded-none text-app-text-primary ring-0 focus-visible:ring-0 focus-visible:border-app-accent px-3 transition-all font-mono text-xs w-full"
                       />
-                      <p className="text-[9px] text-app-muted uppercase tracking-tighter">Enter Devicon class, image URL, or upload from computer</p>
                     </div>
-
-                    <input
-                      id="icon-upload"
-                      type="file"
-                      accept="image/*"
-                      className="hidden"
-                      onChange={(e) => {
-                        const file = e.target.files?.[0];
-                        if (file) {
-                          const localUrl = URL.createObjectURL(file);
-                          setEditingTech({ ...editingTech, iconUrl: localUrl });
-                        }
-                      }}
-                    />
                   </div>
                 </div>
+              </div>
 
-                <div className="grid grid-cols-2 gap-6">
-                  <div className="space-y-2">
-                    <Label className="text-app-muted uppercase text-[10px] font-bold">Theme Colors</Label>
-                    <div className="flex flex-col gap-3">
-                      <div className="flex items-center gap-3">
-                        <div className="w-8 h-8 border border-app-border shrink-0" style={{ backgroundColor: editingTech.lightColor }}>
-                          <input type="color" value={editingTech.lightColor} onChange={e => setEditingTech({ ...editingTech, lightColor: e.target.value })} className="opacity-0 w-full h-full cursor-pointer" />
-                        </div>
-                        <Input value={editingTech.lightColor} onChange={e => setEditingTech({ ...editingTech, lightColor: e.target.value })} className="h-8 bg-app-bg border-app-border rounded-none text-[11px] font-mono ring-0 focus-visible:ring-0 focus-visible:border-app-accent" placeholder="Light Hex" />
-                        <span className="text-[9px] uppercase text-app-muted font-bold tracking-tighter">Light</span>
+              <div className="space-y-4 pt-4">
+                <Label className="text-app-muted uppercase text-[10px] font-bold tracking-widest block mb-1.5">Brand Identity Colors</Label>
+                <div className="grid grid-cols-2 gap-8 max-w-lg">
+                  <div className="space-y-3">
+                    <div className="flex items-center gap-3">
+                      <div className="w-10 h-10 border border-app-border shrink-0 shadow-inner group relative overflow-hidden">
+                        <input type="color" value={editingTech.lightColor} onChange={e => setEditingTech({ ...editingTech, lightColor: e.target.value })} className="absolute inset-0 opacity-0 w-full h-full cursor-pointer z-10" />
+                        <div className="absolute inset-0" style={{ backgroundColor: editingTech.lightColor }}></div>
                       </div>
-                      <div className="flex items-center gap-3">
-                        <div className="w-8 h-8 border border-app-border shrink-0" style={{ backgroundColor: editingTech.darkColor }}>
-                          <input type="color" value={editingTech.darkColor} onChange={e => setEditingTech({ ...editingTech, darkColor: e.target.value })} className="opacity-0 w-full h-full cursor-pointer" />
-                        </div>
-                        <Input value={editingTech.darkColor} onChange={e => setEditingTech({ ...editingTech, darkColor: e.target.value })} className="h-8 bg-app-bg border-app-border rounded-none text-[11px] font-mono ring-0 focus-visible:ring-0 focus-visible:border-app-accent" placeholder="Dark Hex" />
-                        <span className="text-[9px] uppercase text-app-muted font-bold tracking-tighter">Dark</span>
+                      <div className="flex-1 space-y-1">
+                        <span className="text-[9px] uppercase text-app-muted font-bold tracking-tighter block">Light Theme</span>
+                        <Input value={editingTech.lightColor} onChange={e => setEditingTech({ ...editingTech, lightColor: e.target.value })} className="h-8 bg-app-bg border-app-border rounded-none text-[11px] font-mono ring-0 focus-visible:ring-0 focus-visible:border-app-accent px-2 transition-all w-full" placeholder="#HEX" />
+                      </div>
+                    </div>
+                  </div>
+                  <div className="space-y-3">
+                    <div className="flex items-center gap-3">
+                      <div className="w-10 h-10 border border-app-border shrink-0 shadow-inner group relative overflow-hidden">
+                        <input type="color" value={editingTech.darkColor} onChange={e => setEditingTech({ ...editingTech, darkColor: e.target.value })} className="absolute inset-0 opacity-0 w-full h-full cursor-pointer z-10" />
+                        <div className="absolute inset-0" style={{ backgroundColor: editingTech.darkColor }}></div>
+                      </div>
+                      <div className="flex-1 space-y-1">
+                        <span className="text-[9px] uppercase text-app-muted font-bold tracking-tighter block">Dark Theme</span>
+                        <Input value={editingTech.darkColor} onChange={e => setEditingTech({ ...editingTech, darkColor: e.target.value })} className="h-8 bg-app-bg border-app-border rounded-none text-[11px] font-mono ring-0 focus-visible:ring-0 focus-visible:border-app-accent px-2 transition-all w-full" placeholder="#HEX" />
                       </div>
                     </div>
                   </div>
@@ -198,8 +196,8 @@ export default function AdminTechnologies() {
               </div>
             </div>
 
-            <div className="flex justify-end pt-4 border-t border-app-border/30">
-              <button onClick={handleSave} className="w-fit px-12 text-app-muted border border-app-muted py-2 hover:text-app-accent hover:border-app-accent transition-all uppercase tracking-[0.2em] font-bold text-[10px] rounded-none">
+            <div className="flex justify-end pt-6 border-t border-app-border/30">
+              <button onClick={handleSave} className="w-fit px-12 h-10 text-app-muted border border-app-border hover:text-app-accent hover:border-app-accent transition-all uppercase tracking-[0.2em] font-bold text-[10px] rounded-none shadow-lg hover:shadow-app-accent/5">
                 Save
               </button>
             </div>

@@ -24,6 +24,7 @@ public static class ProfileEndpoints
             {
                 profile.Name,
                 profile.Title,
+                profile.PhotoUrl,
                 profile.Description,
                 profile.Location,
                 profile.Phone,

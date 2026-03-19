@@ -1,6 +1,7 @@
 export interface ProfileData {
   name: string;
   title: string;
+  photoUrl: string;
   description: string;
   location: string;
   phone: string;
@@ -94,4 +95,4 @@ export const deleteProject = async (id: number): Promise<void> => {
   await fetch(`/api/projects/${id}`, {
     method: "DELETE",
   });
-};
+};

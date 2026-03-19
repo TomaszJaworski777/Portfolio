@@ -10,7 +10,6 @@ import { Plus, Trash, Edit2, X } from "lucide-react";
 export default function AdminProjects() {
   const [projects, setProjects] = useState<ProjectData[]>([]);
   const [allTech, setAllTech] = useState<TechData[]>([]);
-  const [loading, setLoading] = useState(true);
   const [editingProject, setEditingProject] = useState<ProjectData | null>(null);
   const [isAdding, setIsAdding] = useState(false);
 
@@ -18,7 +17,6 @@ export default function AdminProjects() {
     Promise.all([fetchProjects(), fetchFilters()]).then(([projectsData, techData]) => {
       setProjects(projectsData);
       setAllTech(techData);
-      setLoading(false);
     });
   }, []);
 
@@ -78,8 +76,6 @@ export default function AdminProjects() {
     setEditingProject({ ...editingProject, technologies: newTechs });
   };
 
-  if (loading) return <div>Loading...</div>;
-
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-end mb-4 px-0">
@@ -102,7 +98,7 @@ export default function AdminProjects() {
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
               <div className="lg:col-span-5 space-y-6">
                 <div className="space-y-2">
-                  <Label className="text-app-muted uppercase text-[10px] font-bold">Project Thumbnail</Label>
+                  <Label className="text-app-muted uppercase text-[10px] font-bold tracking-widest block mb-1.5">Project Thumbnail</Label>
                   <div className="flex flex-col gap-4">
                     <div className="relative group w-full aspect-video border border-app-border bg-app-bg flex items-center justify-center overflow-hidden shadow-inner uppercase">
                       {editingProject.thumbnailUrl ? (
@@ -151,11 +147,11 @@ export default function AdminProjects() {
                     />
 
                     <div className="space-y-2">
-                      <Label className="text-[9px] text-app-muted uppercase tracking-tighter">Manual URL</Label>
+                      <Label className="text-[9px] text-app-muted uppercase tracking-tighter block mb-1">Manual URL</Label>
                       <Input
                         value={editingProject.thumbnailUrl}
                         onChange={e => setEditingProject({ ...editingProject, thumbnailUrl: e.target.value })}
-                        className="h-7 bg-app-bg border border-app-border text-[11px] font-mono rounded-none ring-0 focus-visible:ring-0 focus-visible:border-app-accent transition-all"
+                        className="h-7 bg-app-bg border border-app-border text-[11px] font-mono rounded-none ring-0 focus-visible:ring-0 focus-visible:border-app-accent transition-all px-2"
                         placeholder="https://example.com/image.jpg"
                       />
                     </div>
@@ -165,28 +161,28 @@ export default function AdminProjects() {
 
               <div className="lg:col-span-7 space-y-6">
                 <div className="space-y-2">
-                  <Label className="text-app-muted uppercase text-[10px] font-bold">Project Name</Label>
-                  <Input value={editingProject.name} onChange={e => setEditingProject({ ...editingProject, name: e.target.value })} className="bg-app-bg border-app-border rounded-none text-app-text-primary ring-0 focus-visible:ring-0 focus-visible:border-app-accent" />
+                  <Label className="text-app-muted uppercase text-[10px] font-bold tracking-widest block mb-1.5">Project Name</Label>
+                  <Input value={editingProject.name} onChange={e => setEditingProject({ ...editingProject, name: e.target.value })} className="h-10 bg-app-bg border-app-border rounded-none text-app-text-primary ring-0 focus-visible:ring-0 focus-visible:border-app-accent px-3 transition-all" />
                 </div>
 
                 <div className="space-y-2">
-                  <Label className="text-app-muted uppercase text-[10px] font-bold">Project Description</Label>
-                  <Textarea value={editingProject.description} onChange={e => setEditingProject({ ...editingProject, description: e.target.value })} className="bg-app-bg border-app-border min-h-[120px] rounded-none text-app-text-primary ring-0 focus-visible:ring-0 focus-visible:border-app-accent" />
+                  <Label className="text-app-muted uppercase text-[10px] font-bold tracking-widest block mb-1.5">Project Description</Label>
+                  <Textarea value={editingProject.description} onChange={e => setEditingProject({ ...editingProject, description: e.target.value })} className="bg-app-bg border-app-border min-h-[120px] rounded-none text-app-text-primary ring-0 focus-visible:ring-0 focus-visible:border-app-accent p-3 transition-all" />
                 </div>
 
                 <div className="grid grid-cols-2 gap-4">
                   <div className="space-y-2">
-                    <Label className="text-app-muted uppercase text-[10px] font-bold">GitHub Source</Label>
-                    <Input value={editingProject.githubUrl} onChange={e => setEditingProject({ ...editingProject, githubUrl: e.target.value })} className="bg-app-bg border-app-border rounded-none text-app-text-primary ring-0 focus-visible:ring-0 focus-visible:border-app-accent" placeholder="https://github.com/..." />
+                    <Label className="text-app-muted uppercase text-[10px] font-bold tracking-widest block mb-1.5">GitHub Source</Label>
+                    <Input value={editingProject.githubUrl} onChange={e => setEditingProject({ ...editingProject, githubUrl: e.target.value })} className="h-10 bg-app-bg border-app-border rounded-none text-app-text-primary ring-0 focus-visible:ring-0 focus-visible:border-app-accent px-3 transition-all" placeholder="https://github.com/..." />
                   </div>
                   <div className="space-y-2">
-                    <Label className="text-app-muted uppercase text-[10px] font-bold">Live Demo</Label>
-                    <Input value={editingProject.demoUrl} onChange={e => setEditingProject({ ...editingProject, demoUrl: e.target.value })} className="bg-app-bg border-app-border rounded-none text-app-text-primary ring-0 focus-visible:ring-0 focus-visible:border-app-accent" placeholder="https://..." />
+                    <Label className="text-app-muted uppercase text-[10px] font-bold tracking-widest block mb-1.5">Live Demo</Label>
+                    <Input value={editingProject.demoUrl} onChange={e => setEditingProject({ ...editingProject, demoUrl: e.target.value })} className="h-10 bg-app-bg border-app-border rounded-none text-app-text-primary ring-0 focus-visible:ring-0 focus-visible:border-app-accent px-3 transition-all" placeholder="https://..." />
                   </div>
                 </div>
 
                 <div className="space-y-2 pt-2">
-                  <Label className="text-app-muted uppercase text-[10px] font-bold">Assign Technologies</Label>
+                  <Label className="text-app-muted uppercase text-[10px] font-bold tracking-widest block mb-1.5">Assign Technologies</Label>
                   <div className="flex flex-wrap gap-2">
                     {allTech.map(tech => {
                       const isActive = editingProject.technologies.some(t => t.name === tech.name);
@@ -224,7 +220,7 @@ export default function AdminProjects() {
             <div className="flex justify-end pt-4 border-t border-app-border/30">
               <button
                 onClick={handleSave}
-                className="w-fit px-12 text-app-muted border border-app-muted py-2 hover:text-app-accent hover:border-app-accent transition-all uppercase tracking-[0.2em] font-bold text-[10px] rounded-none"
+                className="w-fit px-12 h-10 text-app-muted border border-app-border hover:text-app-accent hover:border-app-accent transition-all uppercase tracking-[0.2em] font-bold text-[10px] rounded-none"
               >
                 Save
               </button>
