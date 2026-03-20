@@ -176,8 +176,11 @@ export default function AdminProjects() {
                       onChange={(e) => {
                         const file = e.target.files?.[0];
                         if (file) {
-                          const localUrl = URL.createObjectURL(file);
-                          setEditingProject({ ...editingProject, thumbnailUrl: localUrl });
+                          const reader = new FileReader();
+                          reader.onloadend = () => {
+                            setEditingProject({ ...editingProject, thumbnailUrl: reader.result as string });
+                          };
+                          reader.readAsDataURL(file);
                         }
                       }}
                     />
@@ -185,8 +188,8 @@ export default function AdminProjects() {
                     <div className="space-y-2">
                       <Label className="text-[9px] text-app-muted uppercase tracking-tighter block mb-1">Manual URL</Label>
                       <Input
-                        value={editingProject.thumbnailUrl}
-                        onChange={e => setEditingProject({ ...editingProject, thumbnailUrl: e.target.value })}
+                        value={editingProject.thumbnailUrl?.startsWith('data:') ? "[Base64 Image Attached]" : editingProject.thumbnailUrl}
+                        onChange={e => { if (!e.target.value.startsWith('[Base64')) setEditingProject({ ...editingProject, thumbnailUrl: e.target.value }); }}
                         className="h-7 bg-app-bg border border-app-border text-[11px] font-mono rounded-none ring-0 focus-visible:ring-0 focus-visible:border-app-accent transition-all px-2"
                         placeholder="https://example.com/image.jpg"
                       />

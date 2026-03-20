@@ -121,8 +121,11 @@ export default function AdminTechnologies() {
                     <input id="icon-upload" type="file" accept="image/*" className="hidden" onChange={(e) => {
                       const file = e.target.files?.[0];
                       if (file) {
-                        const localUrl = URL.createObjectURL(file);
-                        setEditingTech({ ...editingTech, iconUrl: localUrl });
+                        const reader = new FileReader();
+                        reader.onloadend = () => {
+                          setEditingTech({ ...editingTech, iconUrl: reader.result as string });
+                        };
+                        reader.readAsDataURL(file);
                       }
                     }} />
                   </div>
@@ -151,8 +154,8 @@ export default function AdminTechnologies() {
                     <div className="space-y-2">
                       <Label className="text-[9px] text-app-muted uppercase tracking-tighter block mb-1">Manual Icon URL / Devicon Class</Label>
                       <Input
-                        value={editingTech.iconUrl}
-                        onChange={e => setEditingTech({ ...editingTech, iconUrl: e.target.value })}
+                        value={editingTech.iconUrl?.startsWith('data:') ? "[Base64 Image Attached]" : editingTech.iconUrl}
+                        onChange={e => { if (!e.target.value.startsWith('[Base64')) setEditingTech({ ...editingTech, iconUrl: e.target.value }); }}
                         placeholder="devicon-react-original or https://..."
                         className="h-10 bg-app-bg border-app-border rounded-none text-app-text-primary ring-0 focus-visible:ring-0 focus-visible:border-app-accent px-3 transition-all font-mono text-xs w-full"
                       />
