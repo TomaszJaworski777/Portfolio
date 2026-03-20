@@ -11,5 +11,7 @@ public class ProfileData
     public string Phone { get; set; } = string.Empty;
     public string GithubUsername { get; set; } = string.Empty;
     public string LinkedinProfile { get; set; } = string.Empty;
+    public string CvUrl { get; set; } = string.Empty;
+    public string CvName { get; set; } = string.Empty;
     public List<TechData> Technologies { get; set; } = new List<TechData>();
 }

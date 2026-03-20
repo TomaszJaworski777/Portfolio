@@ -139,7 +139,15 @@ export default function Home() {
 
           <TopBarButton devicon="devicon-github-original" size={24} className="hover:text-app-github-highlight" onClick={() => { window.open(`https://github.com/${profile?.githubUsername}`, "_blank", "noopener,noreferrer") }} />
           <TopBarButton devicon="devicon-linkedin-plain" size={24} className="hover:text-app-linkedin-highlight" onClick={() => { window.open(`https://www.linkedin.com/in/${profile?.linkedinProfile}`, "_blank", "noopener,noreferrer") }} />
-          <TopBarButton icon={FileDown} size={24} className="hover:text-app-accent" />
+          <TopBarButton icon={FileDown} size={24} className="hover:text-app-accent" onClick={() => {
+            if (!profile?.cvUrl) return;
+            const link = document.createElement("a");
+            link.href = profile.cvUrl;
+            link.download = `${profile?.name} - CV.pdf`;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+          }} />
           <ThemeToggle size={28} className="lg:ml-5" onToggle={(light) => {
             if (light) {
               document.documentElement.classList.add("light");

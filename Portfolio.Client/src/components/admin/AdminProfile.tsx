@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Plus, Trash } from "lucide-react";
+import { Plus, Trash, FileDown } from "lucide-react";
 import { fetchProfile, updateProfile, type ProfileData, type TechData, fetchTechnologies } from "../../services/api";
 import { Input } from "../ui/input";
 import { Label } from "../ui/label";
@@ -69,11 +69,13 @@ export default function AdminProfile({ onUpdate }: { onUpdate?: () => void }) {
     <Card className="bg-transparent border-none ring-0 text-app-text-primary rounded-none shadow-none px-0 pt-0 pb-4 gap-0">
       <CardContent className="space-y-8">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 items-start">
-          <div className="lg:col-span-12 xl:col-span-7 space-y-6">
+          <div className="lg:col-span-12 xl:col-span-7 space-y-8">
             <div className="space-y-4">
-              <div className="flex items-start gap-10">
-                <div className="flex flex-col gap-4 shrink-0">
-                  <div className="relative mt-3 group w-32 h-32 rounded-full border border-app-border bg-app-bg flex items-center justify-center overflow-hidden shadow-inner ring-offset-4 ring-offset-app-bg group-hover:ring-1 ring-app-accent/20 transition-all">
+              <div className="flex flex-wrap items-start gap-10">
+                {/* Photo Upload */}
+                <div className="flex flex-col gap-3 shrink-0">
+                  <Label className="text-app-muted uppercase text-[9px] tracking-[0.2em] font-bold block">Photo</Label>
+                  <div className="relative group w-32 h-32 rounded-full border border-app-border bg-app-bg flex items-center justify-center overflow-hidden shadow-inner ring-offset-4 ring-offset-app-bg group-hover:ring-1 ring-app-accent/20 transition-all">
                     {profile?.photoUrl ? (
                       <>
                         <img src={profile.photoUrl} className="w-full h-full object-cover transition-transform group-hover:scale-105" />
@@ -100,22 +102,72 @@ export default function AdminProfile({ onUpdate }: { onUpdate?: () => void }) {
                         className="flex flex-col items-center gap-2 text-app-muted hover:text-app-accent transition-all group-hover:scale-110"
                       >
                         <Plus size={32} strokeWidth={1} />
-                        <span className="text-[10px] uppercase tracking-widest font-bold text-center">Upload Photo</span>
+                        <span className="text-[10px] uppercase tracking-widest font-bold text-center">Upload</span>
                       </button>
                     )}
                   </div>
                   <input id="photo-upload" type="file" accept="image/*" className="hidden" onChange={(e) => {
                     const file = e.target.files?.[0];
                     if (file) {
-                      const localUrl = URL.createObjectURL(file);
-                      if (profile) {
-                        setProfile({ ...profile, photoUrl: localUrl });
-                      }
+                      const reader = new FileReader();
+                      reader.onloadend = () => {
+                        if (profile) setProfile({ ...profile, photoUrl: reader.result as string });
+                      };
+                      reader.readAsDataURL(file);
                     }
                   }} />
                 </div>
 
-                <div className="flex-1 space-y-4">
+                {/* CV Upload */}
+                <div className="flex flex-col gap-3 shrink-0">
+                  <Label className="text-app-muted uppercase text-[9px] tracking-[0.2em] font-bold block">CV (PDF)</Label>
+                  <div className="relative group w-32 h-32 border border-app-border bg-app-bg flex flex-col items-center justify-center overflow-hidden shadow-inner transition-all hover:border-app-accent/50">
+                    {profile?.cvUrl?.startsWith('data:application/pdf') || profile?.cvUrl?.toLowerCase().endsWith('.pdf') ? (
+                      <div className="flex flex-col items-center gap-2 px-2 text-center">
+                        <FileDown size={32} className="text-app-accent" />
+                        <span className="text-[9px] uppercase tracking-widest font-bold text-app-muted truncate max-w-full">
+                          {profile.cvName || "CV Attached"}
+                        </span>
+                        <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-3">
+                          <button
+                            onClick={() => document.getElementById('cv-upload')?.click()}
+                            className="p-2 bg-app-accent/20 border border-app-accent text-app-accent hover:bg-app-accent/30 transition-all rounded-none"
+                            title="Replace CV"
+                          >
+                            <Plus size={18} strokeWidth={2} />
+                          </button>
+                          <button
+                            onClick={() => setProfile({ ...profile, cvUrl: "", cvName: "" })}
+                            className="p-2 bg-red-500/10 border border-red-500 text-red-500 hover:bg-red-500/20 transition-all rounded-none"
+                            title="Remove CV"
+                          >
+                            <Trash size={18} strokeWidth={2} />
+                          </button>
+                        </div>
+                      </div>
+                    ) : (
+                      <button
+                        onClick={() => document.getElementById('cv-upload')?.click()}
+                        className="flex flex-col items-center gap-2 text-app-muted hover:text-app-accent transition-all group-hover:scale-110"
+                      >
+                        <Plus size={28} strokeWidth={1} />
+                        <span className="text-[9px] uppercase tracking-widest font-bold text-center px-2">Upload</span>
+                      </button>
+                    )}
+                  </div>
+                  <input id="cv-upload" type="file" accept="application/pdf" className="hidden" onChange={(e) => {
+                    const file = e.target.files?.[0];
+                    if (file) {
+                      const reader = new FileReader();
+                      reader.onloadend = () => {
+                        if (profile) setProfile({ ...profile, cvUrl: reader.result as string, cvName: file.name });
+                      };
+                      reader.readAsDataURL(file);
+                    }
+                  }} />
+                </div>
+
+                <div className="flex-1 space-y-5 min-w-[300px]">
                   <div className="space-y-2">
                     <Label htmlFor="name" className="text-app-muted uppercase text-[10px] tracking-widest font-bold block mb-1.5">Full Name</Label>
                     <Input id="name" name="name" value={profile?.name} onChange={handleChange} className="bg-app-bg border-app-border rounded-none text-app-text-primary ring-0 focus-visible:ring-0 focus-visible:border-app-accent h-10 px-3 transition-all" />
@@ -132,8 +184,8 @@ export default function AdminProfile({ onUpdate }: { onUpdate?: () => void }) {
               <Label className="text-[9px] text-app-muted uppercase tracking-tighter block mb-1">Manual Photo URL</Label>
               <Input
                 name="photoUrl"
-                value={profile?.photoUrl}
-                onChange={handleChange}
+                value={profile?.photoUrl?.startsWith('data:') ? "[Base64 Image Attached]" : profile?.photoUrl}
+                onChange={(e) => { if (!e.target.value.startsWith('[Base64')) handleChange(e); }}
                 className="h-7 bg-app-bg border border-app-border text-[11px] font-mono rounded-none ring-0 focus-visible:ring-0 focus-visible:border-app-accent transition-all max-w-lg px-2"
                 placeholder="https://example.com/photo.jpg"
               />
@@ -165,6 +217,7 @@ export default function AdminProfile({ onUpdate }: { onUpdate?: () => void }) {
                 <Input id="linkedinProfile" name="linkedinProfile" value={profile?.linkedinProfile} onChange={handleChange} className="bg-app-bg border-app-border rounded-none text-app-text-primary ring-0 focus-visible:ring-0 focus-visible:border-app-accent h-10 px-3 transition-all" placeholder="profile-slug" />
               </div>
             </div>
+
           </div>
 
           <div className="lg:col-span-12 xl:col-span-5 space-y-8">

@@ -1,7 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Portfolio.Server.Data;
 using Portfolio.Server.Models;
-using System.Linq;
 
 namespace Portfolio.Server.Endpoints;
 
@@ -32,6 +31,8 @@ public static class ProfileEndpoints
                 profile.Phone,
                 profile.GithubUsername,
                 profile.LinkedinProfile,
+                profile.CvUrl,
+                profile.CvName,
                 Languages = profile.Technologies.Where(t => t.Category == "language"),
                 Frameworks = profile.Technologies.Where(t => t.Category == "framework"),
                 Tools = profile.Technologies.Where(t => t.Category == "ides & tools"),
@@ -60,6 +61,8 @@ public static class ProfileEndpoints
             profile.Phone = dto.Phone;
             profile.GithubUsername = dto.GithubUsername;
             profile.LinkedinProfile = dto.LinkedinProfile;
+            profile.CvUrl = dto.CvUrl ?? string.Empty;
+            profile.CvName = dto.CvName ?? string.Empty;
 
             var allSelectedNames = (dto.Languages ?? new())
                 .Concat(dto.Frameworks ?? new())
@@ -91,6 +94,8 @@ record ProfileUpdateDto(
     string Phone,
     string GithubUsername,
     string LinkedinProfile,
+    string? CvUrl,
+    string? CvName,
     List<TechData> Languages,
     List<TechData> Frameworks,
     List<TechData> Tools,

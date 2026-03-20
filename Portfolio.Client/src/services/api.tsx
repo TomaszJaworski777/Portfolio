@@ -7,6 +7,8 @@ export interface ProfileData {
   phone: string;
   githubUsername: string;
   linkedinProfile: string;
+  cvUrl?: string;
+  cvName?: string;
   languages: TechData[];
   frameworks: TechData[];
   tools: TechData[];
