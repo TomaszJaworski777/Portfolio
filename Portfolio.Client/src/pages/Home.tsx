@@ -219,6 +219,8 @@ export default function Home() {
                       title={project.name}
                       description={project.description}
                       thumbnailUrl={project.thumbnailUrl}
+                      githubUrl={project.githubUrl}
+                      demoUrl={project.demoUrl}
                       technologies={project.technologies}
                       isLight={isLight}
                     />

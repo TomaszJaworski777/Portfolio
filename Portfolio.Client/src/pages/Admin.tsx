@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Routes, Route, Link, useLocation } from "react-router-dom";
-import { User, Briefcase, Cpu, Home, LogOut } from "lucide-react";
+import { User, Briefcase, Cpu, Home } from "lucide-react";
 import AdminProfile from "../components/admin/AdminProfile";
 import AdminProjects from "../components/admin/AdminProjects";
 import AdminTechnologies from "../components/admin/AdminTechnologies";
@@ -71,13 +71,6 @@ export default function Admin() {
               <Home size={16} strokeWidth={1.5} />
               Back to Site
             </Link>
-            <button
-              onClick={() => alert("Logout clicked")}
-              className="w-full flex items-center gap-3 px-4 py-2 text-app-muted hover:text-red-500 transition-all uppercase text-[11px] font-bold tracking-[0.2em] rounded-none"
-            >
-              <LogOut size={16} strokeWidth={1.5} />
-              Logout
-            </button>
           </div>
         </div>
       </aside>
