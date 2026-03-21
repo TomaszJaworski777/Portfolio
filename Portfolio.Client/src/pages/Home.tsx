@@ -90,9 +90,9 @@ export default function Home() {
               <X size={20} />
             </button>
             <div className="border-b border-app-border pb-6 animate-fade-in-up">
-              <img src={profile?.photoUrl} className="rounded-full bg-app-bg w-50 h-50 border-2 m-auto border-app-border object-cover" alt="Profile" />
-              <p className="w-full uppercase mt-4 text-app-text-primary text-center tracking-wider font-bold">{profile?.name}</p>
-              <p className="w-full uppercase mt-1 text-app-accent text-[12px] text-center font-bold">{profile?.title}</p>
+              <img src={profile?.photoUrl} className="rounded-full bg-app-bg w-50 h-50 border-2 m-auto border-app-border object-cover" title={`${profile?.name} - ${profile?.title}`} />
+              <h1 className="w-full uppercase mt-4 text-app-text-primary text-center tracking-wider font-bold">{profile?.name}</h1>
+              <h2 className="w-full uppercase mt-1 text-app-accent text-[12px] text-center font-bold">{profile?.title}</h2>
               <div className="whitespace-pre-line text-sm leading-relaxed text-center mt-5 text-app-muted">
                 {profile?.description}
               </div>
@@ -102,23 +102,23 @@ export default function Home() {
               <p className="w-full mt-2 text-app-text-primary text-[14px] ml-5"><Phone size={16} className="inline mr-2 text-app-accent" />{profile?.phone}</p>
             </div>
             <div>
-              <p className="w-full uppercase mt-5 tracking-wider ml-3 text-[10px] text-app-accent animate-fade-in-left delay-50"><b>languages</b></p>
+              <h3 className="w-full uppercase mt-5 tracking-wider ml-3 text-[10px] text-app-accent animate-fade-in-left delay-50"><b>languages</b></h3>
               <div className="w-full grid grid-cols-8 gap-2 pl-3 pr-3 mt-2">
                 {profile?.languages?.map((tech, i) => <div key={tech.name} className="animate-fade-in-left" style={{ animationDelay: `${50 + (i * 30)}ms` }}><TechIcon name={tech.name} iconUrl={tech.iconUrl} color={isLight ? tech.lightColor : tech.darkColor} /></div>)}
               </div>
-              <p className="w-full uppercase mt-6 tracking-wider ml-3 text-[10px] text-app-accent animate-fade-in-left delay-100"><b>frameworks</b></p>
+              <h3 className="w-full uppercase mt-6 tracking-wider ml-3 text-[10px] text-app-accent animate-fade-in-left delay-100"><b>frameworks</b></h3>
               <div className="w-full grid grid-cols-8 gap-2 pl-3 pr-3 mt-2">
                 {profile?.frameworks?.map((tech, i) => <div key={tech.name} className="animate-fade-in-left" style={{ animationDelay: `${100 + (i * 30)}ms` }}><TechIcon name={tech.name} iconUrl={tech.iconUrl} color={isLight ? tech.lightColor : tech.darkColor} /></div>)}
               </div>
-              <p className="w-full uppercase mt-6 tracking-wider ml-3 text-[10px] text-app-accent animate-fade-in-left delay-150"><b>ides & tools</b></p>
+              <h3 className="w-full uppercase mt-6 tracking-wider ml-3 text-[10px] text-app-accent animate-fade-in-left delay-150"><b>ides & tools</b></h3>
               <div className="w-full grid grid-cols-8 gap-2 pl-3 pr-3 mt-2">
                 {profile?.tools?.map((tech, i) => <div key={tech.name} className="animate-fade-in-left" style={{ animationDelay: `${150 + (i * 30)}ms` }}><TechIcon name={tech.name} iconUrl={tech.iconUrl} color={isLight ? tech.lightColor : tech.darkColor} /></div>)}
               </div>
-              <p className="w-full uppercase mt-6 tracking-wider ml-3 text-[10px] text-app-accent animate-fade-in-left delay-200"><b>databases</b></p>
+              <h3 className="w-full uppercase mt-6 tracking-wider ml-3 text-[10px] text-app-accent animate-fade-in-left delay-200"><b>databases</b></h3>
               <div className="w-full grid grid-cols-8 gap-2 pl-3 pr-3 mt-2">
                 {profile?.databases?.map((tech, i) => <div key={tech.name} className="animate-fade-in-left" style={{ animationDelay: `${200 + (i * 30)}ms` }}><TechIcon name={tech.name} iconUrl={tech.iconUrl} color={isLight ? tech.lightColor : tech.darkColor} /></div>)}
               </div>
-              <p className="w-full uppercase mt-6 tracking-wider ml-3 text-[10px] text-app-accent animate-fade-in-left delay-250"><b>devops</b></p>
+              <h3 className="w-full uppercase mt-6 tracking-wider ml-3 text-[10px] text-app-accent animate-fade-in-left delay-250"><b>devops</b></h3>
               <div className="w-full grid grid-cols-8 gap-2 pl-3 pr-3 mt-2">
                 {profile?.devOps?.map((tech, i) => <div key={tech.name} className="animate-fade-in-left" style={{ animationDelay: `${250 + (i * 30)}ms` }}><TechIcon name={tech.name} iconUrl={tech.iconUrl} color={isLight ? tech.lightColor : tech.darkColor} /></div>)}
               </div>
@@ -160,7 +160,7 @@ export default function Home() {
         </header>
 
         <section className="w-full px-10 lg:px-15 py-6 flex flex-col justify-center shrink-0 bg-app-bg sticky top-0 z-10">
-          <p className="uppercase text-[10px] tracking-wider mb-1.5 text-app-accent font-bold">filter</p>
+          <h2 className="uppercase text-[10px] tracking-wider mb-1.5 text-app-accent font-bold">filter</h2>
           <div className="relative group mb-3">
             <div className="absolute left-3 top-1/2 -translate-y-1/2 text-app-accent font-mono text-xs opacity-50 group-focus-within:opacity-100">
               &gt;
@@ -189,7 +189,7 @@ export default function Home() {
         </section>
 
         <main className="flex-1 overflow-y-auto px-6 lg:px-10 pb-0 w-full mask-[linear-gradient(to_bottom,transparent,black_25px)] custom-scrollbar scrollbar-gutter-stable">
-          <div className="w-full py-5 px-6">
+          <section className="w-full py-5 px-6">
             <motion.div layout className="grid gap-6 grid-cols-[repeat(auto-fill,minmax(350px,1fr))] w-full">
               <AnimatePresence mode="popLayout">
                 {isLoaded && filteredProjects.map((project, i) => (
@@ -228,7 +228,7 @@ export default function Home() {
                 ))}
               </AnimatePresence>
             </motion.div>
-          </div>
+          </section>
 
           <footer className="h-20 flex items-center justify-between shrink-0 mt-10 mb-5 border border-app-border">
             <p className="text-[10px] uppercase tracking-widest text-white/20 px-6">Footer Container</p>

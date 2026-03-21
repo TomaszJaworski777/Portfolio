@@ -237,10 +237,10 @@ export default function AdminTechnologies() {
                 </div>
               </TableCell>
               <TableCell className="text-right space-x-2 pr-4 py-1">
-                <button onClick={() => handleEdit(tech)} className="text-app-muted border border-app-muted p-1.5 hover:text-app-accent hover:border-app-accent transition-all rounded-none">
+                <button onClick={() => handleEdit(tech)} className="text-app-muted border border-app-border p-1.5 hover:text-app-accent hover:border-app-accent transition-all rounded-none">
                   <Edit2 className="h-4 w-4" strokeWidth={1.5} />
                 </button>
-                <button onClick={() => handleDelete(tech.name, tech.id)} className="text-app-muted border border-app-muted p-1.5 hover:text-red-500 hover:border-red-500 transition-all rounded-none">
+                <button onClick={() => handleDelete(tech.name, tech.id)} className="text-app-muted border border-app-border p-1.5 hover:text-red-500 hover:border-red-500 transition-all rounded-none">
                   <Trash className="h-4 w-4" strokeWidth={1.5} />
                 </button>
               </TableCell>

@@ -19,7 +19,7 @@ export function ProjectCard({ title, description, thumbnailUrl, githubUrl, demoU
             <div className="bg-app-sidebar w-full h-45 flex items-center justify-center overflow-hidden">
                 {thumbnailUrl && <img src={thumbnailUrl} alt={title} className="w-full h-full object-contain" />}
             </div>
-            <p className="text-app-text-primary font-bold uppercase mt-2 text-[21px] tracking-wider">{title}</p>
+            <h3 className="text-app-text-primary font-bold uppercase mt-2 text-[21px] tracking-wider">{title}</h3>
             <div className="whitespace-pre-line text-sm leading-relaxed mt-1 text-app-muted h-17">{description}</div>
             <p className="uppercase text-[10px] tracking-wider text-app-accent font-bold mt-2">tech stack</p>
             <div className="w-full grid gap-1.5 mt-1 grid-cols-[repeat(auto-fill,24px)]">
