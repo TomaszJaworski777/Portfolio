@@ -36,13 +36,32 @@ export interface TechData {
   darkColor: string;
 }
 
+import { getAuthToken, clearAuthToken } from "./auth";
+
+const fetchWithAuth = async (input: RequestInfo | URL, init?: RequestInit) => {
+  const token = getAuthToken();
+  const headers = new Headers(init?.headers);
+  if (token) {
+    headers.set("Authorization", `Bearer ${token}`);
+  }
+
+  const response = await fetch(input, { ...init, headers });
+
+  if (response.status === 401 || response.status === 403) {
+    clearAuthToken();
+    window.location.href = "/admin/login";
+  }
+
+  return response;
+};
+
 export const fetchProfile = async (): Promise<ProfileData> => {
-  const response = await fetch(`/api/profile`);
+  const response = await fetchWithAuth(`/api/profile`);
   return response.json();
 };
 
 export const updateProfile = async (profile: ProfileData): Promise<void> => {
-  await fetch(`/api/profile`, {
+  await fetchWithAuth(`/api/profile`, {
     method: "PUT",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(profile),
@@ -50,17 +69,17 @@ export const updateProfile = async (profile: ProfileData): Promise<void> => {
 };
 
 export const fetchFilters = async (): Promise<TechData[]> => {
-  const response = await fetch(`/api/filters`);
+  const response = await fetchWithAuth(`/api/filters`);
   return response.json();
 };
 
 export const fetchTechnologies = async (): Promise<TechData[]> => {
-  const response = await fetch(`/api/technologies`);
+  const response = await fetchWithAuth(`/api/technologies`);
   return response.json();
 };
 
 export const addTechnology = async (tech: TechData): Promise<void> => {
-  await fetch(`/api/technologies`, {
+  await fetchWithAuth(`/api/technologies`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(tech),
@@ -68,7 +87,7 @@ export const addTechnology = async (tech: TechData): Promise<void> => {
 };
 
 export const updateTechnology = async (id: number, tech: TechData): Promise<void> => {
-  await fetch(`/api/technologies/${id}`, {
+  await fetchWithAuth(`/api/technologies/${id}`, {
     method: "PUT",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(tech),
@@ -76,18 +95,18 @@ export const updateTechnology = async (id: number, tech: TechData): Promise<void
 };
 
 export const deleteTechnology = async (id: number): Promise<void> => {
-  await fetch(`/api/technologies/${id}`, {
+  await fetchWithAuth(`/api/technologies/${id}`, {
     method: "DELETE",
   });
 };
 
 export const fetchProjects = async (): Promise<ProjectData[]> => {
-  const response = await fetch(`/api/projects`);
+  const response = await fetchWithAuth(`/api/projects`);
   return response.json();
 };
 
 export const addProject = async (project: ProjectData): Promise<void> => {
-  await fetch(`/api/projects`, {
+  await fetchWithAuth(`/api/projects`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(project),
@@ -95,7 +114,7 @@ export const addProject = async (project: ProjectData): Promise<void> => {
 };
 
 export const updateProject = async (id: number, project: ProjectData): Promise<void> => {
-  await fetch(`/api/projects/${id}`, {
+  await fetchWithAuth(`/api/projects/${id}`, {
     method: "PUT",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(project),
@@ -103,7 +122,7 @@ export const updateProject = async (id: number, project: ProjectData): Promise<v
 };
 
 export const deleteProject = async (id: number): Promise<void> => {
-  await fetch(`/api/projects/${id}`, {
+  await fetchWithAuth(`/api/projects/${id}`, {
     method: "DELETE",
   });
 };

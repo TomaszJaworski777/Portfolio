@@ -68,4 +68,6 @@ public class DatabaseContext : DbContext
     public DbSet<ProjectData> Projects { get; set; }
     public DbSet<TechData> Technologies { get; set; }
     public DbSet<TechCategoryData> TechCategories { get; set; }
+    public DbSet<AdminPassword> AdminPasswords { get; set; }
+    public DbSet<AuthToken> AuthTokens { get; set; }
 }
