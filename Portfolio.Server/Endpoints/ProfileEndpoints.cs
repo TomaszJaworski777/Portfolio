@@ -78,7 +78,7 @@ public static class ProfileEndpoints
                 .ToListAsync();
 
             await context.SaveChangesAsync();
-
+            return Results.NoContent();
         })
         .WithName("UpdateProfile")
         .AddEndpointFilter<AuthFilter>();

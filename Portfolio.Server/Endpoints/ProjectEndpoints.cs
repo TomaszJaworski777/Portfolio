@@ -98,6 +98,9 @@ public static class ProjectEndpoints
                 return Results.NotFound();
             }
 
+            var analyticsToRemove = await context.AnalyticsEvents.Where(a => a.ProjectId == id).ToListAsync();
+            context.AnalyticsEvents.RemoveRange(analyticsToRemove);
+
             context.Projects.Remove(project);
             await context.SaveChangesAsync();
 

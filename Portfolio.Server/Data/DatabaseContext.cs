@@ -70,4 +70,5 @@ public class DatabaseContext : DbContext
     public DbSet<TechCategoryData> TechCategories { get; set; }
     public DbSet<AdminPassword> AdminPasswords { get; set; }
     public DbSet<AuthToken> AuthTokens { get; set; }
+    public DbSet<AnalyticsEvent> AnalyticsEvents { get; set; }
 }

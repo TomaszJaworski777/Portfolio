@@ -41,5 +41,6 @@ app.MapProjectEndpoints();
 app.MapTechnologiesEndpoints();
 app.MapFilterEndpoints();
 app.MapAuthEndpoints();
+app.MapAnalyticsEndpoints();
 
 app.Run();
