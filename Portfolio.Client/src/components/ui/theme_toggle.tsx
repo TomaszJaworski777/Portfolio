@@ -21,6 +21,6 @@ export function ThemeToggle({ size = 28, defaultLight = false, className = "", o
   }, [isLight, onToggle]);
 
   return (
-    <TopBarButton icon={isLight ? Moon : Sun} size={size} onClick={() => setIsLight(!isLight)} className={`hover:text-app-theme-toggle ${className}`} />
+    <TopBarButton title={isLight ? "Dark Mode" : "Light Mode"} icon={isLight ? Moon : Sun} size={size} onClick={() => setIsLight(!isLight)} className={`hover:text-app-theme-toggle ${className}`} />
   );
 }

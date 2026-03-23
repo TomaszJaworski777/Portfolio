@@ -129,7 +129,7 @@ export default function Home() {
       </aside>
 
       <div className="flex flex-col flex-1 min-w-0">
-        <header className="h-16 flex items-center justify-between lg:justify-end px-4 lg:px-10 shrink-0">
+        <header className="h-16 flex items-center justify-between lg:justify-end px-4 lg:px-10 shrink-0 relative z-50">
           <button
             onClick={() => setIsSidebarOpen(true)}
             className="lg:hidden p-2 bg-app-surface text-app-text-primary hover:text-app-accent"
@@ -137,9 +137,9 @@ export default function Home() {
             <UserRound size={26} />
           </button>
 
-          <TopBarButton devicon="devicon-github-original" size={24} className="hover:text-app-github-highlight" onClick={() => { window.open(`https://github.com/${profile?.githubUsername}`, "_blank", "noopener,noreferrer") }} />
-          <TopBarButton devicon="devicon-linkedin-plain" size={24} className="hover:text-app-linkedin-highlight" onClick={() => { window.open(`https://www.linkedin.com/in/${profile?.linkedinProfile}`, "_blank", "noopener,noreferrer") }} />
-          <TopBarButton icon={FileDown} size={24} className="hover:text-app-accent" onClick={() => {
+          <TopBarButton title="GitHub" devicon="devicon-github-original" size={24} className="hover:text-app-github-highlight" onClick={() => { window.open(`https://github.com/${profile?.githubUsername}`, "_blank", "noopener,noreferrer") }} />
+          <TopBarButton title="LinkedIn" devicon="devicon-linkedin-plain" size={24} className="hover:text-app-linkedin-highlight" onClick={() => { window.open(`https://www.linkedin.com/in/${profile?.linkedinProfile}`, "_blank", "noopener,noreferrer") }} />
+          <TopBarButton title="Download CV" icon={FileDown} size={24} className="hover:text-app-accent" onClick={() => {
             if (!profile?.cvUrl) return;
             const link = document.createElement("a");
             link.href = profile.cvUrl;
