@@ -36,7 +36,8 @@ public static class TechnologiesEndpoints
 
             return Results.Created($"/api/technologies/{tech.Id}", tech);
         })
-        .WithName("CreateTechnology");
+        .WithName("CreateTechnology")
+        .AddEndpointFilter<AuthFilter>();
 
         group.MapPut("/{id}", async (int id, TechData dto, DatabaseContext context) =>
         {
@@ -59,7 +60,8 @@ public static class TechnologiesEndpoints
 
             return Results.NoContent();
         })
-        .WithName("UpdateTechnology");
+        .WithName("UpdateTechnology")
+        .AddEndpointFilter<AuthFilter>();
 
         group.MapDelete("/{id}", async (int id, DatabaseContext context) =>
         {
@@ -77,7 +79,8 @@ public static class TechnologiesEndpoints
 
             return Results.NoContent();
         })
-        .WithName("DeleteTechnology");
+        .WithName("DeleteTechnology")
+        .AddEndpointFilter<AuthFilter>();
     }
 }
 

@@ -49,7 +49,8 @@ public static class AuthEndpoints
                 return Results.Ok();
             }
             return Results.NotFound();
-        });
+        })
+        .AddEndpointFilter<AuthFilter>();
     }
 
     private static string ComputeSha256Hash(string rawData)

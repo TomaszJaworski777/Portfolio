@@ -54,7 +54,9 @@ public static class ProjectEndpoints
             await context.SaveChangesAsync();
 
             return Results.Created($"/api/project/{project.Id}", project);
-        }).WithName("AddProject");
+        })
+        .WithName("AddProject")
+        .AddEndpointFilter<AuthFilter>();
 
         group.MapPut("/{id}", async (int id, ProjectData dto, DatabaseContext context) =>
         {
@@ -81,7 +83,9 @@ public static class ProjectEndpoints
             await context.SaveChangesAsync();
 
             return Results.NoContent();
-        }).WithName("UpdateProject");
+        })
+        .WithName("UpdateProject")
+        .AddEndpointFilter<AuthFilter>();
 
         group.MapDelete("/{id}", async (int id, DatabaseContext context) =>
         {
@@ -98,6 +102,8 @@ public static class ProjectEndpoints
             await context.SaveChangesAsync();
 
             return Results.NoContent();
-        }).WithName("DeleteProject");
+        })
+        .WithName("DeleteProject")
+        .AddEndpointFilter<AuthFilter>();
     }
 }

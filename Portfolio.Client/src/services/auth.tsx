@@ -1,11 +1,7 @@
-// src/services/auth.ts
-
 const TOKEN_KEY = "admin_auth_token";
 
 export const setAuthToken = (token: string, expiresAt: string) => {
-  // Convert expiration date from server to Date object
   const expirationDate = new Date(expiresAt);
-  // Set cookie with expiration date and strict path for security
   document.cookie = `${TOKEN_KEY}=${token}; expires=${expirationDate.toUTCString()}; path=/`;
 };
 
@@ -16,7 +12,7 @@ export const getAuthToken = (): string | null => {
 };
 
 export const clearAuthToken = () => {
-  document.cookie = `${TOKEN_KEY}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
+  document.cookie = `${TOKEN_KEY}=; Max-Age=0; path=/;`;
 };
 
 export const login = async (password: string): Promise<{ token: string; expiresAt: string } | null> => {
@@ -31,8 +27,7 @@ export const login = async (password: string): Promise<{ token: string; expiresA
       return null;
     }
 
-    const data = await response.json();
-    return data;
+    return await response.json();
   } catch (err) {
     console.error("Login failed:", err);
     return null;

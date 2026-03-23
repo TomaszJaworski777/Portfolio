@@ -45,7 +45,26 @@ const fetchWithAuth = async (input: RequestInfo | URL, init?: RequestInit) => {
     headers.set("Authorization", `Bearer ${token}`);
   }
 
-  const response = await fetch(input, { ...init, headers });
+  let body = init?.body;
+  const method = init?.method?.toUpperCase() || "GET";
+
+  if (token && ["POST", "PUT", "PATCH", "DELETE"].includes(method)) {
+    if (!headers.has("Content-Type")) {
+      headers.set("Content-Type", "application/json");
+    }
+
+    if (headers.get("Content-Type")?.includes("application/json")) {
+      try {
+        const parsedBody = body && typeof body === "string" ? JSON.parse(body) : {};
+        if (typeof parsedBody === "object" && parsedBody !== null) {
+          parsedBody.token = token;
+          body = JSON.stringify(parsedBody);
+        }
+      } catch (e) { }
+    }
+  }
+
+  const response = await fetch(input, { ...init, headers, body });
 
   if (response.status === 401 || response.status === 403) {
     clearAuthToken();
