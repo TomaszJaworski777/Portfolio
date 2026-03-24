@@ -45,6 +45,18 @@ public static class AnalyticsEndpoints
         })
         .WithName("RecordSiteVisit");
 
+        group.MapGet("/visits", async (DatabaseContext context) =>
+        {
+            var uniqueVisits = await context.AnalyticsEvents
+                .Where(a => a.EventType == "SiteVisit")
+                .Select(a => a.HashedIp)
+                .Distinct()
+                .CountAsync();
+
+            return Results.Ok(new { count = uniqueVisits });
+        })
+        .WithName("GetTotalVisits");
+
         group.MapPost("/project/{id}/click", async (int id, ProjectClickDto dto, HttpContext httpContext, DatabaseContext context) =>
         {
             var ip = httpContext.Connection.RemoteIpAddress?.ToString() ?? "unknown";

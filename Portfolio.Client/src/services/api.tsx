@@ -159,3 +159,14 @@ export const recordProjectClick = async (id: number, type: "demo" | "github"): P
     body: JSON.stringify({ type }),
   });
 };
+
+export const fetchTotalVisits = async (): Promise<number> => {
+  try {
+    const response = await fetch('/api/analytics/visits');
+    if (!response.ok) return 0;
+    const data = await response.json();
+    return data.count || 0;
+  } catch {
+    return 0;
+  }
+};

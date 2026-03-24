@@ -7,7 +7,7 @@ import { ProjectCard } from "../components/ui/project_card";
 import { FilterButton } from "../components/ui/filter_button";
 import { TechIcon } from "../components/ui/tech_icon";
 import type { ProfileData, TechData, ProjectData } from "../services/api";
-import { fetchProfile, fetchFilters, fetchProjects, recordSiteVisit } from "../services/api";
+import { fetchProfile, fetchFilters, fetchProjects, recordSiteVisit, fetchTotalVisits } from "../services/api";
 import { motion, AnimatePresence } from "framer-motion";
 
 export default function Home() {
@@ -17,6 +17,7 @@ export default function Home() {
   const [profile, setProfile] = useState<ProfileData | null>(null);
   const [filters, setFilters] = useState<TechData[]>([]);
   const [projects, setProjects] = useState<ProjectData[]>([]);
+  const [totalVisits, setTotalVisits] = useState<number>(0);
   const [isLoaded, setIsLoaded] = useState(false);
 
   const [activeFilters, setActiveFilters] = useState<string[]>([]);
@@ -28,15 +29,17 @@ export default function Home() {
       try {
         recordSiteVisit();
 
-        const [profileData, filtersData, projectsData] = await Promise.all([
+        const [profileData, filtersData, projectsData, totalVisitsData] = await Promise.all([
           fetchProfile(),
           fetchFilters(),
-          fetchProjects()
+          fetchProjects(),
+          fetchTotalVisits()
         ]);
 
         setProfile(profileData);
         setFilters(filtersData);
         setProjects(projectsData);
+        setTotalVisits(totalVisitsData);
         setIsLoaded(true);
       } catch (err) {
         console.error(err);
@@ -232,8 +235,13 @@ export default function Home() {
             </motion.div>
           </section>
 
-          <footer className="h-20 flex items-center justify-between shrink-0 mt-10 mb-5 border border-app-border">
-            <p className="text-[10px] uppercase tracking-widest text-white/20 px-6">Footer Container</p>
+          <footer className="flex flex-col items-start justify-center shrink-0 mt-10 mb-5 px-6 gap-2">
+            <p className="text-[10px] uppercase tracking-widest text-app-muted opacity-60">
+              Visits: <span className="text-app-accent font-mono">{totalVisits}</span>
+            </p>
+            <p className="text-[10px] uppercase tracking-widest text-app-muted opacity-60">
+              © {new Date().getFullYear()} Tomasz Jaworski
+            </p>
           </footer>
         </main>
       </div>
