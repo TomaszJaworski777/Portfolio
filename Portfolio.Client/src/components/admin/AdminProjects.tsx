@@ -258,6 +258,8 @@ export default function AdminProjects() {
           <TableRow className="border-app-border hover:bg-transparent">
             <TableHead className="text-app-muted uppercase text-[10px] tracking-widest pl-4 font-bold w-12">Order</TableHead>
             <TableHead className="text-app-muted uppercase text-[10px] tracking-widest font-bold">Project</TableHead>
+            <TableHead className="text-app-muted uppercase text-[10px] tracking-widest font-bold">Demo Views</TableHead>
+            <TableHead className="text-app-muted uppercase text-[10px] tracking-widest font-bold">GitHub Views</TableHead>
             <TableHead className="text-app-muted uppercase text-[10px] tracking-widest font-bold">Technologies</TableHead>
             <TableHead className="text-right text-app-muted uppercase text-[10px] tracking-widest pr-4 font-bold">Actions</TableHead>
           </TableRow>
@@ -284,6 +286,8 @@ export default function AdminProjects() {
                 </div>
               </TableCell>
               <TableCell className="font-medium py-1.5">{project.name}</TableCell>
+              <TableCell className="py-1.5 text-app-text-primary">{project.uniqueDemoVisits ?? 0}</TableCell>
+              <TableCell className="py-1.5 text-app-text-primary">{project.uniqueGithubVisits ?? 0}</TableCell>
               <TableCell className="py-1.5">
                 <div className="grid gap-1.5 grid-cols-[repeat(auto-fill,20px)]">
                   {project.technologies.map(t => (

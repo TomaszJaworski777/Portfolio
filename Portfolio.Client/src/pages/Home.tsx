@@ -7,7 +7,7 @@ import { ProjectCard } from "../components/ui/project_card";
 import { FilterButton } from "../components/ui/filter_button";
 import { TechIcon } from "../components/ui/tech_icon";
 import type { ProfileData, TechData, ProjectData } from "../services/api";
-import { fetchProfile, fetchFilters, fetchProjects } from "../services/api";
+import { fetchProfile, fetchFilters, fetchProjects, recordSiteVisit } from "../services/api";
 import { motion, AnimatePresence } from "framer-motion";
 
 export default function Home() {
@@ -26,6 +26,8 @@ export default function Home() {
   useEffect(() => {
     const loadAllData = async () => {
       try {
+        recordSiteVisit();
+
         const [profileData, filtersData, projectsData] = await Promise.all([
           fetchProfile(),
           fetchFilters(),

@@ -1,6 +1,7 @@
 import { SquareArrowRightEnter } from "lucide-react";
 import { TechIcon } from "./tech_icon";
 import type { TechData } from "../../services/api";
+import { recordProjectClick } from "../../services/api";
 
 interface ProjectCardProps {
     id: number;
@@ -13,7 +14,7 @@ interface ProjectCardProps {
     isLight: boolean;
 }
 
-export function ProjectCard({ title, description, thumbnailUrl, githubUrl, demoUrl, technologies, isLight }: ProjectCardProps) {
+export function ProjectCard({ id, title, description, thumbnailUrl, githubUrl, demoUrl, technologies, isLight }: ProjectCardProps) {
     return (
         <div className="group relative bg-app-sidebar border border-app-border p-3 h-100">
             <div className="bg-app-sidebar w-full h-45 flex items-center justify-center overflow-hidden">
@@ -29,12 +30,12 @@ export function ProjectCard({ title, description, thumbnailUrl, githubUrl, demoU
             </div>
             <div className="absolute bottom-2 right-2 flex h-7.25">
                 {demoUrl && (
-                    <button onClick={() => window.open(demoUrl, "_blank", "noopener,noreferrer")} className="text-app-muted bg-app-sidebar border border-app-border pl-1.75 pr-1.75 pb-0.5 flex hover:text-app-accent hover:border-app-accent">
+                    <button onClick={() => { recordProjectClick(id, "demo"); window.open(demoUrl, "_blank", "noopener,noreferrer"); }} className="text-app-muted bg-app-sidebar border border-app-border pl-1.75 pr-1.75 pb-0.5 flex hover:text-app-accent hover:border-app-accent">
                         <SquareArrowRightEnter size={16} strokeWidth={1.5} className="mt-[5.5px] mr-1" /> Demo
                     </button>
                 )}
                 {githubUrl && (
-                    <button onClick={() => window.open(githubUrl, "_blank", "noopener,noreferrer")} className="text-app-muted bg-app-sidebar ml-2 border border-app-border pl-1.75 pr-1.75 pb-0.5 hover:text-app-accent hover:border-app-accent">
+                    <button onClick={() => { recordProjectClick(id, "github"); window.open(githubUrl, "_blank", "noopener,noreferrer"); }} className="text-app-muted bg-app-sidebar ml-2 border border-app-border pl-1.75 pr-1.75 pb-0.5 hover:text-app-accent hover:border-app-accent">
                         <i className={`devicon-github-original text-[14px]`} /> Source
                     </button>
                 )}

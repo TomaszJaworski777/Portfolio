@@ -1,3 +1,5 @@
+using System.ComponentModel.DataAnnotations.Schema;
+
 namespace Portfolio.Server.Models;
 
 public class ProjectData
@@ -10,4 +12,10 @@ public class ProjectData
     public string GithubUrl { get; set; } = string.Empty;
     public string DemoUrl { get; set; } = string.Empty;
     public List<TechData> Technologies { get; set; } = new List<TechData>();
+
+    [NotMapped]
+    public int UniqueDemoVisits { get; set; }
+    
+    [NotMapped]
+    public int UniqueGithubVisits { get; set; }
 }

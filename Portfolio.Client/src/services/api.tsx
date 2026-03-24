@@ -25,6 +25,8 @@ export interface ProjectData {
   githubUrl: string;
   demoUrl: string;
   technologies: TechData[];
+  uniqueDemoVisits?: number;
+  uniqueGithubVisits?: number;
 }
 
 export interface TechData {
@@ -143,5 +145,17 @@ export const updateProject = async (id: number, project: ProjectData): Promise<v
 export const deleteProject = async (id: number): Promise<void> => {
   await fetchWithAuth(`/api/projects/${id}`, {
     method: "DELETE",
+  });
+};
+
+export const recordSiteVisit = async (): Promise<void> => {
+  await fetch(`/api/analytics/visit`, { method: "POST" });
+};
+
+export const recordProjectClick = async (id: number, type: "demo" | "github"): Promise<void> => {
+  await fetch(`/api/analytics/project/${id}/click`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ type }),
   });
 };

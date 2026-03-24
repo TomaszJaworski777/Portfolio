@@ -24,10 +24,26 @@ public static class ProjectEndpoints
             };
             
             var projects = await context.Projects.Include(p => p.Technologies).OrderBy(p => p.Order).ToListAsync();
-            projects.ForEach(p => p.Technologies = p.Technologies
-                .OrderBy(t => categoryOrder.GetValueOrDefault(t.Category.ToLower(), 99))
-                .ThenBy(t => t.Name)
-                .ToList());
+            
+            var projectIds = projects.Select(p => p.Id).ToList();
+            var analytics = await context.AnalyticsEvents
+                .Where(a => a.ProjectId != null && projectIds.Contains(a.ProjectId.Value))
+                .GroupBy(a => new { a.ProjectId, a.EventType })
+                .Select(g => new { 
+                    ProjectId = g.Key.ProjectId, 
+                    EventType = g.Key.EventType, 
+                    UniqueVisits = g.Select(x => x.HashedIp).Distinct().Count() 
+                })
+                .ToListAsync();
+
+            projects.ForEach(p => {
+                p.Technologies = p.Technologies
+                    .OrderBy(t => categoryOrder.GetValueOrDefault(t.Category.ToLower(), 99))
+                    .ThenBy(t => t.Name)
+                    .ToList();
+                p.UniqueDemoVisits = analytics.FirstOrDefault(a => a.ProjectId == p.Id && a.EventType == "ProjectClick_Demo")?.UniqueVisits ?? 0;
+                p.UniqueGithubVisits = analytics.FirstOrDefault(a => a.ProjectId == p.Id && a.EventType == "ProjectClick_Github")?.UniqueVisits ?? 0;
+            });
             return projects;
         })  
         .WithName("GetProjects");
