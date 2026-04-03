@@ -1,13 +1,7 @@
-FROM node:20-alpine
+# syntax=docker/dockerfile:1
+FROM nginx:stable-alpine
 
-WORKDIR /app
+COPY ./dist /usr/share/nginx/html
+COPY ./nginx.conf /etc/nginx/nginx.conf
 
-COPY package.json ./
-COPY package-lock.json ./
-RUN npm install
-
-COPY . .
-
-EXPOSE 5173
-
-CMD ["npm", "run", "dev", "--", "--host"]
+EXPOSE 80

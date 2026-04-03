@@ -11,21 +11,16 @@ services:
     build: ./Portfolio.Server
     container_name: portfolio-server
     ports:
-      - "5000:8080"
+      - "2137:5000"
     environment:
-      ASPNETCORE_ENVIRONMENT: "Development"
-      ASPNETCORE_URLS: "http://+:8080"
-      DOTNET_USE_POLLING_FILE_WATCHER: "true"
+      ASPNETCORE_URLS: http://+:5000
       ConnectionStrings__DefaultConnection: "Host=db;Port=5432;Database=${DB_NAME};Username=${DB_USER};Password=${DB_PASSWORD}"
     depends_on:
       - db
-    volumes:
-      - ./Portfolio.Server:/app
   client:
     build: ./Portfolio.Client
     container_name: portfolio-client
     ports:
-      - "5173:5173"
-    volumes:
-      - ./Portfolio.Client:/app
-    
+      - "80:80"
+    depends_on:
+      - server

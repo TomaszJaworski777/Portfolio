@@ -8,9 +8,4 @@ USER user
 
 RUN mkdir -vp "/home/user/app"
 WORKDIR /home/user/app
-
-EXPOSE 5000
-
-ADD ./bin/Release/net9.0/publish /home/user/app
-
-CMD ["dotnet", "Portfolio.Server.dll"]
+CMD ["/bin/sh", "-c", "/bin/sh"]

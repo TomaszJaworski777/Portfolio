@@ -24,16 +24,20 @@ if (app.Environment.IsDevelopment())
 using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
-    try
-    {
-        var context = services.GetRequiredService<DatabaseContext>();
-        context.Database.Migrate();
-        Console.WriteLine("Successfully applied migrations.");
-    }
-    catch (Exception e)
-    {
-        Console.WriteLine($"Error occurred while applying migrations: {e.Message}");
-    }
+    while(true) {
+		try
+		{
+			var context = services.GetRequiredService<DatabaseContext>();
+			context.Database.Migrate();
+			Console.WriteLine("Successfully applied migrations.");
+			break;
+		}
+		catch (Exception e)
+		{
+			Console.WriteLine($"Error occurred while applying migrations: {e.Message}. Waiting 5 seconds...");
+			Thread.Sleep(5000);
+		}
+	}
 }
 
 app.MapProfileEndpoints();

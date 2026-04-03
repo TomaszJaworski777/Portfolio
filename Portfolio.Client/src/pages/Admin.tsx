@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Routes, Route, Link, useLocation, useNavigate, Navigate } from "react-router-dom";
+import { Routes, Route, Link, useLocation, useNavigate, Navigate } from "react-router";
 import { User, Briefcase, Cpu, Home } from "lucide-react";
 import AdminProfile from "../components/admin/AdminProfile";
 import AdminProjects from "../components/admin/AdminProjects";

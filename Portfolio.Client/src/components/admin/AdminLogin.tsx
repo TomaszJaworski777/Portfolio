@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Lock, LogIn } from "lucide-react";
 import { login, setAuthToken } from "../../services/auth";
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router";
 
 export default function AdminLogin() {
   const [password, setPassword] = useState("");
