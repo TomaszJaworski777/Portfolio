@@ -12,7 +12,6 @@ public static class ProjectEndpoints
 
         group.MapGet("/", async (DatabaseContext context) =>
         {
-            Thread.Sleep(150);
 
             var categoryOrder = new Dictionary<string, int>
             {
@@ -50,7 +49,6 @@ public static class ProjectEndpoints
 
         group.MapPost("/", async (ProjectData dto, DatabaseContext context) =>
         {
-            Thread.Sleep(150);
 
             var project = new ProjectData
             {
@@ -76,7 +74,6 @@ public static class ProjectEndpoints
 
         group.MapPut("/{id}", async (int id, ProjectData dto, DatabaseContext context) =>
         {
-            Thread.Sleep(150);
 
             var project = await context.Projects.Include(p => p.Technologies).FirstOrDefaultAsync(p => p.Id == id);
 
@@ -105,7 +102,6 @@ public static class ProjectEndpoints
 
         group.MapDelete("/{id}", async (int id, DatabaseContext context) =>
         {
-            Thread.Sleep(150);
 
             var project = await context.Projects.Include(p => p.Technologies).FirstOrDefaultAsync(p => p.Id == id);
 

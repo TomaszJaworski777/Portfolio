@@ -170,11 +170,11 @@ export default function AdminProfile({ onUpdate }: { onUpdate?: () => void }) {
                 <div className="flex-1 space-y-5 min-w-[300px]">
                   <div className="space-y-2">
                     <Label htmlFor="name" className="text-app-muted uppercase text-[10px] tracking-widest font-bold block mb-1.5">Full Name</Label>
-                    <Input id="name" name="name" value={profile?.name} onChange={handleChange} className="bg-app-bg border-app-border rounded-none text-app-text-primary ring-0 focus-visible:ring-0 focus-visible:border-app-accent h-10 px-3 transition-all" />
+                    <Input id="name" name="name" value={profile?.name ?? ""} onChange={handleChange} className="bg-app-bg border-app-border rounded-none text-app-text-primary ring-0 focus-visible:ring-0 focus-visible:border-app-accent h-10 px-3 transition-all" />
                   </div>
                   <div className="space-y-2">
                     <Label htmlFor="title" className="text-app-muted uppercase text-[10px] tracking-widest font-bold block mb-1.5">Professional Title</Label>
-                    <Input id="title" name="title" value={profile?.title} onChange={handleChange} className="bg-app-bg border-app-border rounded-none text-app-text-primary ring-0 focus-visible:ring-0 focus-visible:border-app-accent h-10 px-3 transition-all" />
+                    <Input id="title" name="title" value={profile?.title ?? ""} onChange={handleChange} className="bg-app-bg border-app-border rounded-none text-app-text-primary ring-0 focus-visible:ring-0 focus-visible:border-app-accent h-10 px-3 transition-all" />
                   </div>
                 </div>
               </div>
@@ -184,7 +184,7 @@ export default function AdminProfile({ onUpdate }: { onUpdate?: () => void }) {
               <Label className="text-[9px] text-app-muted uppercase tracking-tighter block mb-1">Manual Photo URL</Label>
               <Input
                 name="photoUrl"
-                value={profile?.photoUrl?.startsWith('data:') ? "[Base64 Image Attached]" : profile?.photoUrl}
+                value={profile?.photoUrl?.startsWith('data:') ? "[Base64 Image Attached]" : (profile?.photoUrl ?? "")}
                 onChange={(e) => { if (!e.target.value.startsWith('[Base64')) handleChange(e); }}
                 className="h-7 bg-app-bg border border-app-border text-[11px] font-mono rounded-none ring-0 focus-visible:ring-0 focus-visible:border-app-accent transition-all max-w-lg px-2"
                 placeholder="https://example.com/photo.jpg"
@@ -193,28 +193,28 @@ export default function AdminProfile({ onUpdate }: { onUpdate?: () => void }) {
 
             <div className="space-y-2 pt-2">
               <Label htmlFor="description" className="text-app-muted uppercase text-[10px] tracking-widest font-bold block mb-1.5">Bio / Description</Label>
-              <Textarea id="description" name="description" value={profile?.description} onChange={handleChange} className="bg-app-bg border-app-border min-h-37.5 rounded-none text-app-text-primary ring-0 focus-visible:ring-0 focus-visible:border-app-accent p-3 transition-all" />
+              <Textarea id="description" name="description" value={profile?.description ?? ""} onChange={handleChange} className="bg-app-bg border-app-border min-h-37.5 rounded-none text-app-text-primary ring-0 focus-visible:ring-0 focus-visible:border-app-accent p-3 transition-all" />
             </div>
 
             <div className="grid grid-cols-2 gap-6">
               <div className="space-y-2">
                 <Label htmlFor="location" className="text-app-muted uppercase text-[10px] tracking-widest font-bold block mb-1.5">Location</Label>
-                <Input id="location" name="location" value={profile?.location} onChange={handleChange} className="bg-app-bg border-app-border rounded-none text-app-text-primary ring-0 focus-visible:ring-0 focus-visible:border-app-accent h-10 px-3 transition-all" />
+                <Input id="location" name="location" value={profile?.location ?? ""} onChange={handleChange} className="bg-app-bg border-app-border rounded-none text-app-text-primary ring-0 focus-visible:ring-0 focus-visible:border-app-accent h-10 px-3 transition-all" />
               </div>
               <div className="space-y-2">
                 <Label htmlFor="phone" className="text-app-muted uppercase text-[10px] tracking-widest font-bold block mb-1.5">Phone Number</Label>
-                <Input id="phone" name="phone" value={profile?.phone} onChange={handleChange} className="bg-app-bg border-app-border rounded-none text-app-text-primary ring-0 focus-visible:ring-0 focus-visible:border-app-accent h-10 px-3 transition-all" />
+                <Input id="phone" name="phone" value={profile?.phone ?? ""} onChange={handleChange} className="bg-app-bg border-app-border rounded-none text-app-text-primary ring-0 focus-visible:ring-0 focus-visible:border-app-accent h-10 px-3 transition-all" />
               </div>
             </div>
 
             <div className="grid grid-cols-2 gap-6">
               <div className="space-y-2">
                 <Label htmlFor="githubUsername" className="text-app-muted uppercase text-[10px] tracking-widest font-bold block mb-1.5">GitHub Username</Label>
-                <Input id="githubUsername" name="githubUsername" value={profile?.githubUsername} onChange={handleChange} className="bg-app-bg border-app-border rounded-none text-app-text-primary ring-0 focus-visible:ring-0 focus-visible:border-app-accent h-10 px-3 transition-all" placeholder="username" />
+                <Input id="githubUsername" name="githubUsername" value={profile?.githubUsername ?? ""} onChange={handleChange} className="bg-app-bg border-app-border rounded-none text-app-text-primary ring-0 focus-visible:ring-0 focus-visible:border-app-accent h-10 px-3 transition-all" placeholder="username" />
               </div>
               <div className="space-y-2">
                 <Label htmlFor="linkedinProfile" className="text-app-muted uppercase text-[10px] tracking-widest font-bold block mb-1.5">LinkedIn Profile</Label>
-                <Input id="linkedinProfile" name="linkedinProfile" value={profile?.linkedinProfile} onChange={handleChange} className="bg-app-bg border-app-border rounded-none text-app-text-primary ring-0 focus-visible:ring-0 focus-visible:border-app-accent h-10 px-3 transition-all" placeholder="profile-slug" />
+                <Input id="linkedinProfile" name="linkedinProfile" value={profile?.linkedinProfile ?? ""} onChange={handleChange} className="bg-app-bg border-app-border rounded-none text-app-text-primary ring-0 focus-visible:ring-0 focus-visible:border-app-accent h-10 px-3 transition-all" placeholder="profile-slug" />
               </div>
             </div>
 

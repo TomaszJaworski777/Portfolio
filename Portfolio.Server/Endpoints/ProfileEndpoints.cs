@@ -12,7 +12,6 @@ public static class ProfileEndpoints
         
         group.MapGet("/", async (DatabaseContext context) =>
         {
-            Thread.Sleep(150);
 
             var profile = await context.Profiles.Include(p => p.Technologies).FirstOrDefaultAsync();
 
@@ -44,7 +43,6 @@ public static class ProfileEndpoints
 
         group.MapPut("/", async (ProfileUpdateDto dto, DatabaseContext context) =>
         {
-            Thread.Sleep(150);
 
             var profile = await context.Profiles.Include(p => p.Technologies).FirstOrDefaultAsync();
 

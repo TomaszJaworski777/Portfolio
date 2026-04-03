@@ -188,7 +188,7 @@ export default function AdminProjects() {
                     <div className="space-y-2">
                       <Label className="text-[9px] text-app-muted uppercase tracking-tighter block mb-1">Manual URL</Label>
                       <Input
-                        value={editingProject.thumbnailUrl?.startsWith('data:') ? "[Base64 Image Attached]" : editingProject.thumbnailUrl}
+                        value={editingProject.thumbnailUrl?.startsWith('data:') ? "[Base64 Image Attached]" : (editingProject.thumbnailUrl ?? "")}
                         onChange={e => { if (!e.target.value.startsWith('[Base64')) setEditingProject({ ...editingProject, thumbnailUrl: e.target.value }); }}
                         className="h-7 bg-app-bg border border-app-border text-[11px] font-mono rounded-none ring-0 focus-visible:ring-0 focus-visible:border-app-accent transition-all px-2"
                         placeholder="https://example.com/image.jpg"
@@ -201,22 +201,22 @@ export default function AdminProjects() {
               <div className="lg:col-span-7 space-y-6">
                 <div className="space-y-2">
                   <Label className="text-app-muted uppercase text-[10px] font-bold tracking-widest block mb-1.5">Project Name</Label>
-                  <Input value={editingProject.name} onChange={e => setEditingProject({ ...editingProject, name: e.target.value })} className="h-10 bg-app-bg border-app-border rounded-none text-app-text-primary ring-0 focus-visible:ring-0 focus-visible:border-app-accent px-3 transition-all" />
+                  <Input value={editingProject.name ?? ""} onChange={e => setEditingProject({ ...editingProject, name: e.target.value })} className="h-10 bg-app-bg border-app-border rounded-none text-app-text-primary ring-0 focus-visible:ring-0 focus-visible:border-app-accent px-3 transition-all" />
                 </div>
 
                 <div className="space-y-2">
                   <Label className="text-app-muted uppercase text-[10px] font-bold tracking-widest block mb-1.5">Project Description</Label>
-                  <Textarea value={editingProject.description} onChange={e => setEditingProject({ ...editingProject, description: e.target.value })} className="bg-app-bg border-app-border min-h-30 rounded-none text-app-text-primary ring-0 focus-visible:ring-0 focus-visible:border-app-accent p-3 transition-all" />
+                  <Textarea value={editingProject.description ?? ""} onChange={e => setEditingProject({ ...editingProject, description: e.target.value })} className="bg-app-bg border-app-border min-h-30 rounded-none text-app-text-primary ring-0 focus-visible:ring-0 focus-visible:border-app-accent p-3 transition-all" />
                 </div>
 
                 <div className="grid grid-cols-2 gap-4">
                   <div className="space-y-2">
                     <Label className="text-app-muted uppercase text-[10px] font-bold tracking-widest block mb-1.5">GitHub Source</Label>
-                    <Input value={editingProject.githubUrl} onChange={e => setEditingProject({ ...editingProject, githubUrl: e.target.value })} className="h-10 bg-app-bg border-app-border rounded-none text-app-text-primary ring-0 focus-visible:ring-0 focus-visible:border-app-accent px-3 transition-all" placeholder="https://github.com/..." />
+                    <Input value={editingProject.githubUrl ?? ""} onChange={e => setEditingProject({ ...editingProject, githubUrl: e.target.value })} className="h-10 bg-app-bg border-app-border rounded-none text-app-text-primary ring-0 focus-visible:ring-0 focus-visible:border-app-accent px-3 transition-all" placeholder="https://github.com/..." />
                   </div>
                   <div className="space-y-2">
                     <Label className="text-app-muted uppercase text-[10px] font-bold tracking-widest block mb-1.5">Live Demo</Label>
-                    <Input value={editingProject.demoUrl} onChange={e => setEditingProject({ ...editingProject, demoUrl: e.target.value })} className="h-10 bg-app-bg border-app-border rounded-none text-app-text-primary ring-0 focus-visible:ring-0 focus-visible:border-app-accent px-3 transition-all" placeholder="https://..." />
+                    <Input value={editingProject.demoUrl ?? ""} onChange={e => setEditingProject({ ...editingProject, demoUrl: e.target.value })} className="h-10 bg-app-bg border-app-border rounded-none text-app-text-primary ring-0 focus-visible:ring-0 focus-visible:border-app-accent px-3 transition-all" placeholder="https://..." />
                   </div>
                 </div>
 

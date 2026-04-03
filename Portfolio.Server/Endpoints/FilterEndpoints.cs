@@ -11,7 +11,6 @@ public static class FilterEndpoints
 
         group.MapGet("/", async (DatabaseContext context) =>
         {
-            Thread.Sleep(150);
 
             return await context.Technologies
                 .Where(t => context.Projects.Any(p => p.Technologies.Any(tp => tp.Id == t.Id)))

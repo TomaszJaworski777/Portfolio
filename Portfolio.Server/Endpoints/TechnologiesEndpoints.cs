@@ -12,7 +12,6 @@ public static class TechnologiesEndpoints
 
         group.MapGet("/", async (DatabaseContext context) =>
         {
-            Thread.Sleep(150);
 
             return await context.Technologies.OrderBy(t => t.Name.ToLower()).ToListAsync();
         })
@@ -20,7 +19,6 @@ public static class TechnologiesEndpoints
 
         group.MapPost("/", async (TechData dto, DatabaseContext context) =>
         {
-            Thread.Sleep(150);
 
             var tech = new TechData
             {
@@ -41,7 +39,6 @@ public static class TechnologiesEndpoints
 
         group.MapPut("/{id}", async (int id, TechData dto, DatabaseContext context) =>
         {
-            Thread.Sleep(150);
 
             var tech = await context.Technologies.FindAsync(id);
 
@@ -65,7 +62,6 @@ public static class TechnologiesEndpoints
 
         group.MapDelete("/{id}", async (int id, DatabaseContext context) =>
         {
-            Thread.Sleep(150);
 
             var tech = await context.Technologies.FindAsync(id);
 

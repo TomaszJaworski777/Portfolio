@@ -134,7 +134,7 @@ export default function AdminTechnologies() {
                     <div className="grid grid-cols-2 gap-6">
                       <div className="space-y-2">
                         <Label className="text-app-muted uppercase text-[10px] font-bold tracking-widest block mb-1.5">Tech Name</Label>
-                        <Input value={editingTech.name} onChange={e => setEditingTech({ ...editingTech, name: e.target.value })} className="h-10 bg-app-bg border-app-border rounded-none text-app-text-primary ring-0 focus-visible:ring-0 focus-visible:border-app-accent px-3 transition-all" />
+                        <Input value={editingTech.name ?? ""} onChange={e => setEditingTech({ ...editingTech, name: e.target.value })} className="h-10 bg-app-bg border-app-border rounded-none text-app-text-primary ring-0 focus-visible:ring-0 focus-visible:border-app-accent px-3 transition-all" />
                       </div>
                       <div className="space-y-2">
                         <Label className="text-app-muted uppercase text-[10px] font-bold tracking-widest block mb-1.5">Category</Label>
@@ -154,7 +154,7 @@ export default function AdminTechnologies() {
                     <div className="space-y-2">
                       <Label className="text-[9px] text-app-muted uppercase tracking-tighter block mb-1">Manual Icon URL / Devicon Class</Label>
                       <Input
-                        value={editingTech.iconUrl?.startsWith('data:') ? "[Base64 Image Attached]" : editingTech.iconUrl}
+                        value={editingTech.iconUrl?.startsWith('data:') ? "[Base64 Image Attached]" : (editingTech.iconUrl ?? "")}
                         onChange={e => { if (!e.target.value.startsWith('[Base64')) setEditingTech({ ...editingTech, iconUrl: e.target.value }); }}
                         placeholder="devicon-react-original or https://..."
                         className="h-10 bg-app-bg border-app-border rounded-none text-app-text-primary ring-0 focus-visible:ring-0 focus-visible:border-app-accent px-3 transition-all font-mono text-xs w-full"
@@ -175,7 +175,7 @@ export default function AdminTechnologies() {
                       </div>
                       <div className="flex-1 space-y-1">
                         <span className="text-[9px] uppercase text-app-muted font-bold tracking-tighter block">Light Theme</span>
-                        <Input value={editingTech.lightColor} onChange={e => setEditingTech({ ...editingTech, lightColor: e.target.value })} className="h-8 bg-app-bg border-app-border rounded-none text-[11px] font-mono ring-0 focus-visible:ring-0 focus-visible:border-app-accent px-2 transition-all w-full" placeholder="#HEX" />
+                        <Input value={editingTech.lightColor ?? ""} onChange={e => setEditingTech({ ...editingTech, lightColor: e.target.value })} className="h-8 bg-app-bg border-app-border rounded-none text-[11px] font-mono ring-0 focus-visible:ring-0 focus-visible:border-app-accent px-2 transition-all w-full" placeholder="#HEX" />
                       </div>
                     </div>
                   </div>
@@ -187,7 +187,7 @@ export default function AdminTechnologies() {
                       </div>
                       <div className="flex-1 space-y-1">
                         <span className="text-[9px] uppercase text-app-muted font-bold tracking-tighter block">Dark Theme</span>
-                        <Input value={editingTech.darkColor} onChange={e => setEditingTech({ ...editingTech, darkColor: e.target.value })} className="h-8 bg-app-bg border-app-border rounded-none text-[11px] font-mono ring-0 focus-visible:ring-0 focus-visible:border-app-accent px-2 transition-all w-full" placeholder="#HEX" />
+                        <Input value={editingTech.darkColor ?? ""} onChange={e => setEditingTech({ ...editingTech, darkColor: e.target.value })} className="h-8 bg-app-bg border-app-border rounded-none text-[11px] font-mono ring-0 focus-visible:ring-0 focus-visible:border-app-accent px-2 transition-all w-full" placeholder="#HEX" />
                       </div>
                     </div>
                   </div>
