@@ -1,17 +1,13 @@
 services:
   db:
-    image: postgres:16
+    image: postgres:18-alpine
     environment:
       POSTGRES_USER: ${DB_USER}
       POSTGRES_PASSWORD: ${DB_PASSWORD}
       POSTGRES_DB: ${DB_NAME}
-    ports:
-      - "5432:5432"
   server:
     build: ./Portfolio.Server
     container_name: portfolio-server
-    ports:
-      - "2137:5000"
     environment:
       ASPNETCORE_URLS: http://+:5000
       ConnectionStrings__DefaultConnection: "Host=db;Port=5432;Database=${DB_NAME};Username=${DB_USER};Password=${DB_PASSWORD}"
@@ -21,6 +17,6 @@ services:
     build: ./Portfolio.Client
     container_name: portfolio-client
     ports:
-      - "80:80"
+      - "127.0.0.1:2137:80"
     depends_on:
       - server
