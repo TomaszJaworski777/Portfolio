@@ -11,7 +11,6 @@ public static class AuthEndpoints
     public static void MapAuthEndpoints(this IEndpointRouteBuilder app)
     {
         var group = app.MapGroup("/api/auth");
-
         group.MapPost("/login", async (LoginRequest request, DatabaseContext context) =>
         {
             var adminPassword = await context.AdminPasswords.FirstOrDefaultAsync();
@@ -38,6 +37,9 @@ public static class AuthEndpoints
 
             return Results.Ok(token);
         });
+
+        group.MapGet("/verify", () => Results.Ok())
+            .AddEndpointFilter<AuthFilter>();
 
         group.MapDelete("/password", async (DatabaseContext context) =>
         {

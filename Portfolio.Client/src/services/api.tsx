@@ -76,6 +76,10 @@ const fetchWithAuth = async (input: RequestInfo | URL, init?: RequestInit) => {
   return response;
 };
 
+export const verifyToken = async (): Promise<void> => {
+  await fetchWithAuth(`/api/auth/verify`);
+};
+
 export const fetchProfile = async (): Promise<ProfileData> => {
   const response = await fetchWithAuth(`/api/profile`);
   return response.json();

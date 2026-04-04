@@ -6,7 +6,7 @@ import AdminProjects from "../components/admin/AdminProjects";
 import AdminTechnologies from "../components/admin/AdminTechnologies";
 import AdminLogin from "../components/admin/AdminLogin";
 import { ThemeToggle } from "../components/ui/theme_toggle";
-import { fetchProfile, type ProfileData } from "../services/api";
+import { fetchProfile, verifyToken, type ProfileData } from "../services/api";
 import { getAuthToken } from "../services/auth";
 
 export default function Admin() {
@@ -20,6 +20,7 @@ export default function Admin() {
     if (!getAuthToken()) return;
     try {
       document.title = "Loading...";
+      await verifyToken();
       const [profileData] = await Promise.all([
         fetchProfile(),
       ]);
@@ -51,6 +52,10 @@ export default function Admin() {
     { name: "Projects", path: "/admin/projects", icon: Briefcase },
     { name: "Technologies", path: "/admin/tech", icon: Cpu },
   ];
+
+  if (!getAuthToken() && !isLoginRoute) {
+    return null;
+  }
 
   return (
     <div className="flex h-screen w-screen overflow-hidden bg-app-bg relative">

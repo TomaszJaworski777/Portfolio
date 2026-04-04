@@ -39,7 +39,7 @@ export default function Home() {
 
         setProfile(profileData);
         if (profileData?.name) {
-          document.title = profileData.name;
+          document.title = profileData.name + " - Portfolio";
         }
         setFilters(filtersData);
         setProjects(projectsData);
