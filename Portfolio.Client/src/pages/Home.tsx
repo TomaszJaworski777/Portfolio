@@ -94,8 +94,8 @@ export default function Home() {
         ${isSidebarOpen ? "translate-x-0" : "-translate-x-full"}
         lg:relative lg:translate-x-0
       `}>
-        <div className="p-6 flex flex-col h-full overflow-hidden">
-          <div className="flex-none">
+        <div className="p-6 flex flex-col h-full overflow-y-auto scrollbar-none relative">
+          <div className="flex-none sticky top-0 bg-app-sidebar z-20">
             <button onClick={() => setIsSidebarOpen(false)} className="lg:hidden text-app-muted hover:text-app-accent flex ml-auto">
               <X size={20} />
             </button>
@@ -112,7 +112,7 @@ export default function Home() {
               <p className="w-full mt-2 text-app-text-primary text-[14px] ml-5"><Phone size={16} className="inline mr-2 text-app-accent" />{profile?.phone}</p>
             </div>
           </div>
-          <div className="flex-1 overflow-y-auto scrollbar-none">
+          <div className="flex-1 pb-4 pt-4">
             <h3 className="w-full uppercase mt-2 tracking-wider ml-3 text-[10px] text-app-accent animate-fade-in-left delay-50"><b>languages</b></h3>
             <div className="w-full grid grid-cols-8 gap-2 pl-3 pr-3 mt-2">
               {profile?.languages?.map((tech, i) => <div key={tech.name} className="animate-fade-in-left" style={{ animationDelay: `${50 + (i * 30)}ms` }}><TechIcon name={tech.name} iconUrl={tech.iconUrl} color={isLight ? tech.lightColor : tech.darkColor} /></div>)}
@@ -134,10 +134,8 @@ export default function Home() {
               {profile?.devOps?.map((tech, i) => <div key={tech.name} className="animate-fade-in-left" style={{ animationDelay: `${250 + (i * 30)}ms` }}><TechIcon name={tech.name} iconUrl={tech.iconUrl} color={isLight ? tech.lightColor : tech.darkColor} /></div>)}
             </div>
           </div>
-          <div className="flex-none border-t border-app-border">
-            <div className="mt-2">
-              {profile?.githubUsername && <GitHubActivity isLight={isLight} username={profile.githubUsername} />}
-            </div>
+          <div className="flex-none sticky bottom-0 bg-app-sidebar pt-4 border-t border-app-border z-20">
+            {profile?.githubUsername && <GitHubActivity isLight={isLight} username={profile.githubUsername} />}
           </div>
         </div>
       </aside>
