@@ -10,21 +10,21 @@ export function GitHubActivity({ isLight, username }: { isLight: boolean; userna
     timeStamp.setMonth(today.getMonth() - 5);
 
     const filtered = contributions.filter((day: any) => {
-        const date = new Date(day.date);
-        return date >= timeStamp;
+      const date = new Date(day.date);
+      return date >= timeStamp;
     });
 
     if (!isReady) {
-        setTimeout(() => {
-            setIsReady(true);
-        }, 0);
+      setTimeout(() => {
+        setIsReady(true);
+      }, 0);
     }
 
     return filtered;
   };
 
   return (
-    <div className="mt-8">
+    <div>
       <div className="flex justify-between items-end mb-2">
         <p className="w-full uppercase tracking-wider text-[11px] text-app-accent">
           <b>github activity</b>
@@ -40,7 +40,7 @@ export function GitHubActivity({ isLight, username }: { isLight: boolean; userna
           overflow-hidden transition-all duration-700 ease-in-out
           ${isReady ? "opacity-100 h-auto" : "opacity-0 h-0"}
         `}>
-          <GitHubCalendar 
+          <GitHubCalendar
             username={username}
             transformData={filter}
             labels={{
