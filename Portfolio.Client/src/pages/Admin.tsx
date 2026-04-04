@@ -19,13 +19,18 @@ export default function Admin() {
   const loadAllData = async () => {
     if (!getAuthToken()) return;
     try {
+      document.title = "Loading...";
       const [profileData] = await Promise.all([
         fetchProfile(),
       ]);
 
       setProfile(profileData);
+      if (profileData?.name) {
+        document.title = profileData.name + " - Admin";
+      }
     } catch (err) {
       console.error(err);
+      document.title = "Portfolio - Admin";
     }
   };
 
@@ -34,7 +39,9 @@ export default function Admin() {
       navigate("/admin/login");
     } else if (getAuthToken() && isLoginRoute) {
       navigate("/admin/profile");
-    } else if (!isLoginRoute) {
+    } else if (isLoginRoute) {
+      document.title = "Admin Login";
+    } else {
       loadAllData();
     }
   }, [location.pathname, navigate, isLoginRoute]);

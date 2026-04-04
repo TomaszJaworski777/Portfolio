@@ -27,6 +27,7 @@ export default function Home() {
   useEffect(() => {
     const loadAllData = async () => {
       try {
+        document.title = "Loading...";
         recordSiteVisit();
 
         const [profileData, filtersData, projectsData, totalVisitsData] = await Promise.all([
@@ -37,12 +38,16 @@ export default function Home() {
         ]);
 
         setProfile(profileData);
+        if (profileData?.name) {
+          document.title = profileData.name;
+        }
         setFilters(filtersData);
         setProjects(projectsData);
         setTotalVisits(totalVisitsData);
         setIsLoaded(true);
       } catch (err) {
         console.error(err);
+        document.title = "Portfolio";
       }
     };
 

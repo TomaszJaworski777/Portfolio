@@ -5,6 +5,9 @@ services:
       POSTGRES_USER: ${DB_USER}
       POSTGRES_PASSWORD: ${DB_PASSWORD}
       POSTGRES_DB: ${DB_NAME}
+    volumes:
+      - postgres_data:/var/lib/postgresql/
+      
   server:
     build: ./Portfolio.Server
     container_name: portfolio-server
@@ -20,3 +23,6 @@ services:
       - "127.0.0.1:2137:80"
     depends_on:
       - server
+      
+volumes:
+  postgres_data:
