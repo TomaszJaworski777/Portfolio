@@ -27,6 +27,7 @@ public static class ProfileEndpoints
                 profile.PhotoUrl,
                 profile.Description,
                 profile.Location,
+                profile.Email,
                 profile.Phone,
                 profile.GithubUsername,
                 profile.LinkedinProfile,
@@ -56,6 +57,7 @@ public static class ProfileEndpoints
             profile.PhotoUrl = dto.PhotoUrl ?? string.Empty;
             profile.Description = dto.Description;
             profile.Location = dto.Location;
+            profile.Email = dto.Email;
             profile.Phone = dto.Phone;
             profile.GithubUsername = dto.GithubUsername;
             profile.LinkedinProfile = dto.LinkedinProfile;
@@ -89,6 +91,7 @@ record ProfileUpdateDto(
     string? PhotoUrl,
     string Description,
     string Location,
+    string Email,
     string Phone,
     string GithubUsername,
     string LinkedinProfile,

@@ -8,6 +8,7 @@ public class ProfileData
     public string PhotoUrl { get; set; } = string.Empty;
     public string Description { get; set; } = string.Empty;
     public string Location { get; set; } = string.Empty;
+    public string Email { get; set; } = string.Empty;
     public string Phone { get; set; } = string.Empty;
     public string GithubUsername { get; set; } = string.Empty;
     public string LinkedinProfile { get; set; } = string.Empty;

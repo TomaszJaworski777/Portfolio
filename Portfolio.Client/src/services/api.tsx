@@ -4,6 +4,7 @@ export interface ProfileData {
   photoUrl: string;
   description: string;
   location: string;
+  email: string;
   phone: string;
   githubUsername: string;
   linkedinProfile: string;

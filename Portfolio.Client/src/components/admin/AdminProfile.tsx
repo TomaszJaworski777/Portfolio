@@ -167,7 +167,7 @@ export default function AdminProfile({ onUpdate }: { onUpdate?: () => void }) {
                   }} />
                 </div>
 
-                <div className="flex-1 space-y-5 min-w-[300px]">
+                <div className="flex-1 space-y-5 min-w-75">
                   <div className="space-y-2">
                     <Label htmlFor="name" className="text-app-muted uppercase text-[10px] tracking-widest font-bold block mb-1.5">Full Name</Label>
                     <Input id="name" name="name" value={profile?.name ?? ""} onChange={handleChange} className="bg-app-bg border-app-border rounded-none text-app-text-primary ring-0 focus-visible:ring-0 focus-visible:border-app-accent h-10 px-3 transition-all" />
@@ -196,10 +196,14 @@ export default function AdminProfile({ onUpdate }: { onUpdate?: () => void }) {
               <Textarea id="description" name="description" value={profile?.description ?? ""} onChange={handleChange} className="bg-app-bg border-app-border min-h-37.5 rounded-none text-app-text-primary ring-0 focus-visible:ring-0 focus-visible:border-app-accent p-3 transition-all" />
             </div>
 
-            <div className="grid grid-cols-2 gap-6">
+            <div className="grid grid-cols-3 gap-6">
               <div className="space-y-2">
                 <Label htmlFor="location" className="text-app-muted uppercase text-[10px] tracking-widest font-bold block mb-1.5">Location</Label>
                 <Input id="location" name="location" value={profile?.location ?? ""} onChange={handleChange} className="bg-app-bg border-app-border rounded-none text-app-text-primary ring-0 focus-visible:ring-0 focus-visible:border-app-accent h-10 px-3 transition-all" />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="email" className="text-app-muted uppercase text-[10px] tracking-widest font-bold block mb-1.5">Email</Label>
+                <Input id="email" name="email" type="email" value={profile?.email ?? ""} onChange={handleChange} className="bg-app-bg border-app-border rounded-none text-app-text-primary ring-0 focus-visible:ring-0 focus-visible:border-app-accent h-10 px-3 transition-all" />
               </div>
               <div className="space-y-2">
                 <Label htmlFor="phone" className="text-app-muted uppercase text-[10px] tracking-widest font-bold block mb-1.5">Phone Number</Label>

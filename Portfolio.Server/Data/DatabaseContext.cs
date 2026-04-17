@@ -59,6 +59,7 @@ public class DatabaseContext : DbContext
                 PhotoUrl = "",
                 Description = "Description",
                 Location = "City, Country",
+                Email = "email@example.com",
                 Phone = "Phone number",
             }
         );

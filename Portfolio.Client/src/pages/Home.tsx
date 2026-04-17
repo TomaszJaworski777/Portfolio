@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { UserRound, X, FileDown, MapPin, Phone } from "lucide-react";
+import { UserRound, X, FileDown, MapPin, Mail, Phone } from "lucide-react";
 import { ThemeToggle } from "../components/ui/theme_toggle";
 import { TopBarButton } from "../components/ui/top_bar_button";
 import { GitHubActivity } from "../components/ui/github_activity";
@@ -106,6 +106,7 @@ export default function Home() {
             </div>
             <div className="border-b border-app-border pb-[clamp(0.375rem,1.2vh,1.25rem)]">
               <p className="w-full mt-[clamp(0.375rem,1vh,0.75rem)] text-app-text-primary tracking-wider text-[clamp(0.625rem,1.2vh,0.875rem)] lg:text-[14px] ml-5"><MapPin size={16} className="inline mr-2 text-app-accent" />{profile?.location}</p>
+              <p className="w-full mt-[clamp(0.25rem,0.8vh,0.5rem)] text-app-text-primary text-[clamp(0.625rem,1.2vh,0.875rem)] lg:text-[14px] ml-5"><Mail size={16} className="inline mr-2 text-app-accent" />{profile?.email}</p>
               <p className="w-full mt-[clamp(0.25rem,0.8vh,0.5rem)] text-app-text-primary text-[clamp(0.625rem,1.2vh,0.875rem)] lg:text-[14px] ml-5"><Phone size={16} className="inline mr-2 text-app-accent" />{profile?.phone}</p>
             </div>
           </div>
