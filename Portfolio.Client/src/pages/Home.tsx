@@ -86,7 +86,7 @@ export default function Home() {
       )}
 
       <aside className={`
-        fixed inset-y-0 left-0 z-50 w-[min(90vw,22.5rem)] lg:w-90 bg-app-sidebar border-r border-app-border
+        fixed inset-y-0 left-0 z-50 w-[min(90vw,22.5rem)] lg:w-90 lg:min-w-[340px] bg-app-sidebar border-r border-app-border
         transition-transform duration-100 ease-in-out shrink-0
         ${isSidebarOpen ? "translate-x-0" : "-translate-x-full"}
         lg:relative lg:translate-x-0
@@ -105,9 +105,9 @@ export default function Home() {
               </div>
             </div>
             <div className="border-b border-app-border pb-[clamp(0.375rem,1.2vh,1.25rem)]">
-              <p className="w-full mt-[clamp(0.375rem,1vh,0.75rem)] text-app-text-primary tracking-wider text-[clamp(0.625rem,1.2vh,0.875rem)] lg:text-[14px] ml-5"><MapPin size={16} className="inline mr-2 text-app-accent" />{profile?.location}</p>
-              <p className="w-full mt-[clamp(0.25rem,0.8vh,0.5rem)] text-app-text-primary text-[clamp(0.625rem,1.2vh,0.875rem)] lg:text-[14px] ml-5"><Mail size={16} className="inline mr-2 text-app-accent" />{profile?.email}</p>
-              <p className="w-full mt-[clamp(0.25rem,0.8vh,0.5rem)] text-app-text-primary text-[clamp(0.625rem,1.2vh,0.875rem)] lg:text-[14px] ml-5"><Phone size={16} className="inline mr-2 text-app-accent" />{profile?.phone}</p>
+              <p className="flex items-center min-w-0 mt-[clamp(0.375rem,1vh,0.75rem)] text-app-text-primary tracking-wider text-[clamp(0.625rem,1.2vh,0.875rem)] lg:text-[14px] pl-5"><MapPin size={16} className="mr-2 text-app-accent shrink-0" /><span className="truncate" title={profile?.location}>{profile?.location}</span></p>
+              <p className="flex items-center min-w-0 mt-[clamp(0.25rem,0.8vh,0.5rem)] text-app-text-primary text-[clamp(0.625rem,1.2vh,0.875rem)] lg:text-[14px] pl-5"><Mail size={16} className="mr-2 text-app-accent shrink-0" /><span className="truncate" title={profile?.email}>{profile?.email}</span></p>
+              <p className="flex items-center min-w-0 mt-[clamp(0.25rem,0.8vh,0.5rem)] text-app-text-primary text-[clamp(0.625rem,1.2vh,0.875rem)] lg:text-[14px] pl-5"><Phone size={16} className="mr-2 text-app-accent shrink-0" /><span className="truncate" title={profile?.phone}>{profile?.phone}</span></p>
             </div>
           </div>
           <div className="flex-1 pb-[clamp(0.375rem,1vh,1rem)] pt-[clamp(0.375rem,1vh,1rem)] mb-1 lg:mb-0">
@@ -200,7 +200,7 @@ export default function Home() {
 
         <main className="flex-1 overflow-y-auto overflow-x-hidden overscroll-contain px-2 lg:px-10 pb-0 w-full mask-[linear-gradient(to_bottom,transparent,black_25px)] custom-scrollbar scrollbar-gutter-stable">
           <section className="w-full py-5 px-2 lg:px-6">
-            <motion.div layout className="grid gap-4 lg:gap-6 grid-cols-[repeat(auto-fill,minmax(260px,1fr))] lg:grid-cols-[repeat(auto-fill,minmax(350px,1fr))] w-full">
+            <motion.div layout className="grid gap-4 lg:gap-6 grid-cols-[repeat(auto-fill,minmax(260px,1fr))] lg:grid-cols-[repeat(auto-fill,minmax(350px,1fr))] auto-rows-fr w-full">
               <AnimatePresence mode="popLayout">
                 {isLoaded && filteredProjects.map((project, i) => (
                   <motion.div

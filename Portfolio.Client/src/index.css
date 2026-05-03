@@ -1,5 +1,11 @@
 @import "tailwindcss";
 
+@media (min-width: 1024px) {
+  html {
+    font-size: clamp(11px, 0.625vw, 20px);
+  }
+}
+
 @theme {
   --color-app-bg: var(--app-bg);
   --color-app-card: var(--app-card);
